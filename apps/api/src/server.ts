@@ -1,0 +1,87 @@
+import cors from "cors";
+import "dotenv/config";
+import express, {
+  type NextFunction,
+  type Request,
+  type Response,
+} from "express";
+import helmet from "helmet";
+
+import { projectRouter } from "./modules/projects/project.routes.js";
+import { prisma } from "./lib/prisma.js";
+
+const app = express();
+
+const PORT = Number(process.env.PORT) || 4000;
+
+app.use(helmet());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  }),
+);
+app.use(express.json());
+
+app.use("/api/projects", projectRouter);
+
+app.get("/", (_request: Request, response: Response) => {
+  response.json({
+    message: "Tradie Assistant API is running",
+  });
+});
+
+app.get("/api/health", (_request: Request, response: Response) => {
+  response.status(200).json({
+    status: "healthy",
+    service: "tradie-assistant-api",
+    timestamp: new Date().toISOString(),
+  });
+});
+
+app.get(
+  "/api/health/database",
+  async (_request: Request, response: Response, next: NextFunction) => {
+    try {
+      await prisma.$queryRaw`SELECT 1`;
+
+      response.status(200).json({
+        status: "healthy",
+        database: "connected",
+        timestamp: new Date().toISOString(),
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+);
+
+app.use(
+  (
+    error: Error,
+    _request: Request,
+    response: Response,
+    _next: NextFunction,
+  ) => {
+    console.error(error);
+
+    response.status(500).json({
+      message: "An unexpected server error occurred.",
+    });
+  },
+);
+
+const server = app.listen(PORT, () => {
+  console.log(`Tradie Assistant API running on http://localhost:${PORT}`);
+});
+
+async function shutDown(): Promise<void> {
+  console.log("Closing server and database connection...");
+
+  server.close(async () => {
+    await prisma.$disconnect();
+    process.exit(0);
+  });
+}
+
+process.on("SIGINT", shutDown);
+process.on("SIGTERM", shutDown);

@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: tradie-assistant-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: tradie_user
+      POSTGRES_PASSWORD: tradie_password
+      POSTGRES_DB: tradie_assistant
+    ports:
+      - "5432:5432"
+    volumes:
+      - tradie_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tradie_user -d tradie_assistant"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  tradie_postgres_data:
