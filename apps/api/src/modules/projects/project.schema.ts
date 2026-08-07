@@ -19,7 +19,7 @@ export const projectStatusSchema = z.enum([
   "ARCHIVED",
 ]);
 
-export const createProjectSchema = z.object({
+const projectFieldsSchema = z.object({
   name: z
     .string()
     .trim()
@@ -56,11 +56,33 @@ export const createProjectSchema = z.object({
   endDate: optionalDate,
 });
 
-export const updateProjectSchema = createProjectSchema
+function datesAreInOrder(data: {
+  startDate?: string | null;
+  endDate?: string | null;
+}) {
+  return (
+    !data.startDate ||
+    !data.endDate ||
+    new Date(data.endDate) >= new Date(data.startDate)
+  );
+}
+
+const dateOrderRefinement = {
+  message: "End date cannot be before the start date.",
+  path: ["endDate"] as string[],
+};
+
+export const createProjectSchema = projectFieldsSchema.refine(
+  datesAreInOrder,
+  dateOrderRefinement,
+);
+
+export const updateProjectSchema = projectFieldsSchema
   .partial()
   .refine((data) => Object.keys(data).length > 0, {
     message: "At least one field must be provided.",
-  });
+  })
+  .refine(datesAreInOrder, dateOrderRefinement);
 
 export const projectIdSchema = z.object({
   projectId: z.string().uuid("Project ID must be a valid UUID."),

@@ -8,6 +8,7 @@ import {
   UserRound,
 } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router";
 
 import { getProjects } from "../api/projects";
 import { EmptyState } from "../components/ui/EmptyState";
@@ -84,13 +85,13 @@ function ProjectCard({
           {project.status}
         </span>
 
-        <button
-          type="button"
+        <Link
+          to={`/projects/${project.id}`}
           className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
           aria-label={`Project options for ${project.name}`}
         >
           <MoreHorizontal size={19} />
-        </button>
+        </Link>
       </div>
 
       <h2 className="mt-5 text-lg font-bold text-slate-950">
@@ -147,12 +148,12 @@ function ProjectCard({
           </p>
         </div>
 
-        <button
-          type="button"
+        <Link
+          to={`/projects/${project.id}`}
           className="text-sm font-bold text-slate-700 hover:text-slate-950"
         >
           View details
-        </button>
+        </Link>
       </div>
     </article>
   );

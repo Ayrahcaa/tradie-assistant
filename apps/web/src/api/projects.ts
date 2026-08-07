@@ -7,6 +7,24 @@ import type {
 const API_URL =
   import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
 
+interface ProjectResponse {
+  data: Project;
+}
+
+export async function getProjectById(
+  projectId: string,
+): Promise<ProjectResponse> {
+  const response = await fetch(`${API_URL}/projects/${projectId}`);
+
+  if (!response.ok) {
+    throw new Error(
+      await getErrorMessage(response, "Unable to load project."),
+    );
+  }
+
+  return response.json() as Promise<ProjectResponse>;
+}
+
 export interface CreateProjectInput {
   name: string;
   description?: string | null;
@@ -18,8 +36,15 @@ export interface CreateProjectInput {
   endDate?: string | null;
 }
 
+export type UpdateProjectInput = Partial<CreateProjectInput>;
+
 interface CreateProjectResponse {
   message: string;
+  data: Project;
+}
+
+interface ProjectResponse {
+  message?: string;
   data: Project;
 }
 
@@ -77,4 +102,64 @@ export async function createProject(
   }
 
   return response.json() as Promise<CreateProjectResponse>;
+}
+
+export async function getProject(projectId: string): Promise<Project> {
+  const response = await fetch(`${API_URL}/projects/${projectId}`);
+
+  if (!response.ok) {
+    throw new Error(
+      await getErrorMessage(response, "Unable to load this project."),
+    );
+  }
+
+  const result = (await response.json()) as ProjectResponse;
+  return result.data;
+}
+
+export async function updateProject(
+  projectId: string,
+  input: UpdateProjectInput,
+): Promise<Project> {
+  const response = await fetch(`${API_URL}/projects/${projectId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      await getErrorMessage(response, "Unable to update this project."),
+    );
+  }
+
+  const result = (await response.json()) as ProjectResponse;
+  return result.data;
+}
+
+export async function archiveProject(projectId: string): Promise<Project> {
+  const response = await fetch(`${API_URL}/projects/${projectId}/archive`, {
+    method: "PATCH",
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      await getErrorMessage(response, "Unable to archive this project."),
+    );
+  }
+
+  const result = (await response.json()) as ProjectResponse;
+  return result.data;
+}
+
+export async function deleteProject(projectId: string): Promise<void> {
+  const response = await fetch(`${API_URL}/projects/${projectId}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      await getErrorMessage(response, "Unable to delete this project."),
+    );
+  }
 }
