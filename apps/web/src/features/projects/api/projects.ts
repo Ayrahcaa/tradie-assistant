@@ -4,8 +4,7 @@ import type {
   ProjectsResponse,
 } from "../types/project";
 
-const API_URL =
-  import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
+const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
 
 interface ProjectResponse {
   data: Project;
@@ -17,9 +16,7 @@ export async function getProjectById(
   const response = await fetch(`${API_URL}/projects/${projectId}`);
 
   if (!response.ok) {
-    throw new Error(
-      await getErrorMessage(response, "Unable to load project."),
-    );
+    throw new Error(await getErrorMessage(response, "Unable to load project."));
   }
 
   return response.json() as Promise<ProjectResponse>;
@@ -29,6 +26,7 @@ export interface CreateProjectInput {
   name: string;
   description?: string | null;
   clientName?: string | null;
+  customerId?: string | null;
   address?: string | null;
   quotedValue?: number | null;
   status?: ProjectStatus;
@@ -69,9 +67,7 @@ async function getErrorMessage(
 export async function getProjects(
   status?: ProjectStatus,
 ): Promise<ProjectsResponse> {
-  const query = status
-    ? `?status=${encodeURIComponent(status)}`
-    : "";
+  const query = status ? `?status=${encodeURIComponent(status)}` : "";
 
   const response = await fetch(`${API_URL}/projects${query}`);
 

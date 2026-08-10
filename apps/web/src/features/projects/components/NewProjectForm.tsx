@@ -1,15 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CircleAlert, LoaderCircle } from "lucide-react";
-import {
-  type ChangeEvent,
-  type FormEvent,
-  useState,
-} from "react";
+import { type ChangeEvent, type FormEvent, useState } from "react";
 
-import {
-  createProject,
-  type CreateProjectInput,
-} from "../../api/projects";
+import { createProject, type CreateProjectInput } from "../api/projects";
+import { getCustomers } from "../../customers/api/customers";
 
 interface NewProjectFormProps {
   onSuccess: () => void;
@@ -19,7 +13,7 @@ interface NewProjectFormProps {
 interface ProjectFormState {
   name: string;
   description: string;
-  clientName: string;
+  customerId: string;
   address: string;
   quotedValue: string;
   startDate: string;
@@ -29,24 +23,24 @@ interface ProjectFormState {
 const initialFormState: ProjectFormState = {
   name: "",
   description: "",
-  clientName: "",
+  customerId: "",
   address: "",
   quotedValue: "",
   startDate: "",
   endDate: "",
 };
 
-export function NewProjectForm({
-  onSuccess,
-  onCancel,
-}: NewProjectFormProps) {
+export function NewProjectForm({ onSuccess, onCancel }: NewProjectFormProps) {
   const queryClient = useQueryClient();
 
-  const [form, setForm] =
-    useState<ProjectFormState>(initialFormState);
+  const [form, setForm] = useState<ProjectFormState>(initialFormState);
 
-  const [validationError, setValidationError] =
-    useState<string | null>(null);
+  const [validationError, setValidationError] = useState<string | null>(null);
+
+  const customersQuery = useQuery({
+    queryKey: ["customers", false],
+    queryFn: () => getCustomers(false),
+  });
 
   const createProjectMutation = useMutation({
     mutationFn: createProject,
@@ -64,7 +58,7 @@ export function NewProjectForm({
 
   function handleChange(
     event: ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
   ) {
     const { name, value } = event.target;
@@ -78,17 +72,21 @@ export function NewProjectForm({
   function buildPayload(): CreateProjectInput {
     return {
       name: form.name.trim(),
+
       description: form.description.trim() || null,
-      clientName: form.clientName.trim() || null,
+
+      customerId: form.customerId || null,
+
       address: form.address.trim() || null,
-      quotedValue:
-        form.quotedValue === ""
-          ? null
-          : Number(form.quotedValue),
+
+      quotedValue: form.quotedValue === "" ? null : Number(form.quotedValue),
+
       status: "ACTIVE",
+
       startDate: form.startDate
         ? new Date(`${form.startDate}T09:00:00`).toISOString()
         : null,
+
       endDate: form.endDate
         ? new Date(`${form.endDate}T17:00:00`).toISOString()
         : null,
@@ -143,14 +141,10 @@ export function NewProjectForm({
       <div className="space-y-5 p-6">
         {(validationError || createProjectMutation.isError) && (
           <div className="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700">
-            <CircleAlert
-              size={20}
-              className="mt-0.5 shrink-0"
-            />
+            <CircleAlert size={20} className="mt-0.5 shrink-0" />
 
             <p className="text-sm font-medium">
-              {validationError ??
-                createProjectMutation.error?.message}
+              {validationError ?? createProjectMutation.error?.message}
             </p>
           </div>
         )}
@@ -200,21 +194,40 @@ export function NewProjectForm({
         <div className="grid gap-5 sm:grid-cols-2">
           <div>
             <label
-              htmlFor="client-name"
+              htmlFor="customerId"
               className="text-sm font-bold text-slate-700"
             >
-              Customer name
+              Customer
             </label>
 
-            <input
-              id="client-name"
-              name="clientName"
-              value={form.clientName}
+            <select
+              id="customerId"
+              name="customerId"
+              value={form.customerId}
               onChange={handleChange}
-              placeholder="John Smith"
               className={inputClasses}
-              maxLength={120}
-            />
+            >
+              <option value="">No customer selected</option>
+
+              {customersQuery.data?.data.map((customer) => (
+                <option key={customer.id} value={customer.id}>
+                  {customer.firstName} {customer.lastName}
+                  {customer.businessName ? ` — ${customer.businessName}` : ""}
+                </option>
+              ))}
+            </select>
+
+            {customersQuery.isPending && (
+              <p className="mt-2 text-xs text-slate-500">
+                Loading customers...
+              </p>
+            )}
+
+            {customersQuery.isError && (
+              <p className="mt-2 text-xs font-medium text-red-600">
+                Unable to load customers.
+              </p>
+            )}
           </div>
 
           <div>
@@ -320,10 +333,7 @@ export function NewProjectForm({
           className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-amber-400 px-5 text-sm font-bold text-slate-950 hover:bg-amber-300 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {createProjectMutation.isPending && (
-            <LoaderCircle
-              size={18}
-              className="animate-spin"
-            />
+            <LoaderCircle size={18} className="animate-spin" />
           )}
 
           {createProjectMutation.isPending

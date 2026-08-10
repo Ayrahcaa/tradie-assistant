@@ -5,6 +5,10 @@ export interface Project {
   name: string;
   description: string | null;
   clientName: string | null;
+
+  customerId: string | null;
+  customer: ProjectCustomer | null;
+
   address: string | null;
   quotedValue: string | null;
   status: ProjectStatus;
@@ -15,6 +19,14 @@ export interface Project {
   updatedAt: string;
 }
 
+export interface ProjectCustomer {
+  id: string;
+  firstName: string;
+  lastName: string;
+  businessName: string | null;
+  email: string | null;
+  phone: string | null;
+}
 export interface ProjectsResponse {
   count: number;
   data: Project[];

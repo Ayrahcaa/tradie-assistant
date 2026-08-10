@@ -1,11 +1,6 @@
 import { z } from "zod";
 
-const optionalText = z
-  .string()
-  .trim()
-  .max(500)
-  .optional()
-  .nullable();
+const optionalText = z.string().trim().max(500).optional().nullable();
 
 const optionalDate = z
   .string()
@@ -13,11 +8,7 @@ const optionalDate = z
   .optional()
   .nullable();
 
-export const projectStatusSchema = z.enum([
-  "ACTIVE",
-  "COMPLETED",
-  "ARCHIVED",
-]);
+export const projectStatusSchema = z.enum(["ACTIVE", "COMPLETED", "ARCHIVED"]);
 
 const projectFieldsSchema = z.object({
   name: z
@@ -28,19 +19,15 @@ const projectFieldsSchema = z.object({
 
   description: optionalText,
 
-  clientName: z
+  clientName: z.string().trim().max(120).optional().nullable(),
+
+  customerId: z
     .string()
-    .trim()
-    .max(120)
+    .uuid("Customer ID must be a valid UUID.")
     .optional()
     .nullable(),
 
-  address: z
-    .string()
-    .trim()
-    .max(250)
-    .optional()
-    .nullable(),
+  address: z.string().trim().max(250).optional().nullable(),
 
   quotedValue: z
     .number()

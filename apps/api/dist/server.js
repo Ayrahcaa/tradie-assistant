@@ -4,6 +4,7 @@ import express from "express";
 import helmet from "helmet";
 import { projectRouter } from "./modules/projects/project.routes.js";
 import { prisma } from "./lib/prisma.js";
+import { customerRouter } from "./modules/customers/customer.routes.js";
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
 app.use(helmet());
@@ -12,6 +13,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use("/api/projects", projectRouter);
+app.use("/api/customers", customerRouter);
 app.get("/", (_request, response) => {
     response.json({
         message: "Tradie Assistant API is running",

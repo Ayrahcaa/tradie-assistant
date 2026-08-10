@@ -11,25 +11,16 @@ import { useState } from "react";
 import { Link } from "react-router";
 
 import { getProjects } from "../api/projects";
-import { EmptyState } from "../components/ui/EmptyState";
-import { PageHeader } from "../components/ui/PageHeader";
-import type {
-  Project,
-  ProjectStatus,
-} from "../types/project";
-import { NewProjectForm } from "../components/projects/NewProjectForm";
-import { Modal } from "../components/ui/Modal";
+import { NewProjectForm } from "../components/NewProjectForm";
+import type { Project, ProjectStatus } from "../types/project";
+
+import { EmptyState } from "../../../shared/components/ui/EmptyState";
+import { Modal } from "../../../shared/components/ui/Modal";
+import { PageHeader } from "../../../shared/components/ui/PageHeader";
 
 type ProjectFilter = "ALL" | ProjectStatus;
 
-const filters: ProjectFilter[] = [
-  "ALL",
-  "ACTIVE",
-  "COMPLETED",
-  "ARCHIVED",
-];
-
-
+const filters: ProjectFilter[] = ["ALL", "ACTIVE", "COMPLETED", "ARCHIVED"];
 
 function formatMoney(value: string | null): string {
   if (!value) {
@@ -68,11 +59,7 @@ function statusClasses(status: ProjectStatus): string {
   }
 }
 
-function ProjectCard({
-  project,
-}: {
-  project: Project;
-}) {
+function ProjectCard({ project }: { project: Project }) {
   return (
     <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
       <div className="flex items-start justify-between gap-4">
@@ -94,9 +81,7 @@ function ProjectCard({
         </Link>
       </div>
 
-      <h2 className="mt-5 text-lg font-bold text-slate-950">
-        {project.name}
-      </h2>
+      <h2 className="mt-5 text-lg font-bold text-slate-950">{project.name}</h2>
 
       <p className="mt-2 line-clamp-2 min-h-10 text-sm leading-5 text-slate-500">
         {project.description || "No description provided."}
@@ -104,21 +89,17 @@ function ProjectCard({
 
       <div className="mt-5 space-y-3 border-t border-slate-100 pt-5">
         <div className="flex items-center gap-3 text-sm text-slate-600">
-          <UserRound
-            size={17}
-            className="shrink-0 text-slate-400"
-          />
+          <UserRound size={17} className="shrink-0 text-slate-400" />
 
           <span className="truncate">
-            {project.clientName || "No customer assigned"}
+            {project.customer
+              ? `${project.customer.firstName} ${project.customer.lastName}`
+              : project.clientName || "No customer assigned"}
           </span>
         </div>
 
-         <div className="flex items-center gap-3 text-sm text-slate-600">
-          <MapPin
-            size={17}
-            className="shrink-0 text-slate-400"
-          />
+        <div className="flex items-center gap-3 text-sm text-slate-600">
+          <MapPin size={17} className="shrink-0 text-slate-400" />
 
           <span className="truncate">
             {project.address || "No address provided"}
@@ -126,14 +107,9 @@ function ProjectCard({
         </div>
 
         <div className="flex items-center gap-3 text-sm text-slate-600">
-          <CalendarDays
-            size={17}
-            className="shrink-0 text-slate-400"
-          />
+          <CalendarDays size={17} className="shrink-0 text-slate-400" />
 
-          <span>
-            {formatDate(project.startDate)}
-          </span>
+          <span>{formatDate(project.startDate)}</span>
         </div>
       </div>
 
@@ -160,14 +136,11 @@ function ProjectCard({
 }
 
 export function ProjectsPage() {
-  const [filter, setFilter] =
-    useState<ProjectFilter>("ALL");
+  const [filter, setFilter] = useState<ProjectFilter>("ALL");
 
-  const [newProjectOpen, setNewProjectOpen] =
-    useState(false);
+  const [newProjectOpen, setNewProjectOpen] = useState(false);
 
-  const status =
-    filter === "ALL" ? undefined : filter;
+  const status = filter === "ALL" ? undefined : filter;
 
   const projectsQuery = useQuery({
     queryKey: ["projects", status],
@@ -181,14 +154,14 @@ export function ProjectsPage() {
         title="Projects"
         description="Manage jobs, customers, dates and quoted values from one place."
         action={
-         <button
-  type="button"
-  onClick={() => setNewProjectOpen(true)}
-  className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-amber-400 px-5 text-sm font-bold text-slate-950 transition hover:bg-amber-300"
->
-  <FolderPlus size={19} />
-  New project
-</button>
+          <button
+            type="button"
+            onClick={() => setNewProjectOpen(true)}
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-amber-400 px-5 text-sm font-bold text-slate-950 transition hover:bg-amber-300"
+          >
+            <FolderPlus size={19} />
+            New project
+          </button>
         }
       />
 
@@ -224,19 +197,12 @@ export function ProjectsPage() {
       {projectsQuery.isError && (
         <div className="rounded-2xl border border-red-200 bg-red-50 p-5 text-red-700">
           <div className="flex items-start gap-3">
-            <CircleAlert
-              size={22}
-              className="mt-0.5 shrink-0"
-            />
+            <CircleAlert size={22} className="mt-0.5 shrink-0" />
 
             <div>
-              <h2 className="font-bold">
-                Projects could not be loaded
-              </h2>
+              <h2 className="font-bold">Projects could not be loaded</h2>
 
-              <p className="mt-1 text-sm">
-                {projectsQuery.error.message}
-              </p>
+              <p className="mt-1 text-sm">{projectsQuery.error.message}</p>
 
               <button
                 type="button"
@@ -250,49 +216,42 @@ export function ProjectsPage() {
         </div>
       )}
 
-      {projectsQuery.isSuccess &&
-        projectsQuery.data.data.length === 0 && (
-          <EmptyState
-            title="No projects found"
-            description={
-              filter === "ALL"
-                ? "Create your first project to begin tracking customers, expenses and profit."
-                : `There are no ${filter.toLowerCase()} projects.`
-            }
-          />
-        )}
+      {projectsQuery.isSuccess && projectsQuery.data.data.length === 0 && (
+        <EmptyState
+          title="No projects found"
+          description={
+            filter === "ALL"
+              ? "Create your first project to begin tracking customers, expenses and profit."
+              : `There are no ${filter.toLowerCase()} projects.`
+          }
+        />
+      )}
 
-      {projectsQuery.isSuccess &&
-        projectsQuery.data.data.length > 0 && (
-          <>
-            <p className="mb-4 text-sm font-semibold text-slate-500">
-              {projectsQuery.data.count}{" "}
-              {projectsQuery.data.count === 1
-                ? "project"
-                : "projects"}
-            </p>
+      {projectsQuery.isSuccess && projectsQuery.data.data.length > 0 && (
+        <>
+          <p className="mb-4 text-sm font-semibold text-slate-500">
+            {projectsQuery.data.count}{" "}
+            {projectsQuery.data.count === 1 ? "project" : "projects"}
+          </p>
 
-            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-              {projectsQuery.data.data.map((project) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                />
-              ))}
-            </div>
-          </>
-        )}
-        <Modal
-  open={newProjectOpen}
-  title="Create a new project"
-  description="Add the project details now. Expenses and invoices can be linked later."
-  onClose={() => setNewProjectOpen(false)}
->
-  <NewProjectForm
-    onSuccess={() => setNewProjectOpen(false)}
-    onCancel={() => setNewProjectOpen(false)}
-  />
-</Modal>
+          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {projectsQuery.data.data.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
+        </>
+      )}
+      <Modal
+        open={newProjectOpen}
+        title="Create a new project"
+        description="Add the project details now. Expenses and invoices can be linked later."
+        onClose={() => setNewProjectOpen(false)}
+      >
+        <NewProjectForm
+          onSuccess={() => setNewProjectOpen(false)}
+          onCancel={() => setNewProjectOpen(false)}
+        />
+      </Modal>
     </>
   );
 }

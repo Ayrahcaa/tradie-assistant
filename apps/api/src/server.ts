@@ -9,6 +9,7 @@ import helmet from "helmet";
 
 import { projectRouter } from "./modules/projects/project.routes.js";
 import { prisma } from "./lib/prisma.js";
+import { customerRouter } from "./modules/customers/customer.routes.js";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(
 app.use(express.json());
 
 app.use("/api/projects", projectRouter);
+app.use("/api/customers", customerRouter);
 
 app.get("/", (_request: Request, response: Response) => {
   response.json({

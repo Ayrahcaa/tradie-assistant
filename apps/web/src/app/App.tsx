@@ -1,13 +1,12 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
 
-import { AppLayout } from "./components/layout/AppLayout";
-import { DashboardPage } from "./pages/DashboardPage";
-import { PlaceholderPage } from "./pages/PlaceholderPage";
-import { ProjectsPage } from "./pages/ProjectsPage";
-import { ProjectDetailsPage } from "./pages/ProjectDetailsPage";
+import { ProjectDetailsPage } from "../features/projects/pages/ProjectDetailsPage";
+import { ProjectsPage } from "../features/projects/pages/ProjectsPage";
+import { AppLayout } from "../shared/components/layout/AppLayout";
+import { DashboardPage } from "../shared/pages/DashboardPage";
+import { PlaceholderPage } from "../shared/pages/PlaceholderPage";
+import { CustomersPage } from "../features/customers/pages/CustomersPage";
+import { CustomerDetailsPage } from "../features/customers/pages/CustomerDetailsPage";
 
 const router = createBrowserRouter([
   {
@@ -28,12 +27,11 @@ const router = createBrowserRouter([
       },
       {
         path: "customers",
-        element: (
-          <PlaceholderPage
-            title="Customers"
-            description="Store customer details and view their projects, quotes, invoices and payments."
-          />
-        ),
+        element: <CustomersPage />,
+      },
+      {
+        path: "customers/:customerId",
+        element: <CustomerDetailsPage />,
       },
       {
         path: "expenses",

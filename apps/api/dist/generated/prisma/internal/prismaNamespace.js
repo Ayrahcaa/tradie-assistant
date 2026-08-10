@@ -68,7 +68,8 @@ export const JsonNull = runtime.JsonNull;
 export const AnyNull = runtime.AnyNull;
 export const ModelName = {
     User: 'User',
-    Project: 'Project'
+    Project: 'Project',
+    Customer: 'Customer'
 };
 /**
  * Enums
@@ -100,6 +101,21 @@ export const ProjectScalarFieldEnum = {
     status: 'status',
     startDate: 'startDate',
     endDate: 'endDate',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    ownerId: 'ownerId'
+};
+export const CustomerScalarFieldEnum = {
+    id: 'id',
+    firstName: 'firstName',
+    lastName: 'lastName',
+    businessName: 'businessName',
+    email: 'email',
+    phone: 'phone',
+    address: 'address',
+    abn: 'abn',
+    notes: 'notes',
+    isArchived: 'isArchived',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     ownerId: 'ownerId'
