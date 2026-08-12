@@ -69,7 +69,12 @@ export const AnyNull = runtime.AnyNull;
 export const ModelName = {
     User: 'User',
     Project: 'Project',
-    Customer: 'Customer'
+    Customer: 'Customer',
+    Quote: 'Quote',
+    QuoteItem: 'QuoteItem',
+    Invoice: 'Invoice',
+    InvoiceItem: 'InvoiceItem',
+    Payment: 'Payment'
 };
 /**
  * Enums
@@ -103,7 +108,8 @@ export const ProjectScalarFieldEnum = {
     endDate: 'endDate',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    ownerId: 'ownerId'
+    ownerId: 'ownerId',
+    customerId: 'customerId'
 };
 export const CustomerScalarFieldEnum = {
     id: 'id',
@@ -118,6 +124,80 @@ export const CustomerScalarFieldEnum = {
     isArchived: 'isArchived',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
+    ownerId: 'ownerId'
+};
+export const QuoteScalarFieldEnum = {
+    id: 'id',
+    quoteNumber: 'quoteNumber',
+    title: 'title',
+    description: 'description',
+    status: 'status',
+    issueDate: 'issueDate',
+    expiryDate: 'expiryDate',
+    subtotal: 'subtotal',
+    gstAmount: 'gstAmount',
+    totalAmount: 'totalAmount',
+    notes: 'notes',
+    terms: 'terms',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    ownerId: 'ownerId',
+    customerId: 'customerId',
+    projectId: 'projectId'
+};
+export const QuoteItemScalarFieldEnum = {
+    id: 'id',
+    description: 'description',
+    quantity: 'quantity',
+    unitPrice: 'unitPrice',
+    lineTotal: 'lineTotal',
+    sortOrder: 'sortOrder',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    quoteId: 'quoteId'
+};
+export const InvoiceScalarFieldEnum = {
+    id: 'id',
+    invoiceNumber: 'invoiceNumber',
+    title: 'title',
+    description: 'description',
+    status: 'status',
+    issueDate: 'issueDate',
+    dueDate: 'dueDate',
+    subtotal: 'subtotal',
+    gstAmount: 'gstAmount',
+    totalAmount: 'totalAmount',
+    amountPaid: 'amountPaid',
+    balanceDue: 'balanceDue',
+    notes: 'notes',
+    terms: 'terms',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    ownerId: 'ownerId',
+    customerId: 'customerId',
+    projectId: 'projectId'
+};
+export const InvoiceItemScalarFieldEnum = {
+    id: 'id',
+    description: 'description',
+    quantity: 'quantity',
+    unitPrice: 'unitPrice',
+    lineTotal: 'lineTotal',
+    sortOrder: 'sortOrder',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    invoiceId: 'invoiceId'
+};
+export const PaymentScalarFieldEnum = {
+    id: 'id',
+    amount: 'amount',
+    method: 'method',
+    reference: 'reference',
+    notes: 'notes',
+    paidAt: 'paidAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    invoiceId: 'invoiceId',
     ownerId: 'ownerId'
 };
 export const SortOrder = {

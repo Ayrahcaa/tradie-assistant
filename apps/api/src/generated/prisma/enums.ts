@@ -16,3 +16,37 @@ export const ProjectStatus = {
 } as const
 
 export type ProjectStatus = (typeof ProjectStatus)[keyof typeof ProjectStatus]
+
+
+export const QuoteStatus = {
+  DRAFT: 'DRAFT',
+  SENT: 'SENT',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type QuoteStatus = (typeof QuoteStatus)[keyof typeof QuoteStatus]
+
+
+export const InvoiceStatus = {
+  DRAFT: 'DRAFT',
+  SENT: 'SENT',
+  PARTIALLY_PAID: 'PARTIALLY_PAID',
+  PAID: 'PAID',
+  OVERDUE: 'OVERDUE',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type InvoiceStatus = (typeof InvoiceStatus)[keyof typeof InvoiceStatus]
+
+
+export const PaymentMethod = {
+  BANK_TRANSFER: 'BANK_TRANSFER',
+  CASH: 'CASH',
+  CARD: 'CARD',
+  CHEQUE: 'CHEQUE',
+  OTHER: 'OTHER'
+} as const
+
+export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]

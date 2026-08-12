@@ -12,4 +12,26 @@ export const ProjectStatus = {
     COMPLETED: 'COMPLETED',
     ARCHIVED: 'ARCHIVED'
 };
+export const QuoteStatus = {
+    DRAFT: 'DRAFT',
+    SENT: 'SENT',
+    ACCEPTED: 'ACCEPTED',
+    REJECTED: 'REJECTED',
+    EXPIRED: 'EXPIRED'
+};
+export const InvoiceStatus = {
+    DRAFT: 'DRAFT',
+    SENT: 'SENT',
+    PARTIALLY_PAID: 'PARTIALLY_PAID',
+    PAID: 'PAID',
+    OVERDUE: 'OVERDUE',
+    CANCELLED: 'CANCELLED'
+};
+export const PaymentMethod = {
+    BANK_TRANSFER: 'BANK_TRANSFER',
+    CASH: 'CASH',
+    CARD: 'CARD',
+    CHEQUE: 'CHEQUE',
+    OTHER: 'OTHER'
+};
 //# sourceMappingURL=enums.js.map

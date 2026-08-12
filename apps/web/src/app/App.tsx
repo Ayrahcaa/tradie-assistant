@@ -7,6 +7,10 @@ import { DashboardPage } from "../shared/pages/DashboardPage";
 import { PlaceholderPage } from "../shared/pages/PlaceholderPage";
 import { CustomersPage } from "../features/customers/pages/CustomersPage";
 import { CustomerDetailsPage } from "../features/customers/pages/CustomerDetailsPage";
+import { QuotesPage } from "../features/quotes/pages/QuotesPage";
+import { QuoteDetailsPage } from "../features/quotes/pages/QuoteDetailsPage";
+import { InvoicesPage } from "../features/invoices/pages/InvoicesPage";
+import { InvoiceDetailsPage } from "../features/invoices/pages/InvoiceDetailsPage";
 
 const router = createBrowserRouter([
   {
@@ -34,13 +38,8 @@ const router = createBrowserRouter([
         element: <CustomerDetailsPage />,
       },
       {
-        path: "expenses",
-        element: (
-          <PlaceholderPage
-            title="Expenses"
-            description="Record project costs, supplier bills, fuel, tools and other business expenses."
-          />
-        ),
+        path: "invoices/:invoiceId",
+        element: <InvoiceDetailsPage />,
       },
       {
         path: "receipts",
@@ -53,21 +52,15 @@ const router = createBrowserRouter([
       },
       {
         path: "quotes",
-        element: (
-          <PlaceholderPage
-            title="Quotes"
-            description="Prepare and track customer quotes."
-          />
-        ),
+        element: <QuotesPage />,
+      },
+      {
+        path: "quotes/:quoteId",
+        element: <QuoteDetailsPage />,
       },
       {
         path: "invoices",
-        element: (
-          <PlaceholderPage
-            title="Invoices"
-            description="Generate invoices and monitor paid, pending and overdue amounts."
-          />
-        ),
+        element: <InvoicesPage />,
       },
       {
         path: "subcontractors",

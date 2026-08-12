@@ -53,7 +53,12 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   Project: 'Project',
-  Customer: 'Customer'
+  Customer: 'Customer',
+  Quote: 'Quote',
+  QuoteItem: 'QuoteItem',
+  Invoice: 'Invoice',
+  InvoiceItem: 'InvoiceItem',
+  Payment: 'Payment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -123,6 +128,100 @@ export const CustomerScalarFieldEnum = {
 } as const
 
 export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
+
+
+export const QuoteScalarFieldEnum = {
+  id: 'id',
+  quoteNumber: 'quoteNumber',
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  issueDate: 'issueDate',
+  expiryDate: 'expiryDate',
+  subtotal: 'subtotal',
+  gstAmount: 'gstAmount',
+  totalAmount: 'totalAmount',
+  notes: 'notes',
+  terms: 'terms',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  ownerId: 'ownerId',
+  customerId: 'customerId',
+  projectId: 'projectId'
+} as const
+
+export type QuoteScalarFieldEnum = (typeof QuoteScalarFieldEnum)[keyof typeof QuoteScalarFieldEnum]
+
+
+export const QuoteItemScalarFieldEnum = {
+  id: 'id',
+  description: 'description',
+  quantity: 'quantity',
+  unitPrice: 'unitPrice',
+  lineTotal: 'lineTotal',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  quoteId: 'quoteId'
+} as const
+
+export type QuoteItemScalarFieldEnum = (typeof QuoteItemScalarFieldEnum)[keyof typeof QuoteItemScalarFieldEnum]
+
+
+export const InvoiceScalarFieldEnum = {
+  id: 'id',
+  invoiceNumber: 'invoiceNumber',
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  issueDate: 'issueDate',
+  dueDate: 'dueDate',
+  subtotal: 'subtotal',
+  gstAmount: 'gstAmount',
+  totalAmount: 'totalAmount',
+  amountPaid: 'amountPaid',
+  balanceDue: 'balanceDue',
+  notes: 'notes',
+  terms: 'terms',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  ownerId: 'ownerId',
+  customerId: 'customerId',
+  projectId: 'projectId'
+} as const
+
+export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const InvoiceItemScalarFieldEnum = {
+  id: 'id',
+  description: 'description',
+  quantity: 'quantity',
+  unitPrice: 'unitPrice',
+  lineTotal: 'lineTotal',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  invoiceId: 'invoiceId'
+} as const
+
+export type InvoiceItemScalarFieldEnum = (typeof InvoiceItemScalarFieldEnum)[keyof typeof InvoiceItemScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  method: 'method',
+  reference: 'reference',
+  notes: 'notes',
+  paidAt: 'paidAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  invoiceId: 'invoiceId',
+  ownerId: 'ownerId'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
 export const SortOrder = {

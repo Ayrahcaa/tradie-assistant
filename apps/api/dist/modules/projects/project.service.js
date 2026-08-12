@@ -20,19 +20,41 @@ async function getDemoUser() {
     }
     return user;
 }
+async function validateCustomer(customerId, ownerId) {
+    if (!customerId) {
+        return null;
+    }
+    const customer = await prisma.customer.findFirst({
+        where: {
+            id: customerId,
+            ownerId,
+        },
+    });
+    if (!customer) {
+        throw new Error("Customer not found.");
+    }
+    return customer;
+}
 export async function createProject(input) {
     const owner = await getDemoUser();
+    const customer = await validateCustomer(input.customerId, owner.id);
     return prisma.project.create({
         data: {
             name: input.name,
             description: input.description,
-            clientName: input.clientName,
+            clientName: customer
+                ? `${customer.firstName} ${customer.lastName}`
+                : input.clientName,
+            customerId: customer?.id ?? null,
             address: input.address,
             quotedValue: input.quotedValue,
             status: input.status ?? "ACTIVE",
             startDate: parseDate(input.startDate),
             endDate: parseDate(input.endDate),
             ownerId: owner.id,
+        },
+        include: {
+            customer: true,
         },
     });
 }
@@ -42,6 +64,9 @@ export async function listProjects(status) {
         where: {
             ownerId: owner.id,
             ...(status ? { status } : {}),
+        },
+        include: {
+            customer: true,
         },
         orderBy: {
             createdAt: "desc",
@@ -55,12 +80,25 @@ export async function getProjectById(projectId) {
             id: projectId,
             ownerId: owner.id,
         },
+        include: {
+            customer: true,
+        },
     });
 }
 export async function updateProject(projectId, input) {
-    const existingProject = await getProjectById(projectId);
+    const owner = await getDemoUser();
+    const existingProject = await prisma.project.findFirst({
+        where: {
+            id: projectId,
+            ownerId: owner.id,
+        },
+    });
     if (!existingProject) {
         return null;
+    }
+    let customer;
+    if (input.customerId !== undefined) {
+        customer = await validateCustomer(input.customerId, owner.id);
     }
     return prisma.project.update({
         where: {
@@ -69,12 +107,20 @@ export async function updateProject(projectId, input) {
         data: {
             name: input.name,
             description: input.description,
-            clientName: input.clientName,
+            customerId: input.customerId === undefined ? undefined : (customer?.id ?? null),
+            clientName: input.customerId === undefined
+                ? input.clientName
+                : customer
+                    ? `${customer.firstName} ${customer.lastName}`
+                    : null,
             address: input.address,
             quotedValue: input.quotedValue,
             status: input.status,
             startDate: parseDate(input.startDate),
             endDate: parseDate(input.endDate),
+        },
+        include: {
+            customer: true,
         },
     });
 }

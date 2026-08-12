@@ -56,3 +56,28 @@ export type Project = Prisma.ProjectModel
  * 
  */
 export type Customer = Prisma.CustomerModel
+/**
+ * Model Quote
+ * 
+ */
+export type Quote = Prisma.QuoteModel
+/**
+ * Model QuoteItem
+ * 
+ */
+export type QuoteItem = Prisma.QuoteItemModel
+/**
+ * Model Invoice
+ * 
+ */
+export type Invoice = Prisma.InvoiceModel
+/**
+ * Model InvoiceItem
+ * 
+ */
+export type InvoiceItem = Prisma.InvoiceItemModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
