@@ -50,3 +50,29 @@ export const PaymentMethod = {
 } as const
 
 export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
+
+
+export const ExpenseCategory = {
+  MATERIALS: 'MATERIALS',
+  TOOLS: 'TOOLS',
+  FUEL: 'FUEL',
+  VEHICLE: 'VEHICLE',
+  SUBCONTRACTOR: 'SUBCONTRACTOR',
+  EQUIPMENT_HIRE: 'EQUIPMENT_HIRE',
+  INSURANCE: 'INSURANCE',
+  PHONE_INTERNET: 'PHONE_INTERNET',
+  OFFICE: 'OFFICE',
+  TRAVEL: 'TRAVEL',
+  OTHER: 'OTHER'
+} as const
+
+export type ExpenseCategory = (typeof ExpenseCategory)[keyof typeof ExpenseCategory]
+
+
+export const ExpenseStatus = {
+  PAID: 'PAID',
+  PENDING: 'PENDING',
+  OVERDUE: 'OVERDUE'
+} as const
+
+export type ExpenseStatus = (typeof ExpenseStatus)[keyof typeof ExpenseStatus]

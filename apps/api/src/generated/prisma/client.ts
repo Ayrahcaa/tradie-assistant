@@ -81,3 +81,13 @@ export type InvoiceItem = Prisma.InvoiceItemModel
  * 
  */
 export type Payment = Prisma.PaymentModel
+/**
+ * Model Expense
+ * 
+ */
+export type Expense = Prisma.ExpenseModel
+/**
+ * Model Receipt
+ * 
+ */
+export type Receipt = Prisma.ReceiptModel

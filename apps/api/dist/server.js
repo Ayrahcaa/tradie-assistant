@@ -8,6 +8,8 @@ import { customerRouter } from "./modules/customers/customer.routes.js";
 import { quoteRouter } from "./modules/quotes/quote.routes.js";
 import { invoiceRouter } from "./modules/invoices/invoice.routes.js";
 import { paymentRouter } from "./modules/payments/payment.routes.js";
+import { expenseRouter } from "./modules/expenses/expense.routes.js";
+import { receiptRouter } from "./modules/receipts/receipt.routes.js";
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
 app.use(helmet());
@@ -20,6 +22,8 @@ app.use("/api/customers", customerRouter);
 app.use("/api/quotes", quoteRouter);
 app.use("/api/invoices", invoiceRouter);
 app.use("/api/payments", paymentRouter);
+app.use("/api/expenses", expenseRouter);
+app.use("/api/receipts", receiptRouter);
 app.get("/", (_request, response) => {
     response.json({
         message: "Tradie Assistant API is running",

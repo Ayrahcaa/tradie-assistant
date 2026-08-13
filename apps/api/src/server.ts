@@ -13,6 +13,8 @@ import { customerRouter } from "./modules/customers/customer.routes.js";
 import { quoteRouter } from "./modules/quotes/quote.routes.js";
 import { invoiceRouter } from "./modules/invoices/invoice.routes.js";
 import { paymentRouter } from "./modules/payments/payment.routes.js";
+import { expenseRouter } from "./modules/expenses/expense.routes.js";
+import { receiptRouter } from "./modules/receipts/receipt.routes.js";
 
 const app = express();
 
@@ -31,6 +33,8 @@ app.use("/api/customers", customerRouter);
 app.use("/api/quotes", quoteRouter);
 app.use("/api/invoices", invoiceRouter);
 app.use("/api/payments", paymentRouter);
+app.use("/api/expenses", expenseRouter);
+app.use("/api/receipts", receiptRouter);
 
 app.get("/", (_request: Request, response: Response) => {
   response.json({
@@ -78,6 +82,21 @@ app.use(
   },
 );
 
+// app.use(
+//   (
+//     error: Error,
+//     _request: Request,
+//     response: Response,
+//     _next: NextFunction,
+//   ) => {
+//     console.error("SERVER ERROR:", error);
+
+//     response.status(500).json({
+//       message: "An unexpected server error occurred.",
+//       error: process.env.NODE_ENV === "production" ? undefined : error.message,
+//     });
+//   },
+// );
 const server = app.listen(PORT, () => {
   console.log(`Tradie Assistant API running on http://localhost:${PORT}`);
 });

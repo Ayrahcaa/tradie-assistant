@@ -46,7 +46,9 @@ export const ModelName = {
     QuoteItem: 'QuoteItem',
     Invoice: 'Invoice',
     InvoiceItem: 'InvoiceItem',
-    Payment: 'Payment'
+    Payment: 'Payment',
+    Expense: 'Expense',
+    Receipt: 'Receipt'
 };
 /*
  * Enums
@@ -170,6 +172,35 @@ export const PaymentScalarFieldEnum = {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     invoiceId: 'invoiceId',
+    ownerId: 'ownerId'
+};
+export const ExpenseScalarFieldEnum = {
+    id: 'id',
+    description: 'description',
+    supplier: 'supplier',
+    category: 'category',
+    status: 'status',
+    amount: 'amount',
+    gstAmount: 'gstAmount',
+    expenseDate: 'expenseDate',
+    dueDate: 'dueDate',
+    paidAt: 'paidAt',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    ownerId: 'ownerId',
+    projectId: 'projectId'
+};
+export const ReceiptScalarFieldEnum = {
+    id: 'id',
+    originalName: 'originalName',
+    fileName: 'fileName',
+    mimeType: 'mimeType',
+    fileSize: 'fileSize',
+    storagePath: 'storagePath',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    expenseId: 'expenseId',
     ownerId: 'ownerId'
 };
 export const SortOrder = {

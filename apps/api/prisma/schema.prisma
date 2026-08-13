@@ -35,6 +35,25 @@ enum PaymentMethod {
   CHEQUE
   OTHER
 }
+enum ExpenseCategory {
+  MATERIALS
+  TOOLS
+  FUEL
+  VEHICLE
+  SUBCONTRACTOR
+  EQUIPMENT_HIRE
+  INSURANCE
+  PHONE_INTERNET
+  OFFICE
+  TRAVEL
+  OTHER
+}
+
+enum ExpenseStatus {
+  PAID
+  PENDING
+  OVERDUE
+}
 
 model User {
   id           String    @id @default(uuid())
@@ -52,6 +71,8 @@ model User {
   quotes Quote[]
   invoices Invoice[]
   payments Payment[]
+  expenses Expense[]
+  receipts Receipt[]
 }
 
 model Project {
@@ -75,6 +96,7 @@ model Project {
 
   quotes Quote[]
   invoices Invoice[]
+  expenses Expense[]
 
   @@index([ownerId])
   @@index([status])
@@ -236,4 +258,57 @@ model Payment {
   @@index([invoiceId])
   @@index([ownerId])
   @@index([paidAt])
+}
+model Expense {
+  id          String          @id @default(uuid())
+  description String
+  supplier    String?
+  category    ExpenseCategory
+  status      ExpenseStatus   @default(PAID)
+
+  amount      Decimal         @db.Decimal(12, 2)
+  gstAmount   Decimal         @default(0) @db.Decimal(12, 2)
+
+  expenseDate DateTime
+  dueDate     DateTime?
+  paidAt      DateTime?
+
+  notes       String?
+
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  ownerId     String
+  owner       User            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  projectId   String?
+  project     Project?        @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  receipts    Receipt[]
+
+  @@index([ownerId])
+  @@index([projectId])
+  @@index([category])
+  @@index([status])
+  @@index([expenseDate])
+}
+
+model Receipt {
+  id           String   @id @default(uuid())
+  originalName String
+  fileName     String
+  mimeType     String
+  fileSize     Int
+  storagePath  String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  expenseId String
+  expense   Expense @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+
+  ownerId String
+  owner   User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([expenseId])
+  @@index([ownerId])
 }

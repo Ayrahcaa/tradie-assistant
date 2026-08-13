@@ -11,6 +11,8 @@ import { QuotesPage } from "../features/quotes/pages/QuotesPage";
 import { QuoteDetailsPage } from "../features/quotes/pages/QuoteDetailsPage";
 import { InvoicesPage } from "../features/invoices/pages/InvoicesPage";
 import { InvoiceDetailsPage } from "../features/invoices/pages/InvoiceDetailsPage";
+import { ExpensesPage } from "../features/expenses/pages/ExpensesPage";
+import { ExpenseDetailsPage } from "../features/expenses/pages/ExpenseDetailsPage";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +63,14 @@ const router = createBrowserRouter([
       {
         path: "invoices",
         element: <InvoicesPage />,
+      },
+      {
+        path: "expenses",
+        element: <ExpensesPage />,
+      },
+      {
+        path: "expenses/:expenseId",
+        element: <ExpenseDetailsPage />,
       },
       {
         path: "subcontractors",

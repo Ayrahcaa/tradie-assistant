@@ -34,4 +34,22 @@ export const PaymentMethod = {
     CHEQUE: 'CHEQUE',
     OTHER: 'OTHER'
 };
+export const ExpenseCategory = {
+    MATERIALS: 'MATERIALS',
+    TOOLS: 'TOOLS',
+    FUEL: 'FUEL',
+    VEHICLE: 'VEHICLE',
+    SUBCONTRACTOR: 'SUBCONTRACTOR',
+    EQUIPMENT_HIRE: 'EQUIPMENT_HIRE',
+    INSURANCE: 'INSURANCE',
+    PHONE_INTERNET: 'PHONE_INTERNET',
+    OFFICE: 'OFFICE',
+    TRAVEL: 'TRAVEL',
+    OTHER: 'OTHER'
+};
+export const ExpenseStatus = {
+    PAID: 'PAID',
+    PENDING: 'PENDING',
+    OVERDUE: 'OVERDUE'
+};
 //# sourceMappingURL=enums.js.map
