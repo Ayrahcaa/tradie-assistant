@@ -67,3 +67,18 @@ export type Expense = Prisma.ExpenseModel
  * 
  */
 export type Receipt = Prisma.ReceiptModel
+/**
+ * Model Subcontractor
+ * 
+ */
+export type Subcontractor = Prisma.SubcontractorModel
+/**
+ * Model SubcontractorProjectCost
+ * 
+ */
+export type SubcontractorProjectCost = Prisma.SubcontractorProjectCostModel
+/**
+ * Model SubcontractorPayment
+ * 
+ */
+export type SubcontractorPayment = Prisma.SubcontractorPaymentModel

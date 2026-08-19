@@ -76,8 +76,7 @@ Rules:
         ? {
             type: "input_file",
             filename: receipt.originalName,
-            file_data: `data:${receipt.mimeType};base64,${base64}`,
-            detail: "high",
+            file_data: `data:application/pdf;base64,${base64}`,
         }
         : {
             type: "input_image",

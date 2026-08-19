@@ -406,7 +406,10 @@ export const ModelName = {
   InvoiceItem: 'InvoiceItem',
   Payment: 'Payment',
   Expense: 'Expense',
-  Receipt: 'Receipt'
+  Receipt: 'Receipt',
+  Subcontractor: 'Subcontractor',
+  SubcontractorProjectCost: 'SubcontractorProjectCost',
+  SubcontractorPayment: 'SubcontractorPayment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -422,7 +425,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "project" | "customer" | "quote" | "quoteItem" | "invoice" | "invoiceItem" | "payment" | "expense" | "receipt"
+    modelProps: "user" | "project" | "customer" | "quote" | "quoteItem" | "invoice" | "invoiceItem" | "payment" | "expense" | "receipt" | "subcontractor" | "subcontractorProjectCost" | "subcontractorPayment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1166,6 +1169,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Subcontractor: {
+      payload: Prisma.$SubcontractorPayload<ExtArgs>
+      fields: Prisma.SubcontractorFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SubcontractorFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SubcontractorFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPayload>
+        }
+        findFirst: {
+          args: Prisma.SubcontractorFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SubcontractorFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPayload>
+        }
+        findMany: {
+          args: Prisma.SubcontractorFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPayload>[]
+        }
+        create: {
+          args: Prisma.SubcontractorCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPayload>
+        }
+        createMany: {
+          args: Prisma.SubcontractorCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SubcontractorCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPayload>[]
+        }
+        delete: {
+          args: Prisma.SubcontractorDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPayload>
+        }
+        update: {
+          args: Prisma.SubcontractorUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPayload>
+        }
+        deleteMany: {
+          args: Prisma.SubcontractorDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SubcontractorUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SubcontractorUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPayload>[]
+        }
+        upsert: {
+          args: Prisma.SubcontractorUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPayload>
+        }
+        aggregate: {
+          args: Prisma.SubcontractorAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSubcontractor>
+        }
+        groupBy: {
+          args: Prisma.SubcontractorGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SubcontractorGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SubcontractorCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SubcontractorCountAggregateOutputType> | number
+        }
+      }
+    }
+    SubcontractorProjectCost: {
+      payload: Prisma.$SubcontractorProjectCostPayload<ExtArgs>
+      fields: Prisma.SubcontractorProjectCostFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SubcontractorProjectCostFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorProjectCostPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SubcontractorProjectCostFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorProjectCostPayload>
+        }
+        findFirst: {
+          args: Prisma.SubcontractorProjectCostFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorProjectCostPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SubcontractorProjectCostFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorProjectCostPayload>
+        }
+        findMany: {
+          args: Prisma.SubcontractorProjectCostFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorProjectCostPayload>[]
+        }
+        create: {
+          args: Prisma.SubcontractorProjectCostCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorProjectCostPayload>
+        }
+        createMany: {
+          args: Prisma.SubcontractorProjectCostCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SubcontractorProjectCostCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorProjectCostPayload>[]
+        }
+        delete: {
+          args: Prisma.SubcontractorProjectCostDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorProjectCostPayload>
+        }
+        update: {
+          args: Prisma.SubcontractorProjectCostUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorProjectCostPayload>
+        }
+        deleteMany: {
+          args: Prisma.SubcontractorProjectCostDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SubcontractorProjectCostUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SubcontractorProjectCostUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorProjectCostPayload>[]
+        }
+        upsert: {
+          args: Prisma.SubcontractorProjectCostUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorProjectCostPayload>
+        }
+        aggregate: {
+          args: Prisma.SubcontractorProjectCostAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSubcontractorProjectCost>
+        }
+        groupBy: {
+          args: Prisma.SubcontractorProjectCostGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SubcontractorProjectCostGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SubcontractorProjectCostCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SubcontractorProjectCostCountAggregateOutputType> | number
+        }
+      }
+    }
+    SubcontractorPayment: {
+      payload: Prisma.$SubcontractorPaymentPayload<ExtArgs>
+      fields: Prisma.SubcontractorPaymentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SubcontractorPaymentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPaymentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SubcontractorPaymentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPaymentPayload>
+        }
+        findFirst: {
+          args: Prisma.SubcontractorPaymentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPaymentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SubcontractorPaymentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPaymentPayload>
+        }
+        findMany: {
+          args: Prisma.SubcontractorPaymentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPaymentPayload>[]
+        }
+        create: {
+          args: Prisma.SubcontractorPaymentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPaymentPayload>
+        }
+        createMany: {
+          args: Prisma.SubcontractorPaymentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SubcontractorPaymentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPaymentPayload>[]
+        }
+        delete: {
+          args: Prisma.SubcontractorPaymentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPaymentPayload>
+        }
+        update: {
+          args: Prisma.SubcontractorPaymentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPaymentPayload>
+        }
+        deleteMany: {
+          args: Prisma.SubcontractorPaymentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SubcontractorPaymentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SubcontractorPaymentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPaymentPayload>[]
+        }
+        upsert: {
+          args: Prisma.SubcontractorPaymentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubcontractorPaymentPayload>
+        }
+        aggregate: {
+          args: Prisma.SubcontractorPaymentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSubcontractorPayment>
+        }
+        groupBy: {
+          args: Prisma.SubcontractorPaymentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SubcontractorPaymentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SubcontractorPaymentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SubcontractorPaymentCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1389,6 +1614,62 @@ export const ReceiptScalarFieldEnum = {
 export type ReceiptScalarFieldEnum = (typeof ReceiptScalarFieldEnum)[keyof typeof ReceiptScalarFieldEnum]
 
 
+export const SubcontractorScalarFieldEnum = {
+  id: 'id',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  businessName: 'businessName',
+  abn: 'abn',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+  notes: 'notes',
+  isArchived: 'isArchived',
+  ownerId: 'ownerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SubcontractorScalarFieldEnum = (typeof SubcontractorScalarFieldEnum)[keyof typeof SubcontractorScalarFieldEnum]
+
+
+export const SubcontractorProjectCostScalarFieldEnum = {
+  id: 'id',
+  description: 'description',
+  rateType: 'rateType',
+  rate: 'rate',
+  quantity: 'quantity',
+  calculatedAmount: 'calculatedAmount',
+  agreedAmount: 'agreedAmount',
+  amountPaid: 'amountPaid',
+  amountPending: 'amountPending',
+  status: 'status',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  subcontractorId: 'subcontractorId',
+  projectId: 'projectId',
+  ownerId: 'ownerId'
+} as const
+
+export type SubcontractorProjectCostScalarFieldEnum = (typeof SubcontractorProjectCostScalarFieldEnum)[keyof typeof SubcontractorProjectCostScalarFieldEnum]
+
+
+export const SubcontractorPaymentScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  paidAt: 'paidAt',
+  reference: 'reference',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  costId: 'costId',
+  ownerId: 'ownerId'
+} as const
+
+export type SubcontractorPaymentScalarFieldEnum = (typeof SubcontractorPaymentScalarFieldEnum)[keyof typeof SubcontractorPaymentScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1567,6 +1848,34 @@ export type ListEnumExpenseStatusFieldRefInput<$PrismaModel> = FieldRefInputType
 
 
 /**
+ * Reference to a field of type 'SubcontractorRateType'
+ */
+export type EnumSubcontractorRateTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubcontractorRateType'>
+    
+
+
+/**
+ * Reference to a field of type 'SubcontractorRateType[]'
+ */
+export type ListEnumSubcontractorRateTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubcontractorRateType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'SubcontractorCostStatus'
+ */
+export type EnumSubcontractorCostStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubcontractorCostStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'SubcontractorCostStatus[]'
+ */
+export type ListEnumSubcontractorCostStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubcontractorCostStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1740,6 +2049,9 @@ export type GlobalOmitConfig = {
   payment?: Prisma.PaymentOmit
   expense?: Prisma.ExpenseOmit
   receipt?: Prisma.ReceiptOmit
+  subcontractor?: Prisma.SubcontractorOmit
+  subcontractorProjectCost?: Prisma.SubcontractorProjectCostOmit
+  subcontractorPayment?: Prisma.SubcontractorPaymentOmit
 }
 
 /* Types for Logging */

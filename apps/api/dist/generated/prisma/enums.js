@@ -52,4 +52,19 @@ export const ExpenseStatus = {
     PENDING: 'PENDING',
     OVERDUE: 'OVERDUE'
 };
+export const SubcontractorRateType = {
+    HOURLY: 'HOURLY',
+    SQUARE_METRE: 'SQUARE_METRE',
+    DAILY: 'DAILY',
+    FIXED_TASK: 'FIXED_TASK',
+    FIXED_PROJECT: 'FIXED_PROJECT',
+    PER_UNIT: 'PER_UNIT',
+    OTHER: 'OTHER'
+};
+export const SubcontractorCostStatus = {
+    UNPAID: 'UNPAID',
+    PARTIALLY_PAID: 'PARTIALLY_PAID',
+    PAID: 'PAID',
+    CANCELLED: 'CANCELLED'
+};
 //# sourceMappingURL=enums.js.map

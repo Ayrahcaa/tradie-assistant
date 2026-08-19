@@ -285,6 +285,7 @@ export type ProjectWhereInput = {
   quotes?: Prisma.QuoteListRelationFilter
   invoices?: Prisma.InvoiceListRelationFilter
   expenses?: Prisma.ExpenseListRelationFilter
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostListRelationFilter
 }
 
 export type ProjectOrderByWithRelationInput = {
@@ -306,6 +307,7 @@ export type ProjectOrderByWithRelationInput = {
   quotes?: Prisma.QuoteOrderByRelationAggregateInput
   invoices?: Prisma.InvoiceOrderByRelationAggregateInput
   expenses?: Prisma.ExpenseOrderByRelationAggregateInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostOrderByRelationAggregateInput
 }
 
 export type ProjectWhereUniqueInput = Prisma.AtLeast<{
@@ -330,6 +332,7 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   quotes?: Prisma.QuoteListRelationFilter
   invoices?: Prisma.InvoiceListRelationFilter
   expenses?: Prisma.ExpenseListRelationFilter
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostListRelationFilter
 }, "id">
 
 export type ProjectOrderByWithAggregationInput = {
@@ -389,6 +392,7 @@ export type ProjectCreateInput = {
   quotes?: Prisma.QuoteCreateNestedManyWithoutProjectInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutProjectInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateInput = {
@@ -408,6 +412,7 @@ export type ProjectUncheckedCreateInput = {
   quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutProjectInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutProjectInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUpdateInput = {
@@ -427,6 +432,7 @@ export type ProjectUpdateInput = {
   quotes?: Prisma.QuoteUpdateManyWithoutProjectNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutProjectNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateInput = {
@@ -446,6 +452,7 @@ export type ProjectUncheckedUpdateInput = {
   quotes?: Prisma.QuoteUncheckedUpdateManyWithoutProjectNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutProjectNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateManyInput = {
@@ -563,6 +570,11 @@ export type ProjectSumOrderByAggregateInput = {
 export type ProjectNullableScalarRelationFilter = {
   is?: Prisma.ProjectWhereInput | null
   isNot?: Prisma.ProjectWhereInput | null
+}
+
+export type ProjectScalarRelationFilter = {
+  is?: Prisma.ProjectWhereInput
+  isNot?: Prisma.ProjectWhereInput
 }
 
 export type ProjectCreateNestedManyWithoutOwnerInput = {
@@ -713,6 +725,20 @@ export type ProjectUpdateOneWithoutExpensesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutExpensesInput, Prisma.ProjectUpdateWithoutExpensesInput>, Prisma.ProjectUncheckedUpdateWithoutExpensesInput>
 }
 
+export type ProjectCreateNestedOneWithoutSubcontractorProjectCostsInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutSubcontractorProjectCostsInput, Prisma.ProjectUncheckedCreateWithoutSubcontractorProjectCostsInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutSubcontractorProjectCostsInput
+  connect?: Prisma.ProjectWhereUniqueInput
+}
+
+export type ProjectUpdateOneRequiredWithoutSubcontractorProjectCostsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutSubcontractorProjectCostsInput, Prisma.ProjectUncheckedCreateWithoutSubcontractorProjectCostsInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutSubcontractorProjectCostsInput
+  upsert?: Prisma.ProjectUpsertWithoutSubcontractorProjectCostsInput
+  connect?: Prisma.ProjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutSubcontractorProjectCostsInput, Prisma.ProjectUpdateWithoutSubcontractorProjectCostsInput>, Prisma.ProjectUncheckedUpdateWithoutSubcontractorProjectCostsInput>
+}
+
 export type ProjectCreateWithoutOwnerInput = {
   id?: string
   name: string
@@ -729,6 +755,7 @@ export type ProjectCreateWithoutOwnerInput = {
   quotes?: Prisma.QuoteCreateNestedManyWithoutProjectInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutProjectInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutOwnerInput = {
@@ -747,6 +774,7 @@ export type ProjectUncheckedCreateWithoutOwnerInput = {
   quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutProjectInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutProjectInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutOwnerInput = {
@@ -810,6 +838,7 @@ export type ProjectCreateWithoutCustomerInput = {
   quotes?: Prisma.QuoteCreateNestedManyWithoutProjectInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutProjectInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutCustomerInput = {
@@ -828,6 +857,7 @@ export type ProjectUncheckedCreateWithoutCustomerInput = {
   quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutProjectInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutProjectInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutCustomerInput = {
@@ -872,6 +902,7 @@ export type ProjectCreateWithoutQuotesInput = {
   customer?: Prisma.CustomerCreateNestedOneWithoutProjectsInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutProjectInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutQuotesInput = {
@@ -890,6 +921,7 @@ export type ProjectUncheckedCreateWithoutQuotesInput = {
   customerId?: string | null
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutProjectInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutQuotesInput = {
@@ -924,6 +956,7 @@ export type ProjectUpdateWithoutQuotesInput = {
   customer?: Prisma.CustomerUpdateOneWithoutProjectsNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutProjectNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutQuotesInput = {
@@ -942,6 +975,7 @@ export type ProjectUncheckedUpdateWithoutQuotesInput = {
   customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutProjectNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutInvoicesInput = {
@@ -960,6 +994,7 @@ export type ProjectCreateWithoutInvoicesInput = {
   customer?: Prisma.CustomerCreateNestedOneWithoutProjectsInput
   quotes?: Prisma.QuoteCreateNestedManyWithoutProjectInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutProjectInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutInvoicesInput = {
@@ -978,6 +1013,7 @@ export type ProjectUncheckedCreateWithoutInvoicesInput = {
   customerId?: string | null
   quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutProjectInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutProjectInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutInvoicesInput = {
@@ -1012,6 +1048,7 @@ export type ProjectUpdateWithoutInvoicesInput = {
   customer?: Prisma.CustomerUpdateOneWithoutProjectsNestedInput
   quotes?: Prisma.QuoteUpdateManyWithoutProjectNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutProjectNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutInvoicesInput = {
@@ -1030,6 +1067,7 @@ export type ProjectUncheckedUpdateWithoutInvoicesInput = {
   customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quotes?: Prisma.QuoteUncheckedUpdateManyWithoutProjectNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutProjectNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutExpensesInput = {
@@ -1048,6 +1086,7 @@ export type ProjectCreateWithoutExpensesInput = {
   customer?: Prisma.CustomerCreateNestedOneWithoutProjectsInput
   quotes?: Prisma.QuoteCreateNestedManyWithoutProjectInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutExpensesInput = {
@@ -1066,6 +1105,7 @@ export type ProjectUncheckedCreateWithoutExpensesInput = {
   customerId?: string | null
   quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutProjectInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutExpensesInput = {
@@ -1100,6 +1140,7 @@ export type ProjectUpdateWithoutExpensesInput = {
   customer?: Prisma.CustomerUpdateOneWithoutProjectsNestedInput
   quotes?: Prisma.QuoteUpdateManyWithoutProjectNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutExpensesInput = {
@@ -1118,6 +1159,99 @@ export type ProjectUncheckedUpdateWithoutExpensesInput = {
   customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quotes?: Prisma.QuoteUncheckedUpdateManyWithoutProjectNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectCreateWithoutSubcontractorProjectCostsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  clientName?: string | null
+  address?: string | null
+  quotedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.ProjectStatus
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutProjectsInput
+  customer?: Prisma.CustomerCreateNestedOneWithoutProjectsInput
+  quotes?: Prisma.QuoteCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  expenses?: Prisma.ExpenseCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectUncheckedCreateWithoutSubcontractorProjectCostsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  clientName?: string | null
+  address?: string | null
+  quotedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: $Enums.ProjectStatus
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  ownerId: string
+  customerId?: string | null
+  quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectCreateOrConnectWithoutSubcontractorProjectCostsInput = {
+  where: Prisma.ProjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutSubcontractorProjectCostsInput, Prisma.ProjectUncheckedCreateWithoutSubcontractorProjectCostsInput>
+}
+
+export type ProjectUpsertWithoutSubcontractorProjectCostsInput = {
+  update: Prisma.XOR<Prisma.ProjectUpdateWithoutSubcontractorProjectCostsInput, Prisma.ProjectUncheckedUpdateWithoutSubcontractorProjectCostsInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutSubcontractorProjectCostsInput, Prisma.ProjectUncheckedCreateWithoutSubcontractorProjectCostsInput>
+  where?: Prisma.ProjectWhereInput
+}
+
+export type ProjectUpdateToOneWithWhereWithoutSubcontractorProjectCostsInput = {
+  where?: Prisma.ProjectWhereInput
+  data: Prisma.XOR<Prisma.ProjectUpdateWithoutSubcontractorProjectCostsInput, Prisma.ProjectUncheckedUpdateWithoutSubcontractorProjectCostsInput>
+}
+
+export type ProjectUpdateWithoutSubcontractorProjectCostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quotedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutProjectsNestedInput
+  customer?: Prisma.CustomerUpdateOneWithoutProjectsNestedInput
+  quotes?: Prisma.QuoteUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  expenses?: Prisma.ExpenseUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectUncheckedUpdateWithoutSubcontractorProjectCostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quotedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quotes?: Prisma.QuoteUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateManyOwnerInput = {
@@ -1151,6 +1285,7 @@ export type ProjectUpdateWithoutOwnerInput = {
   quotes?: Prisma.QuoteUpdateManyWithoutProjectNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutProjectNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutOwnerInput = {
@@ -1169,6 +1304,7 @@ export type ProjectUncheckedUpdateWithoutOwnerInput = {
   quotes?: Prisma.QuoteUncheckedUpdateManyWithoutProjectNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutProjectNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateManyWithoutOwnerInput = {
@@ -1217,6 +1353,7 @@ export type ProjectUpdateWithoutCustomerInput = {
   quotes?: Prisma.QuoteUpdateManyWithoutProjectNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutProjectNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutCustomerInput = {
@@ -1235,6 +1372,7 @@ export type ProjectUncheckedUpdateWithoutCustomerInput = {
   quotes?: Prisma.QuoteUncheckedUpdateManyWithoutProjectNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutProjectNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateManyWithoutCustomerInput = {
@@ -1261,12 +1399,14 @@ export type ProjectCountOutputType = {
   quotes: number
   invoices: number
   expenses: number
+  subcontractorProjectCosts: number
 }
 
 export type ProjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   quotes?: boolean | ProjectCountOutputTypeCountQuotesArgs
   invoices?: boolean | ProjectCountOutputTypeCountInvoicesArgs
   expenses?: boolean | ProjectCountOutputTypeCountExpensesArgs
+  subcontractorProjectCosts?: boolean | ProjectCountOutputTypeCountSubcontractorProjectCostsArgs
 }
 
 /**
@@ -1300,6 +1440,13 @@ export type ProjectCountOutputTypeCountExpensesArgs<ExtArgs extends runtime.Type
   where?: Prisma.ExpenseWhereInput
 }
 
+/**
+ * ProjectCountOutputType without action
+ */
+export type ProjectCountOutputTypeCountSubcontractorProjectCostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SubcontractorProjectCostWhereInput
+}
+
 
 export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1320,6 +1467,7 @@ export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   quotes?: boolean | Prisma.Project$quotesArgs<ExtArgs>
   invoices?: boolean | Prisma.Project$invoicesArgs<ExtArgs>
   expenses?: boolean | Prisma.Project$expensesArgs<ExtArgs>
+  subcontractorProjectCosts?: boolean | Prisma.Project$subcontractorProjectCostsArgs<ExtArgs>
   _count?: boolean | Prisma.ProjectCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["project"]>
 
@@ -1382,6 +1530,7 @@ export type ProjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   quotes?: boolean | Prisma.Project$quotesArgs<ExtArgs>
   invoices?: boolean | Prisma.Project$invoicesArgs<ExtArgs>
   expenses?: boolean | Prisma.Project$expensesArgs<ExtArgs>
+  subcontractorProjectCosts?: boolean | Prisma.Project$subcontractorProjectCostsArgs<ExtArgs>
   _count?: boolean | Prisma.ProjectCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProjectIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1401,6 +1550,7 @@ export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     quotes: Prisma.$QuotePayload<ExtArgs>[]
     invoices: Prisma.$InvoicePayload<ExtArgs>[]
     expenses: Prisma.$ExpensePayload<ExtArgs>[]
+    subcontractorProjectCosts: Prisma.$SubcontractorProjectCostPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1815,6 +1965,7 @@ export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends runtime.
   quotes<T extends Prisma.Project$quotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$quotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   invoices<T extends Prisma.Project$invoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   expenses<T extends Prisma.Project$expensesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$expensesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  subcontractorProjectCosts<T extends Prisma.Project$subcontractorProjectCostsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$subcontractorProjectCostsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubcontractorProjectCostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2346,6 +2497,30 @@ export type Project$expensesArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.ExpenseScalarFieldEnum | Prisma.ExpenseScalarFieldEnum[]
+}
+
+/**
+ * Project.subcontractorProjectCosts
+ */
+export type Project$subcontractorProjectCostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SubcontractorProjectCost
+   */
+  select?: Prisma.SubcontractorProjectCostSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SubcontractorProjectCost
+   */
+  omit?: Prisma.SubcontractorProjectCostOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubcontractorProjectCostInclude<ExtArgs> | null
+  where?: Prisma.SubcontractorProjectCostWhereInput
+  orderBy?: Prisma.SubcontractorProjectCostOrderByWithRelationInput | Prisma.SubcontractorProjectCostOrderByWithRelationInput[]
+  cursor?: Prisma.SubcontractorProjectCostWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SubcontractorProjectCostScalarFieldEnum | Prisma.SubcontractorProjectCostScalarFieldEnum[]
 }
 
 /**

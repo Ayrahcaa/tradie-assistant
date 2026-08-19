@@ -76,3 +76,26 @@ export const ExpenseStatus = {
 } as const
 
 export type ExpenseStatus = (typeof ExpenseStatus)[keyof typeof ExpenseStatus]
+
+
+export const SubcontractorRateType = {
+  HOURLY: 'HOURLY',
+  SQUARE_METRE: 'SQUARE_METRE',
+  DAILY: 'DAILY',
+  FIXED_TASK: 'FIXED_TASK',
+  FIXED_PROJECT: 'FIXED_PROJECT',
+  PER_UNIT: 'PER_UNIT',
+  OTHER: 'OTHER'
+} as const
+
+export type SubcontractorRateType = (typeof SubcontractorRateType)[keyof typeof SubcontractorRateType]
+
+
+export const SubcontractorCostStatus = {
+  UNPAID: 'UNPAID',
+  PARTIALLY_PAID: 'PARTIALLY_PAID',
+  PAID: 'PAID',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type SubcontractorCostStatus = (typeof SubcontractorCostStatus)[keyof typeof SubcontractorCostStatus]

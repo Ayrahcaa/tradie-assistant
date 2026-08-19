@@ -13,6 +13,8 @@ import { InvoicesPage } from "../features/invoices/pages/InvoicesPage";
 import { InvoiceDetailsPage } from "../features/invoices/pages/InvoiceDetailsPage";
 import { ExpensesPage } from "../features/expenses/pages/ExpensesPage";
 import { ExpenseDetailsPage } from "../features/expenses/pages/ExpenseDetailsPage";
+import { SubcontractorsPage } from "../features/subcontractors/pages/SubcontractorsPage";
+import { SubcontractorDetailsPage } from "../features/subcontractors/pages/SubcontractorDetailsPage";
 
 const router = createBrowserRouter([
   {
@@ -74,12 +76,11 @@ const router = createBrowserRouter([
       },
       {
         path: "subcontractors",
-        element: (
-          <PlaceholderPage
-            title="Subcontractors"
-            description="Track subcontractor details, bills and payments."
-          />
-        ),
+        element: <SubcontractorsPage />,
+      },
+      {
+        path: "subcontractors/:subcontractorId",
+        element: <SubcontractorDetailsPage />,
       },
       {
         path: "assistant",

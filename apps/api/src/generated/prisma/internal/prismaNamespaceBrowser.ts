@@ -60,7 +60,10 @@ export const ModelName = {
   InvoiceItem: 'InvoiceItem',
   Payment: 'Payment',
   Expense: 'Expense',
-  Receipt: 'Receipt'
+  Receipt: 'Receipt',
+  Subcontractor: 'Subcontractor',
+  SubcontractorProjectCost: 'SubcontractorProjectCost',
+  SubcontractorPayment: 'SubcontractorPayment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -261,6 +264,62 @@ export const ReceiptScalarFieldEnum = {
 } as const
 
 export type ReceiptScalarFieldEnum = (typeof ReceiptScalarFieldEnum)[keyof typeof ReceiptScalarFieldEnum]
+
+
+export const SubcontractorScalarFieldEnum = {
+  id: 'id',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  businessName: 'businessName',
+  abn: 'abn',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+  notes: 'notes',
+  isArchived: 'isArchived',
+  ownerId: 'ownerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SubcontractorScalarFieldEnum = (typeof SubcontractorScalarFieldEnum)[keyof typeof SubcontractorScalarFieldEnum]
+
+
+export const SubcontractorProjectCostScalarFieldEnum = {
+  id: 'id',
+  description: 'description',
+  rateType: 'rateType',
+  rate: 'rate',
+  quantity: 'quantity',
+  calculatedAmount: 'calculatedAmount',
+  agreedAmount: 'agreedAmount',
+  amountPaid: 'amountPaid',
+  amountPending: 'amountPending',
+  status: 'status',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  subcontractorId: 'subcontractorId',
+  projectId: 'projectId',
+  ownerId: 'ownerId'
+} as const
+
+export type SubcontractorProjectCostScalarFieldEnum = (typeof SubcontractorProjectCostScalarFieldEnum)[keyof typeof SubcontractorProjectCostScalarFieldEnum]
+
+
+export const SubcontractorPaymentScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  paidAt: 'paidAt',
+  reference: 'reference',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  costId: 'costId',
+  ownerId: 'ownerId'
+} as const
+
+export type SubcontractorPaymentScalarFieldEnum = (typeof SubcontractorPaymentScalarFieldEnum)[keyof typeof SubcontractorPaymentScalarFieldEnum]
 
 
 export const SortOrder = {

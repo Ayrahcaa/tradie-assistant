@@ -48,7 +48,10 @@ export const ModelName = {
     InvoiceItem: 'InvoiceItem',
     Payment: 'Payment',
     Expense: 'Expense',
-    Receipt: 'Receipt'
+    Receipt: 'Receipt',
+    Subcontractor: 'Subcontractor',
+    SubcontractorProjectCost: 'SubcontractorProjectCost',
+    SubcontractorPayment: 'SubcontractorPayment'
 };
 /*
  * Enums
@@ -201,6 +204,50 @@ export const ReceiptScalarFieldEnum = {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     expenseId: 'expenseId',
+    ownerId: 'ownerId'
+};
+export const SubcontractorScalarFieldEnum = {
+    id: 'id',
+    firstName: 'firstName',
+    lastName: 'lastName',
+    businessName: 'businessName',
+    abn: 'abn',
+    email: 'email',
+    phone: 'phone',
+    address: 'address',
+    notes: 'notes',
+    isArchived: 'isArchived',
+    ownerId: 'ownerId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const SubcontractorProjectCostScalarFieldEnum = {
+    id: 'id',
+    description: 'description',
+    rateType: 'rateType',
+    rate: 'rate',
+    quantity: 'quantity',
+    calculatedAmount: 'calculatedAmount',
+    agreedAmount: 'agreedAmount',
+    amountPaid: 'amountPaid',
+    amountPending: 'amountPending',
+    status: 'status',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    subcontractorId: 'subcontractorId',
+    projectId: 'projectId',
+    ownerId: 'ownerId'
+};
+export const SubcontractorPaymentScalarFieldEnum = {
+    id: 'id',
+    amount: 'amount',
+    paidAt: 'paidAt',
+    reference: 'reference',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    costId: 'costId',
     ownerId: 'ownerId'
 };
 export const SortOrder = {

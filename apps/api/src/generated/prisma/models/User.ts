@@ -221,6 +221,9 @@ export type UserWhereInput = {
   payments?: Prisma.PaymentListRelationFilter
   expenses?: Prisma.ExpenseListRelationFilter
   receipts?: Prisma.ReceiptListRelationFilter
+  subcontractors?: Prisma.SubcontractorListRelationFilter
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostListRelationFilter
+  subcontractorPayments?: Prisma.SubcontractorPaymentListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -240,6 +243,9 @@ export type UserOrderByWithRelationInput = {
   payments?: Prisma.PaymentOrderByRelationAggregateInput
   expenses?: Prisma.ExpenseOrderByRelationAggregateInput
   receipts?: Prisma.ReceiptOrderByRelationAggregateInput
+  subcontractors?: Prisma.SubcontractorOrderByRelationAggregateInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostOrderByRelationAggregateInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -262,6 +268,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   payments?: Prisma.PaymentListRelationFilter
   expenses?: Prisma.ExpenseListRelationFilter
   receipts?: Prisma.ReceiptListRelationFilter
+  subcontractors?: Prisma.SubcontractorListRelationFilter
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostListRelationFilter
+  subcontractorPayments?: Prisma.SubcontractorPaymentListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -311,6 +320,9 @@ export type UserCreateInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutOwnerInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutOwnerInput
   receipts?: Prisma.ReceiptCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -330,6 +342,9 @@ export type UserUncheckedCreateInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOwnerInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutOwnerInput
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUpdateInput = {
@@ -349,6 +364,9 @@ export type UserUpdateInput = {
   payments?: Prisma.PaymentUpdateManyWithoutOwnerNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutOwnerNestedInput
   receipts?: Prisma.ReceiptUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -368,6 +386,9 @@ export type UserUncheckedUpdateInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOwnerNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutOwnerNestedInput
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -557,6 +578,48 @@ export type UserUpdateOneRequiredWithoutReceiptsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReceiptsInput, Prisma.UserUpdateWithoutReceiptsInput>, Prisma.UserUncheckedUpdateWithoutReceiptsInput>
 }
 
+export type UserCreateNestedOneWithoutSubcontractorsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSubcontractorsInput, Prisma.UserUncheckedCreateWithoutSubcontractorsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSubcontractorsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSubcontractorsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSubcontractorsInput, Prisma.UserUncheckedCreateWithoutSubcontractorsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSubcontractorsInput
+  upsert?: Prisma.UserUpsertWithoutSubcontractorsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSubcontractorsInput, Prisma.UserUpdateWithoutSubcontractorsInput>, Prisma.UserUncheckedUpdateWithoutSubcontractorsInput>
+}
+
+export type UserCreateNestedOneWithoutSubcontractorProjectCostsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSubcontractorProjectCostsInput, Prisma.UserUncheckedCreateWithoutSubcontractorProjectCostsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSubcontractorProjectCostsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSubcontractorProjectCostsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSubcontractorProjectCostsInput, Prisma.UserUncheckedCreateWithoutSubcontractorProjectCostsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSubcontractorProjectCostsInput
+  upsert?: Prisma.UserUpsertWithoutSubcontractorProjectCostsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSubcontractorProjectCostsInput, Prisma.UserUpdateWithoutSubcontractorProjectCostsInput>, Prisma.UserUncheckedUpdateWithoutSubcontractorProjectCostsInput>
+}
+
+export type UserCreateNestedOneWithoutSubcontractorPaymentsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSubcontractorPaymentsInput, Prisma.UserUncheckedCreateWithoutSubcontractorPaymentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSubcontractorPaymentsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSubcontractorPaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSubcontractorPaymentsInput, Prisma.UserUncheckedCreateWithoutSubcontractorPaymentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSubcontractorPaymentsInput
+  upsert?: Prisma.UserUpsertWithoutSubcontractorPaymentsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSubcontractorPaymentsInput, Prisma.UserUpdateWithoutSubcontractorPaymentsInput>, Prisma.UserUncheckedUpdateWithoutSubcontractorPaymentsInput>
+}
+
 export type UserCreateWithoutProjectsInput = {
   id?: string
   firstName: string
@@ -573,6 +636,9 @@ export type UserCreateWithoutProjectsInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutOwnerInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutOwnerInput
   receipts?: Prisma.ReceiptCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutProjectsInput = {
@@ -591,6 +657,9 @@ export type UserUncheckedCreateWithoutProjectsInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOwnerInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutOwnerInput
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutProjectsInput = {
@@ -625,6 +694,9 @@ export type UserUpdateWithoutProjectsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutOwnerNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutOwnerNestedInput
   receipts?: Prisma.ReceiptUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProjectsInput = {
@@ -643,6 +715,9 @@ export type UserUncheckedUpdateWithoutProjectsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOwnerNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutOwnerNestedInput
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutCustomersInput = {
@@ -661,6 +736,9 @@ export type UserCreateWithoutCustomersInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutOwnerInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutOwnerInput
   receipts?: Prisma.ReceiptCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutCustomersInput = {
@@ -679,6 +757,9 @@ export type UserUncheckedCreateWithoutCustomersInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOwnerInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutOwnerInput
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutCustomersInput = {
@@ -713,6 +794,9 @@ export type UserUpdateWithoutCustomersInput = {
   payments?: Prisma.PaymentUpdateManyWithoutOwnerNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutOwnerNestedInput
   receipts?: Prisma.ReceiptUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCustomersInput = {
@@ -731,6 +815,9 @@ export type UserUncheckedUpdateWithoutCustomersInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOwnerNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutOwnerNestedInput
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutQuotesInput = {
@@ -749,6 +836,9 @@ export type UserCreateWithoutQuotesInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutOwnerInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutOwnerInput
   receipts?: Prisma.ReceiptCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutQuotesInput = {
@@ -767,6 +857,9 @@ export type UserUncheckedCreateWithoutQuotesInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOwnerInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutOwnerInput
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutQuotesInput = {
@@ -801,6 +894,9 @@ export type UserUpdateWithoutQuotesInput = {
   payments?: Prisma.PaymentUpdateManyWithoutOwnerNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutOwnerNestedInput
   receipts?: Prisma.ReceiptUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutQuotesInput = {
@@ -819,6 +915,9 @@ export type UserUncheckedUpdateWithoutQuotesInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOwnerNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutOwnerNestedInput
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutInvoicesInput = {
@@ -837,6 +936,9 @@ export type UserCreateWithoutInvoicesInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutOwnerInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutOwnerInput
   receipts?: Prisma.ReceiptCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutInvoicesInput = {
@@ -855,6 +957,9 @@ export type UserUncheckedCreateWithoutInvoicesInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOwnerInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutOwnerInput
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutInvoicesInput = {
@@ -889,6 +994,9 @@ export type UserUpdateWithoutInvoicesInput = {
   payments?: Prisma.PaymentUpdateManyWithoutOwnerNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutOwnerNestedInput
   receipts?: Prisma.ReceiptUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInvoicesInput = {
@@ -907,6 +1015,9 @@ export type UserUncheckedUpdateWithoutInvoicesInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOwnerNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutOwnerNestedInput
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutPaymentsInput = {
@@ -925,6 +1036,9 @@ export type UserCreateWithoutPaymentsInput = {
   invoices?: Prisma.InvoiceCreateNestedManyWithoutOwnerInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutOwnerInput
   receipts?: Prisma.ReceiptCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutPaymentsInput = {
@@ -943,6 +1057,9 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutOwnerInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutOwnerInput
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutPaymentsInput = {
@@ -977,6 +1094,9 @@ export type UserUpdateWithoutPaymentsInput = {
   invoices?: Prisma.InvoiceUpdateManyWithoutOwnerNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutOwnerNestedInput
   receipts?: Prisma.ReceiptUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentsInput = {
@@ -995,6 +1115,9 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutOwnerNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutOwnerNestedInput
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutExpensesInput = {
@@ -1013,6 +1136,9 @@ export type UserCreateWithoutExpensesInput = {
   invoices?: Prisma.InvoiceCreateNestedManyWithoutOwnerInput
   payments?: Prisma.PaymentCreateNestedManyWithoutOwnerInput
   receipts?: Prisma.ReceiptCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutExpensesInput = {
@@ -1031,6 +1157,9 @@ export type UserUncheckedCreateWithoutExpensesInput = {
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutOwnerInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOwnerInput
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutExpensesInput = {
@@ -1065,6 +1194,9 @@ export type UserUpdateWithoutExpensesInput = {
   invoices?: Prisma.InvoiceUpdateManyWithoutOwnerNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutOwnerNestedInput
   receipts?: Prisma.ReceiptUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutExpensesInput = {
@@ -1083,6 +1215,9 @@ export type UserUncheckedUpdateWithoutExpensesInput = {
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutOwnerNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOwnerNestedInput
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutReceiptsInput = {
@@ -1101,6 +1236,9 @@ export type UserCreateWithoutReceiptsInput = {
   invoices?: Prisma.InvoiceCreateNestedManyWithoutOwnerInput
   payments?: Prisma.PaymentCreateNestedManyWithoutOwnerInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutReceiptsInput = {
@@ -1119,6 +1257,9 @@ export type UserUncheckedCreateWithoutReceiptsInput = {
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutOwnerInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOwnerInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutReceiptsInput = {
@@ -1153,6 +1294,9 @@ export type UserUpdateWithoutReceiptsInput = {
   invoices?: Prisma.InvoiceUpdateManyWithoutOwnerNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutOwnerNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReceiptsInput = {
@@ -1171,6 +1315,309 @@ export type UserUncheckedUpdateWithoutReceiptsInput = {
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutOwnerNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOwnerNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserCreateWithoutSubcontractorsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  passwordHash: string
+  businessName?: string | null
+  abn?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  projects?: Prisma.ProjectCreateNestedManyWithoutOwnerInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutOwnerInput
+  quotes?: Prisma.QuoteCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutOwnerInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOwnerInput
+  expenses?: Prisma.ExpenseCreateNestedManyWithoutOwnerInput
+  receipts?: Prisma.ReceiptCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
+}
+
+export type UserUncheckedCreateWithoutSubcontractorsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  passwordHash: string
+  businessName?: string | null
+  abn?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutOwnerInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutOwnerInput
+  quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutOwnerInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOwnerInput
+  expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutOwnerInput
+  receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutSubcontractorsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSubcontractorsInput, Prisma.UserUncheckedCreateWithoutSubcontractorsInput>
+}
+
+export type UserUpsertWithoutSubcontractorsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSubcontractorsInput, Prisma.UserUncheckedUpdateWithoutSubcontractorsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSubcontractorsInput, Prisma.UserUncheckedCreateWithoutSubcontractorsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSubcontractorsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSubcontractorsInput, Prisma.UserUncheckedUpdateWithoutSubcontractorsInput>
+}
+
+export type UserUpdateWithoutSubcontractorsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  abn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  projects?: Prisma.ProjectUpdateManyWithoutOwnerNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutOwnerNestedInput
+  quotes?: Prisma.QuoteUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutOwnerNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOwnerNestedInput
+  expenses?: Prisma.ExpenseUpdateManyWithoutOwnerNestedInput
+  receipts?: Prisma.ReceiptUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSubcontractorsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  abn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutOwnerNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutOwnerNestedInput
+  quotes?: Prisma.QuoteUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutOwnerNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOwnerNestedInput
+  expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutOwnerNestedInput
+  receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserCreateWithoutSubcontractorProjectCostsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  passwordHash: string
+  businessName?: string | null
+  abn?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  projects?: Prisma.ProjectCreateNestedManyWithoutOwnerInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutOwnerInput
+  quotes?: Prisma.QuoteCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutOwnerInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOwnerInput
+  expenses?: Prisma.ExpenseCreateNestedManyWithoutOwnerInput
+  receipts?: Prisma.ReceiptCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
+}
+
+export type UserUncheckedCreateWithoutSubcontractorProjectCostsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  passwordHash: string
+  businessName?: string | null
+  abn?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutOwnerInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutOwnerInput
+  quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutOwnerInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOwnerInput
+  expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutOwnerInput
+  receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutSubcontractorProjectCostsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSubcontractorProjectCostsInput, Prisma.UserUncheckedCreateWithoutSubcontractorProjectCostsInput>
+}
+
+export type UserUpsertWithoutSubcontractorProjectCostsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSubcontractorProjectCostsInput, Prisma.UserUncheckedUpdateWithoutSubcontractorProjectCostsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSubcontractorProjectCostsInput, Prisma.UserUncheckedCreateWithoutSubcontractorProjectCostsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSubcontractorProjectCostsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSubcontractorProjectCostsInput, Prisma.UserUncheckedUpdateWithoutSubcontractorProjectCostsInput>
+}
+
+export type UserUpdateWithoutSubcontractorProjectCostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  abn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  projects?: Prisma.ProjectUpdateManyWithoutOwnerNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutOwnerNestedInput
+  quotes?: Prisma.QuoteUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutOwnerNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOwnerNestedInput
+  expenses?: Prisma.ExpenseUpdateManyWithoutOwnerNestedInput
+  receipts?: Prisma.ReceiptUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSubcontractorProjectCostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  abn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutOwnerNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutOwnerNestedInput
+  quotes?: Prisma.QuoteUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutOwnerNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOwnerNestedInput
+  expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutOwnerNestedInput
+  receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserCreateWithoutSubcontractorPaymentsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  passwordHash: string
+  businessName?: string | null
+  abn?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  projects?: Prisma.ProjectCreateNestedManyWithoutOwnerInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutOwnerInput
+  quotes?: Prisma.QuoteCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutOwnerInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOwnerInput
+  expenses?: Prisma.ExpenseCreateNestedManyWithoutOwnerInput
+  receipts?: Prisma.ReceiptCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
+}
+
+export type UserUncheckedCreateWithoutSubcontractorPaymentsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  passwordHash: string
+  businessName?: string | null
+  abn?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutOwnerInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutOwnerInput
+  quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutOwnerInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOwnerInput
+  expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutOwnerInput
+  receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutSubcontractorPaymentsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSubcontractorPaymentsInput, Prisma.UserUncheckedCreateWithoutSubcontractorPaymentsInput>
+}
+
+export type UserUpsertWithoutSubcontractorPaymentsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSubcontractorPaymentsInput, Prisma.UserUncheckedUpdateWithoutSubcontractorPaymentsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSubcontractorPaymentsInput, Prisma.UserUncheckedCreateWithoutSubcontractorPaymentsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSubcontractorPaymentsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSubcontractorPaymentsInput, Prisma.UserUncheckedUpdateWithoutSubcontractorPaymentsInput>
+}
+
+export type UserUpdateWithoutSubcontractorPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  abn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  projects?: Prisma.ProjectUpdateManyWithoutOwnerNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutOwnerNestedInput
+  quotes?: Prisma.QuoteUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutOwnerNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOwnerNestedInput
+  expenses?: Prisma.ExpenseUpdateManyWithoutOwnerNestedInput
+  receipts?: Prisma.ReceiptUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSubcontractorPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  abn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutOwnerNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutOwnerNestedInput
+  quotes?: Prisma.QuoteUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutOwnerNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOwnerNestedInput
+  expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutOwnerNestedInput
+  receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 
@@ -1186,6 +1633,9 @@ export type UserCountOutputType = {
   payments: number
   expenses: number
   receipts: number
+  subcontractors: number
+  subcontractorProjectCosts: number
+  subcontractorPayments: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1196,6 +1646,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   payments?: boolean | UserCountOutputTypeCountPaymentsArgs
   expenses?: boolean | UserCountOutputTypeCountExpensesArgs
   receipts?: boolean | UserCountOutputTypeCountReceiptsArgs
+  subcontractors?: boolean | UserCountOutputTypeCountSubcontractorsArgs
+  subcontractorProjectCosts?: boolean | UserCountOutputTypeCountSubcontractorProjectCostsArgs
+  subcontractorPayments?: boolean | UserCountOutputTypeCountSubcontractorPaymentsArgs
 }
 
 /**
@@ -1257,6 +1710,27 @@ export type UserCountOutputTypeCountReceiptsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.ReceiptWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSubcontractorsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SubcontractorWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSubcontractorProjectCostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SubcontractorProjectCostWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSubcontractorPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SubcontractorPaymentWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1275,6 +1749,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   payments?: boolean | Prisma.User$paymentsArgs<ExtArgs>
   expenses?: boolean | Prisma.User$expensesArgs<ExtArgs>
   receipts?: boolean | Prisma.User$receiptsArgs<ExtArgs>
+  subcontractors?: boolean | Prisma.User$subcontractorsArgs<ExtArgs>
+  subcontractorProjectCosts?: boolean | Prisma.User$subcontractorProjectCostsArgs<ExtArgs>
+  subcontractorPayments?: boolean | Prisma.User$subcontractorPaymentsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1323,6 +1800,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   payments?: boolean | Prisma.User$paymentsArgs<ExtArgs>
   expenses?: boolean | Prisma.User$expensesArgs<ExtArgs>
   receipts?: boolean | Prisma.User$receiptsArgs<ExtArgs>
+  subcontractors?: boolean | Prisma.User$subcontractorsArgs<ExtArgs>
+  subcontractorProjectCosts?: boolean | Prisma.User$subcontractorProjectCostsArgs<ExtArgs>
+  subcontractorPayments?: boolean | Prisma.User$subcontractorPaymentsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1338,6 +1818,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     payments: Prisma.$PaymentPayload<ExtArgs>[]
     expenses: Prisma.$ExpensePayload<ExtArgs>[]
     receipts: Prisma.$ReceiptPayload<ExtArgs>[]
+    subcontractors: Prisma.$SubcontractorPayload<ExtArgs>[]
+    subcontractorProjectCosts: Prisma.$SubcontractorProjectCostPayload<ExtArgs>[]
+    subcontractorPayments: Prisma.$SubcontractorPaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1750,6 +2233,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   payments<T extends Prisma.User$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   expenses<T extends Prisma.User$expensesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$expensesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   receipts<T extends Prisma.User$receiptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$receiptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReceiptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  subcontractors<T extends Prisma.User$subcontractorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$subcontractorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubcontractorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  subcontractorProjectCosts<T extends Prisma.User$subcontractorProjectCostsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$subcontractorProjectCostsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubcontractorProjectCostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  subcontractorPayments<T extends Prisma.User$subcontractorPaymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$subcontractorPaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubcontractorPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2346,6 +2832,78 @@ export type User$receiptsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.ReceiptScalarFieldEnum | Prisma.ReceiptScalarFieldEnum[]
+}
+
+/**
+ * User.subcontractors
+ */
+export type User$subcontractorsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Subcontractor
+   */
+  select?: Prisma.SubcontractorSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Subcontractor
+   */
+  omit?: Prisma.SubcontractorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubcontractorInclude<ExtArgs> | null
+  where?: Prisma.SubcontractorWhereInput
+  orderBy?: Prisma.SubcontractorOrderByWithRelationInput | Prisma.SubcontractorOrderByWithRelationInput[]
+  cursor?: Prisma.SubcontractorWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SubcontractorScalarFieldEnum | Prisma.SubcontractorScalarFieldEnum[]
+}
+
+/**
+ * User.subcontractorProjectCosts
+ */
+export type User$subcontractorProjectCostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SubcontractorProjectCost
+   */
+  select?: Prisma.SubcontractorProjectCostSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SubcontractorProjectCost
+   */
+  omit?: Prisma.SubcontractorProjectCostOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubcontractorProjectCostInclude<ExtArgs> | null
+  where?: Prisma.SubcontractorProjectCostWhereInput
+  orderBy?: Prisma.SubcontractorProjectCostOrderByWithRelationInput | Prisma.SubcontractorProjectCostOrderByWithRelationInput[]
+  cursor?: Prisma.SubcontractorProjectCostWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SubcontractorProjectCostScalarFieldEnum | Prisma.SubcontractorProjectCostScalarFieldEnum[]
+}
+
+/**
+ * User.subcontractorPayments
+ */
+export type User$subcontractorPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SubcontractorPayment
+   */
+  select?: Prisma.SubcontractorPaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SubcontractorPayment
+   */
+  omit?: Prisma.SubcontractorPaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubcontractorPaymentInclude<ExtArgs> | null
+  where?: Prisma.SubcontractorPaymentWhereInput
+  orderBy?: Prisma.SubcontractorPaymentOrderByWithRelationInput | Prisma.SubcontractorPaymentOrderByWithRelationInput[]
+  cursor?: Prisma.SubcontractorPaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SubcontractorPaymentScalarFieldEnum | Prisma.SubcontractorPaymentScalarFieldEnum[]
 }
 
 /**

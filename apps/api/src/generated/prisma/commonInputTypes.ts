@@ -331,6 +331,40 @@ export type EnumExpenseStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumExpenseStatusFilter<$PrismaModel>
 }
 
+export type EnumSubcontractorRateTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.SubcontractorRateType | Prisma.EnumSubcontractorRateTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SubcontractorRateType[] | Prisma.ListEnumSubcontractorRateTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SubcontractorRateType[] | Prisma.ListEnumSubcontractorRateTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSubcontractorRateTypeFilter<$PrismaModel> | $Enums.SubcontractorRateType
+}
+
+export type EnumSubcontractorCostStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.SubcontractorCostStatus | Prisma.EnumSubcontractorCostStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.SubcontractorCostStatus[] | Prisma.ListEnumSubcontractorCostStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SubcontractorCostStatus[] | Prisma.ListEnumSubcontractorCostStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSubcontractorCostStatusFilter<$PrismaModel> | $Enums.SubcontractorCostStatus
+}
+
+export type EnumSubcontractorRateTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SubcontractorRateType | Prisma.EnumSubcontractorRateTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SubcontractorRateType[] | Prisma.ListEnumSubcontractorRateTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SubcontractorRateType[] | Prisma.ListEnumSubcontractorRateTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSubcontractorRateTypeWithAggregatesFilter<$PrismaModel> | $Enums.SubcontractorRateType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSubcontractorRateTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSubcontractorRateTypeFilter<$PrismaModel>
+}
+
+export type EnumSubcontractorCostStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SubcontractorCostStatus | Prisma.EnumSubcontractorCostStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.SubcontractorCostStatus[] | Prisma.ListEnumSubcontractorCostStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SubcontractorCostStatus[] | Prisma.ListEnumSubcontractorCostStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSubcontractorCostStatusWithAggregatesFilter<$PrismaModel> | $Enums.SubcontractorCostStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSubcontractorCostStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSubcontractorCostStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -659,6 +693,40 @@ export type NestedEnumExpenseStatusWithAggregatesFilter<$PrismaModel = never> = 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumExpenseStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumExpenseStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumSubcontractorRateTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.SubcontractorRateType | Prisma.EnumSubcontractorRateTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SubcontractorRateType[] | Prisma.ListEnumSubcontractorRateTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SubcontractorRateType[] | Prisma.ListEnumSubcontractorRateTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSubcontractorRateTypeFilter<$PrismaModel> | $Enums.SubcontractorRateType
+}
+
+export type NestedEnumSubcontractorCostStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.SubcontractorCostStatus | Prisma.EnumSubcontractorCostStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.SubcontractorCostStatus[] | Prisma.ListEnumSubcontractorCostStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SubcontractorCostStatus[] | Prisma.ListEnumSubcontractorCostStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSubcontractorCostStatusFilter<$PrismaModel> | $Enums.SubcontractorCostStatus
+}
+
+export type NestedEnumSubcontractorRateTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SubcontractorRateType | Prisma.EnumSubcontractorRateTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SubcontractorRateType[] | Prisma.ListEnumSubcontractorRateTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SubcontractorRateType[] | Prisma.ListEnumSubcontractorRateTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSubcontractorRateTypeWithAggregatesFilter<$PrismaModel> | $Enums.SubcontractorRateType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSubcontractorRateTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSubcontractorRateTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumSubcontractorCostStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SubcontractorCostStatus | Prisma.EnumSubcontractorCostStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.SubcontractorCostStatus[] | Prisma.ListEnumSubcontractorCostStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SubcontractorCostStatus[] | Prisma.ListEnumSubcontractorCostStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSubcontractorCostStatusWithAggregatesFilter<$PrismaModel> | $Enums.SubcontractorCostStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSubcontractorCostStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSubcontractorCostStatusFilter<$PrismaModel>
 }
 
 

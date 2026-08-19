@@ -15,6 +15,9 @@ import { invoiceRouter } from "./modules/invoices/invoice.routes.js";
 import { paymentRouter } from "./modules/payments/payment.routes.js";
 import { expenseRouter } from "./modules/expenses/expense.routes.js";
 import { receiptRouter } from "./modules/receipts/receipt.routes.js";
+import { subcontractorRouter } from "./modules/subcontractors/subcontractor.routes.js";
+import { subcontractorCostRouter } from "./modules/subcontractor-costs/subcontractor-cost.routes.js";
+import { subcontractorPaymentRouter } from "./modules/subcontractor-payments/subcontractor-payment.routes.js";
 
 const app = express();
 
@@ -35,6 +38,9 @@ app.use("/api/invoices", invoiceRouter);
 app.use("/api/payments", paymentRouter);
 app.use("/api/expenses", expenseRouter);
 app.use("/api/receipts", receiptRouter);
+app.use("/api/subcontractors", subcontractorRouter);
+app.use("/api/subcontractor-costs", subcontractorCostRouter);
+app.use("/api/subcontractor-payments", subcontractorPaymentRouter);
 
 app.get("/", (_request: Request, response: Response) => {
   response.json({
