@@ -20,9 +20,19 @@ import { authRouter } from "./modules/auth/auth.routes.js";
 import { requireAuth } from "./modules/auth/auth.middleware.js";
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
+const allowedWebOrigins = new Set([
+    "http://localhost:5173",
+    "http://localhost:8081",
+    ...(process.env.WEB_ORIGIN ?? "").split(",").map((origin) => origin.trim()).filter(Boolean),
+]);
 app.use(helmet());
 app.use(cors({
-    origin: process.env.WEB_ORIGIN ?? "http://localhost:5173",
+    origin(origin, callback) {
+        if (!origin || allowedWebOrigins.has(origin))
+            callback(null, true);
+        else
+            callback(new Error("Origin is not allowed by CORS."));
+    },
     credentials: true,
 }));
 app.use(express.json());

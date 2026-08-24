@@ -7,10 +7,17 @@ function setSessionCookie(response, token, expiresAt) {
     response.setHeader("Set-Cookie", `${SESSION_COOKIE}=${encodeURIComponent(token)}; HttpOnly; Path=/; SameSite=Lax; Max-Age=${Math.floor(SESSION_TTL_MS / 1000)}; Expires=${expiresAt.toUTCString()}${secure}`);
 }
 function clearSessionCookie(response) { const secure = process.env.NODE_ENV === "production" ? "; Secure" : ""; response.setHeader("Set-Cookie", `${SESSION_COOKIE}=; HttpOnly; Path=/; SameSite=Lax; Max-Age=0${secure}`); }
+function authResponseData(request, result) {
+    // Native clients cannot reliably use browser cookie jars. They explicitly opt in
+    // to receiving the same opaque session token and keep it in OS secure storage.
+    return request.get("X-Client-Platform") === "mobile"
+        ? { user: result.user, sessionToken: result.token, expiresAt: result.expiresAt }
+        : { user: result.user };
+}
 export async function registerHandler(request, response, next) { try {
     const result = await register(registerSchema.parse(request.body));
     setSessionCookie(response, result.token, result.expiresAt);
-    response.status(201).json({ message: "Account created successfully.", data: { user: result.user } });
+    response.status(201).json({ message: "Account created successfully.", data: authResponseData(request, result) });
 }
 catch (error) {
     next(error);
@@ -18,7 +25,7 @@ catch (error) {
 export async function loginHandler(request, response, next) { try {
     const result = await login(loginSchema.parse(request.body));
     setSessionCookie(response, result.token, result.expiresAt);
-    response.json({ message: "Logged in successfully.", data: { user: result.user } });
+    response.json({ message: "Logged in successfully.", data: authResponseData(request, result) });
 }
 catch (error) {
     next(error);

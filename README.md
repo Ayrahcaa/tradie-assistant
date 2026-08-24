@@ -147,3 +147,54 @@ Legacy expenses categorised as `SUBCONTRACTOR` are reported separately and exclu
 - Real card/payment processing and bank feeds are not connected.
 - Email and SMS delivery are not connected.
 - Receipt files use local server storage rather than cloud storage.
+
+## Mobile development
+
+The native app lives in `apps/mobile` and uses Expo SDK 57, React Native, TypeScript, Expo Router, TanStack Query, SecureStore and the same Express API/database as the web app.
+
+### Requirements and environment
+
+- Node.js 22.13 or newer (required by Expo SDK 57)
+- Xcode and an iOS Simulator for local iOS development
+- Android Studio, an Android SDK and an emulator for Android development
+- Expo Go for quick device testing, or an Expo development build for the intended long-term workflow
+
+Create `apps/mobile/.env`:
+
+```env
+EXPO_PUBLIC_API_URL="http://localhost:4000/api"
+```
+
+Only the public API address belongs in this file. Never put database credentials, password hashes, OpenAI keys or server secrets in an `EXPO_PUBLIC_` variable.
+
+Start the API and mobile app in separate terminals:
+
+```bash
+npm run dev:api
+npm run dev:mobile
+```
+
+From the Expo terminal press `i` for the iOS Simulator or `a` for an Android emulator. Equivalent direct commands are:
+
+```bash
+npm run ios --workspace=@tradie-assistant/mobile
+npm run android --workspace=@tradie-assistant/mobile
+```
+
+For an iOS Simulator, `http://localhost:4000/api` normally reaches the Mac. Android Emulator usually needs `http://10.0.2.2:4000/api`. A physical phone must use the Mac's private Wi-Fi address, for example `http://192.168.1.20:4000/api`; the phone and Mac must be on the same network and the firewall must allow port 4000. Do not commit that machine-specific address.
+
+### Mobile authentication and permissions
+
+Web and mobile share the same `User` and `Session` records. Web uses an HTTP-only cookie. Mobile opts into an opaque session token response with `X-Client-Platform: mobile`, stores that token in the operating system's encrypted SecureStore, and sends it as a bearer credential. On a 401 or logout, SecureStore and all user-specific TanStack Query data are cleared before the auth screen is shown. Passwords are never stored on the device.
+
+Camera and photo-library permission are requested only when the user chooses **Take photo** or **Choose from photos** on an expense. Receipt images are uploaded to the existing authenticated receipts endpoint. AI extraction is intentionally not called.
+
+Mobile checks:
+
+```bash
+npm run typecheck:mobile
+npm run lint --workspace=@tradie-assistant/mobile
+npx expo-doctor apps/mobile
+```
+
+Known mobile limitations: full offline sync, push notifications, password management, OAuth, real invoice sending/card payments, quote creation, and store releases are not included. Receipt storage remains local to the API server. A physical iOS/Android manual pass is still required before release.
