@@ -59,20 +59,6 @@ export interface CreateInvoiceInput {
 
 export type UpdateInvoiceInput = Partial<CreateInvoiceInput>;
 
-async function getDemoUser() {
-  const email = process.env.DEMO_USER_EMAIL ?? "demo@tradieassistant.com";
-
-  const user = await prisma.user.findUnique({
-    where: { email },
-  });
-
-  if (!user) {
-    throw new Error("Demo user was not found.");
-  }
-
-  return user;
-}
-
 async function validateCustomer(customerId: string, ownerId: string) {
   const customer = await prisma.customer.findFirst({
     where: {
@@ -127,24 +113,22 @@ function calculateTotals(items: InvoiceItemInput[]) {
   };
 }
 
-async function generateInvoiceNumber() {
+async function generateInvoiceNumber(ownerId: string) {
   const year = new Date().getFullYear();
 
-  const count = await prisma.invoice.count();
+  const count = await prisma.invoice.count({ where: { ownerId } });
 
   return `INV-${year}-${String(count + 1).padStart(4, "0")}`;
 }
 
-export async function createInvoice(input: CreateInvoiceInput) {
-  const owner = await getDemoUser();
+export async function createInvoice(ownerId: string, input: CreateInvoiceInput) {
+  await validateCustomer(input.customerId, ownerId);
 
-  await validateCustomer(input.customerId, owner.id);
-
-  await validateProject(input.projectId, owner.id);
+  await validateProject(input.projectId, ownerId);
 
   const totals = calculateTotals(input.items);
 
-  const invoiceNumber = await generateInvoiceNumber();
+  const invoiceNumber = await generateInvoiceNumber(ownerId);
 
   return prisma.invoice.create({
     data: {
@@ -164,7 +148,7 @@ export async function createInvoice(input: CreateInvoiceInput) {
       amountPaid: 0,
       balanceDue: totals.totalAmount,
 
-      ownerId: owner.id,
+      ownerId,
 
       items: {
         create: input.items.map((item, index) => ({
@@ -189,12 +173,10 @@ export async function createInvoice(input: CreateInvoiceInput) {
   });
 }
 
-export async function listInvoices(status?: InvoiceStatus) {
-  const owner = await getDemoUser();
-
+export async function listInvoices(ownerId: string, status?: InvoiceStatus) {
   const invoices = await prisma.invoice.findMany({
     where: {
-      ownerId: owner.id,
+      ownerId,
     },
 
     include: {
@@ -254,13 +236,11 @@ export async function listInvoices(status?: InvoiceStatus) {
     : updatedInvoices;
 }
 
-export async function getInvoiceById(invoiceId: string) {
-  const owner = await getDemoUser();
-
+export async function getInvoiceById(ownerId: string, invoiceId: string) {
   const invoice = await prisma.invoice.findFirst({
     where: {
       id: invoiceId,
-      ownerId: owner.id,
+      ownerId,
     },
 
     include: {
@@ -325,23 +305,22 @@ export async function getInvoiceById(invoiceId: string) {
 }
 
 export async function updateInvoice(
+  ownerId: string,
   invoiceId: string,
   input: UpdateInvoiceInput,
 ) {
-  const owner = await getDemoUser();
-
-  const existing = await getInvoiceById(invoiceId);
+  const existing = await getInvoiceById(ownerId, invoiceId);
 
   if (!existing) {
     return null;
   }
 
   if (input.customerId) {
-    await validateCustomer(input.customerId, owner.id);
+    await validateCustomer(input.customerId, ownerId);
   }
 
   if (input.projectId !== undefined) {
-    await validateProject(input.projectId, owner.id);
+    await validateProject(input.projectId, ownerId);
   }
 
   const totals = input.items ? calculateTotals(input.items) : null;
@@ -424,10 +403,11 @@ export async function updateInvoice(
 }
 
 export async function updateInvoiceStatus(
+  ownerId: string,
   invoiceId: string,
   status: InvoiceStatus,
 ) {
-  const invoice = await getInvoiceById(invoiceId);
+  const invoice = await getInvoiceById(ownerId, invoiceId);
 
   if (!invoice) {
     return null;
@@ -454,8 +434,8 @@ export async function updateInvoiceStatus(
   });
 }
 
-export async function deleteInvoice(invoiceId: string) {
-  const invoice = await getInvoiceById(invoiceId);
+export async function deleteInvoice(ownerId: string, invoiceId: string) {
+  const invoice = await getInvoiceById(ownerId, invoiceId);
 
   if (!invoice) {
     return false;

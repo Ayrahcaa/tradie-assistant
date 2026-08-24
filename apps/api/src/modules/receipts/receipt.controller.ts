@@ -31,7 +31,7 @@ export async function uploadReceiptHandler(
       return;
     }
 
-    const receipt = await createReceipt(expenseId, request.file);
+    const receipt = await createReceipt(request.authUser!.id, expenseId, request.file);
 
     response.status(201).json({
       message: "Receipt uploaded successfully.",
@@ -50,7 +50,7 @@ export async function listExpenseReceiptsHandler(
   try {
     const { expenseId } = request.params;
 
-    const receipts = await listExpenseReceipts(expenseId);
+    const receipts = await listExpenseReceipts(request.authUser!.id, expenseId);
 
     if (!receipts) {
       response.status(404).json({
@@ -76,7 +76,7 @@ export async function downloadReceiptHandler(
   try {
     const { receiptId } = request.params;
 
-    const receipt = await getReceiptById(receiptId);
+    const receipt = await getReceiptById(request.authUser!.id, receiptId);
 
     if (!receipt) {
       response.status(404).json({
@@ -99,7 +99,7 @@ export async function deleteReceiptHandler(
   try {
     const { receiptId } = request.params;
 
-    const deleted = await deleteReceipt(receiptId);
+    const deleted = await deleteReceipt(request.authUser!.id, receiptId);
 
     if (!deleted) {
       response.status(404).json({
@@ -123,7 +123,7 @@ export async function extractReceiptHandler(
   try {
     const { receiptId } = request.params;
 
-    const extraction = await extractReceiptData(receiptId);
+    const extraction = await extractReceiptData(request.authUser!.id, receiptId);
 
     response.status(200).json({
       message: "Receipt analysed successfully.",

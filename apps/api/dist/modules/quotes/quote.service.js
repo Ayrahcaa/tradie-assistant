@@ -1,16 +1,4 @@
 import { prisma } from "../../lib/prisma.js";
-async function getDemoUser() {
-    const email = process.env.DEMO_USER_EMAIL ?? "demo@tradieassistant.com";
-    const user = await prisma.user.findUnique({
-        where: {
-            email,
-        },
-    });
-    if (!user) {
-        throw new Error("Demo user was not found. Run npm run seed in apps/api.");
-    }
-    return user;
-}
 async function validateCustomer(customerId, ownerId) {
     const customer = await prisma.customer.findFirst({
         where: {
@@ -48,16 +36,15 @@ function calculateTotals(items) {
         totalAmount,
     };
 }
-async function generateQuoteNumber() {
+async function generateQuoteNumber(ownerId) {
     const year = new Date().getFullYear();
-    const count = await prisma.quote.count();
+    const count = await prisma.quote.count({ where: { ownerId } });
     return `Q-${year}-${String(count + 1).padStart(4, "0")}`;
 }
-export async function createQuote(input) {
-    const owner = await getDemoUser();
-    await validateCustomer(input.customerId, owner.id);
-    await validateProject(input.projectId, owner.id);
-    const quoteNumber = await generateQuoteNumber();
+export async function createQuote(ownerId, input) {
+    await validateCustomer(input.customerId, ownerId);
+    await validateProject(input.projectId, ownerId);
+    const quoteNumber = await generateQuoteNumber(ownerId);
     const totals = calculateTotals(input.items);
     return prisma.quote.create({
         data: {
@@ -72,7 +59,7 @@ export async function createQuote(input) {
             subtotal: totals.subtotal,
             gstAmount: totals.gstAmount,
             totalAmount: totals.totalAmount,
-            ownerId: owner.id,
+            ownerId,
             items: {
                 create: input.items.map((item, index) => ({
                     description: item.description,
@@ -94,11 +81,10 @@ export async function createQuote(input) {
         },
     });
 }
-export async function listQuotes(status) {
-    const owner = await getDemoUser();
+export async function listQuotes(ownerId, status) {
     return prisma.quote.findMany({
         where: {
-            ownerId: owner.id,
+            ownerId,
             ...(status ? { status } : {}),
         },
         include: {
@@ -111,12 +97,11 @@ export async function listQuotes(status) {
         },
     });
 }
-export async function getQuoteById(quoteId) {
-    const owner = await getDemoUser();
+export async function getQuoteById(ownerId, quoteId) {
     return prisma.quote.findFirst({
         where: {
             id: quoteId,
-            ownerId: owner.id,
+            ownerId,
         },
         include: {
             customer: true,
@@ -129,17 +114,16 @@ export async function getQuoteById(quoteId) {
         },
     });
 }
-export async function updateQuote(quoteId, input) {
-    const owner = await getDemoUser();
-    const existingQuote = await getQuoteById(quoteId);
+export async function updateQuote(ownerId, quoteId, input) {
+    const existingQuote = await getQuoteById(ownerId, quoteId);
     if (!existingQuote) {
         return null;
     }
     if (input.customerId) {
-        await validateCustomer(input.customerId, owner.id);
+        await validateCustomer(input.customerId, ownerId);
     }
     if (input.projectId !== undefined) {
-        await validateProject(input.projectId, owner.id);
+        await validateProject(input.projectId, ownerId);
     }
     const totals = input.items ? calculateTotals(input.items) : null;
     return prisma.$transaction(async (tx) => {
@@ -195,8 +179,8 @@ export async function updateQuote(quoteId, input) {
         });
     });
 }
-export async function updateQuoteStatus(quoteId, status) {
-    const quote = await getQuoteById(quoteId);
+export async function updateQuoteStatus(ownerId, quoteId, status) {
+    const quote = await getQuoteById(ownerId, quoteId);
     if (!quote) {
         return null;
     }
@@ -218,8 +202,8 @@ export async function updateQuoteStatus(quoteId, status) {
         },
     });
 }
-export async function deleteQuote(quoteId) {
-    const quote = await getQuoteById(quoteId);
+export async function deleteQuote(ownerId, quoteId) {
+    const quote = await getQuoteById(ownerId, quoteId);
     if (!quote) {
         return false;
     }

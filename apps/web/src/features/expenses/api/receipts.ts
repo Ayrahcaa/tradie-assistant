@@ -1,4 +1,5 @@
 import type { Receipt, ReceiptsResponse } from "../types/receipt";
+import { apiFetch } from "../../../shared/api/http";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
 
@@ -23,7 +24,7 @@ async function getErrorMessage(
 export async function getExpenseReceipts(
   expenseId: string,
 ): Promise<ReceiptsResponse> {
-  const response = await fetch(`${API_URL}/receipts/expense/${expenseId}`);
+  const response = await apiFetch(`${API_URL}/receipts/expense/${expenseId}`);
 
   if (!response.ok) {
     throw new Error(
@@ -42,7 +43,7 @@ export async function uploadReceipt(
 
   formData.append("receipt", file);
 
-  const response = await fetch(`${API_URL}/receipts/expense/${expenseId}`, {
+  const response = await apiFetch(`${API_URL}/receipts/expense/${expenseId}`, {
     method: "POST",
     body: formData,
   });
@@ -61,7 +62,7 @@ export async function uploadReceipt(
 }
 
 export async function deleteReceipt(receiptId: string): Promise<void> {
-  const response = await fetch(`${API_URL}/receipts/${receiptId}`, {
+  const response = await apiFetch(`${API_URL}/receipts/${receiptId}`, {
     method: "DELETE",
   });
 

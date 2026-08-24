@@ -1,4 +1,5 @@
 import type { Quote, QuotesResponse, QuoteStatus } from "../types/quote";
+import { apiFetch } from "../../../shared/api/http";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
 
@@ -48,7 +49,7 @@ async function getErrorMessage(
 export async function getQuotes(status?: QuoteStatus): Promise<QuotesResponse> {
   const query = status ? `?status=${encodeURIComponent(status)}` : "";
 
-  const response = await fetch(`${API_URL}/quotes${query}`);
+  const response = await apiFetch(`${API_URL}/quotes${query}`);
 
   if (!response.ok) {
     throw new Error(await getErrorMessage(response, "Unable to load quotes."));
@@ -58,7 +59,7 @@ export async function getQuotes(status?: QuoteStatus): Promise<QuotesResponse> {
 }
 
 export async function getQuote(quoteId: string): Promise<Quote> {
-  const response = await fetch(`${API_URL}/quotes/${quoteId}`);
+  const response = await apiFetch(`${API_URL}/quotes/${quoteId}`);
 
   if (!response.ok) {
     throw new Error(await getErrorMessage(response, "Unable to load quote."));
@@ -70,7 +71,7 @@ export async function getQuote(quoteId: string): Promise<Quote> {
 }
 
 export async function createQuote(input: CreateQuoteInput): Promise<Quote> {
-  const response = await fetch(`${API_URL}/quotes`, {
+  const response = await apiFetch(`${API_URL}/quotes`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -91,7 +92,7 @@ export async function updateQuote(
   quoteId: string,
   input: UpdateQuoteInput,
 ): Promise<Quote> {
-  const response = await fetch(`${API_URL}/quotes/${quoteId}`, {
+  const response = await apiFetch(`${API_URL}/quotes/${quoteId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -112,7 +113,7 @@ export async function updateQuoteStatus(
   quoteId: string,
   status: QuoteStatus,
 ): Promise<Quote> {
-  const response = await fetch(`${API_URL}/quotes/${quoteId}/status`, {
+  const response = await apiFetch(`${API_URL}/quotes/${quoteId}/status`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -132,7 +133,7 @@ export async function updateQuoteStatus(
 }
 
 export async function deleteQuote(quoteId: string): Promise<void> {
-  const response = await fetch(`${API_URL}/quotes/${quoteId}`, {
+  const response = await apiFetch(`${API_URL}/quotes/${quoteId}`, {
     method: "DELETE",
   });
 

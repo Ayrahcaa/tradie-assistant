@@ -380,10 +380,11 @@ export type InvoiceOrderByWithRelationInput = {
 
 export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  invoiceNumber?: string
+  ownerId_invoiceNumber?: Prisma.InvoiceOwnerIdInvoiceNumberCompoundUniqueInput
   AND?: Prisma.InvoiceWhereInput | Prisma.InvoiceWhereInput[]
   OR?: Prisma.InvoiceWhereInput[]
   NOT?: Prisma.InvoiceWhereInput | Prisma.InvoiceWhereInput[]
+  invoiceNumber?: Prisma.StringFilter<"Invoice"> | string
   title?: Prisma.StringFilter<"Invoice"> | string
   description?: Prisma.StringNullableFilter<"Invoice"> | string | null
   status?: Prisma.EnumInvoiceStatusFilter<"Invoice"> | $Enums.InvoiceStatus
@@ -406,7 +407,7 @@ export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   project?: Prisma.XOR<Prisma.ProjectNullableScalarRelationFilter, Prisma.ProjectWhereInput> | null
   items?: Prisma.InvoiceItemListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
-}, "id" | "invoiceNumber">
+}, "id" | "ownerId_invoiceNumber">
 
 export type InvoiceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -627,6 +628,11 @@ export type InvoiceListRelationFilter = {
 
 export type InvoiceOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type InvoiceOwnerIdInvoiceNumberCompoundUniqueInput = {
+  ownerId: string
+  invoiceNumber: string
 }
 
 export type InvoiceCountOrderByAggregateInput = {

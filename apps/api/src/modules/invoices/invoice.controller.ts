@@ -33,7 +33,7 @@ export async function createInvoiceHandler(
       return;
     }
 
-    const invoice = await createInvoice(parsed.data);
+    const invoice = await createInvoice(request.authUser!.id, parsed.data);
 
     response.status(201).json({
       message: "Invoice created successfully.",
@@ -72,7 +72,7 @@ export async function listInvoicesHandler(
       status = parsed.data;
     }
 
-    const invoices = await listInvoices(status);
+    const invoices = await listInvoices(request.authUser!.id, status);
 
     response.status(200).json({
       count: invoices.length,
@@ -98,7 +98,7 @@ export async function getInvoiceHandler(
       return;
     }
 
-    const invoice = await getInvoiceById(parsed.data.invoiceId);
+    const invoice = await getInvoiceById(request.authUser!.id, parsed.data.invoiceId);
 
     if (!invoice) {
       response.status(404).json({
@@ -140,7 +140,7 @@ export async function updateInvoiceHandler(
       return;
     }
 
-    const invoice = await updateInvoice(params.data.invoiceId, body.data);
+    const invoice = await updateInvoice(request.authUser!.id, params.data.invoiceId, body.data);
 
     if (!invoice) {
       response.status(404).json({
@@ -176,6 +176,7 @@ export async function updateInvoiceStatusHandler(
     }
 
     const invoice = await updateInvoiceStatus(
+      request.authUser!.id,
       params.data.invoiceId,
       body.data.status,
     );
@@ -211,7 +212,7 @@ export async function deleteInvoiceHandler(
       return;
     }
 
-    const deleted = await deleteInvoice(parsed.data.invoiceId);
+    const deleted = await deleteInvoice(request.authUser!.id, parsed.data.invoiceId);
 
     if (!deleted) {
       response.status(404).json({

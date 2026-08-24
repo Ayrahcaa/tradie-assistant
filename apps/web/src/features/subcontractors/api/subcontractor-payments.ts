@@ -1,4 +1,5 @@
 import type { SubcontractorPayment, SubcontractorProjectCost } from "../types/subcontractor-cost";
+import { apiFetch } from "../../../shared/api/http";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
 
@@ -19,7 +20,7 @@ async function errorMessage(response: Response, fallback: string) {
 }
 
 export async function createSubcontractorPayment(input: CreateSubcontractorPaymentInput) {
-  const response = await fetch(`${API_URL}/subcontractor-payments`, {
+  const response = await apiFetch(`${API_URL}/subcontractor-payments`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
@@ -29,7 +30,7 @@ export async function createSubcontractorPayment(input: CreateSubcontractorPayme
 }
 
 export async function deleteSubcontractorPayment(paymentId: string): Promise<SubcontractorProjectCost> {
-  const response = await fetch(`${API_URL}/subcontractor-payments/${paymentId}`, { method: "DELETE" });
+  const response = await apiFetch(`${API_URL}/subcontractor-payments/${paymentId}`, { method: "DELETE" });
   if (!response.ok) throw new Error(await errorMessage(response, "Unable to delete payment."));
   return ((await response.json()) as { data: SubcontractorProjectCost }).data;
 }

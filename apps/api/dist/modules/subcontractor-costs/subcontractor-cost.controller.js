@@ -10,7 +10,7 @@ export async function createSubcontractorCostHandler(request, response, next) {
             });
             return;
         }
-        const cost = await createSubcontractorCost(parsed.data);
+        const cost = await createSubcontractorCost(request.authUser.id, parsed.data);
         response.status(201).json({
             message: "Subcontractor project cost created successfully.",
             data: cost,
@@ -28,7 +28,7 @@ export async function listSubcontractorCostsHandler(request, response, next) {
         const projectId = typeof request.query.projectId === "string"
             ? request.query.projectId
             : undefined;
-        const costs = await listSubcontractorCosts(subcontractorId, projectId);
+        const costs = await listSubcontractorCosts(request.authUser.id, subcontractorId, projectId);
         response.status(200).json({
             count: costs.length,
             data: costs,
@@ -47,7 +47,7 @@ export async function getSubcontractorCostHandler(request, response, next) {
             });
             return;
         }
-        const cost = await getSubcontractorCostById(parsed.data.costId);
+        const cost = await getSubcontractorCostById(request.authUser.id, parsed.data.costId);
         if (!cost) {
             response.status(404).json({
                 message: "Subcontractor cost not found.",
@@ -79,7 +79,7 @@ export async function updateSubcontractorCostHandler(request, response, next) {
             });
             return;
         }
-        const cost = await updateSubcontractorCost(params.data.costId, body.data);
+        const cost = await updateSubcontractorCost(request.authUser.id, params.data.costId, body.data);
         if (!cost) {
             response.status(404).json({
                 message: "Subcontractor cost not found.",
@@ -104,7 +104,7 @@ export async function cancelSubcontractorCostHandler(request, response, next) {
             });
             return;
         }
-        const cost = await cancelSubcontractorCost(parsed.data.costId);
+        const cost = await cancelSubcontractorCost(request.authUser.id, parsed.data.costId);
         if (!cost) {
             response.status(404).json({
                 message: "Subcontractor cost not found.",
@@ -129,7 +129,7 @@ export async function deleteSubcontractorCostHandler(request, response, next) {
             });
             return;
         }
-        const deleted = await deleteSubcontractorCost(parsed.data.costId);
+        const deleted = await deleteSubcontractorCost(request.authUser.id, parsed.data.costId);
         if (!deleted) {
             response.status(404).json({
                 message: "Subcontractor cost not found.",

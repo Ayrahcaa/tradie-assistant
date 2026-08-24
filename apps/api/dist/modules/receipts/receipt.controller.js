@@ -9,7 +9,7 @@ export async function uploadReceiptHandler(request, response, next) {
             });
             return;
         }
-        const receipt = await createReceipt(expenseId, request.file);
+        const receipt = await createReceipt(request.authUser.id, expenseId, request.file);
         response.status(201).json({
             message: "Receipt uploaded successfully.",
             data: receipt,
@@ -22,7 +22,7 @@ export async function uploadReceiptHandler(request, response, next) {
 export async function listExpenseReceiptsHandler(request, response, next) {
     try {
         const { expenseId } = request.params;
-        const receipts = await listExpenseReceipts(expenseId);
+        const receipts = await listExpenseReceipts(request.authUser.id, expenseId);
         if (!receipts) {
             response.status(404).json({
                 message: "Expense not found.",
@@ -41,7 +41,7 @@ export async function listExpenseReceiptsHandler(request, response, next) {
 export async function downloadReceiptHandler(request, response, next) {
     try {
         const { receiptId } = request.params;
-        const receipt = await getReceiptById(receiptId);
+        const receipt = await getReceiptById(request.authUser.id, receiptId);
         if (!receipt) {
             response.status(404).json({
                 message: "Receipt not found.",
@@ -57,7 +57,7 @@ export async function downloadReceiptHandler(request, response, next) {
 export async function deleteReceiptHandler(request, response, next) {
     try {
         const { receiptId } = request.params;
-        const deleted = await deleteReceipt(receiptId);
+        const deleted = await deleteReceipt(request.authUser.id, receiptId);
         if (!deleted) {
             response.status(404).json({
                 message: "Receipt not found.",
@@ -75,7 +75,7 @@ export async function deleteReceiptHandler(request, response, next) {
 export async function extractReceiptHandler(request, response, next) {
     try {
         const { receiptId } = request.params;
-        const extraction = await extractReceiptData(receiptId);
+        const extraction = await extractReceiptData(request.authUser.id, receiptId);
         response.status(200).json({
             message: "Receipt analysed successfully.",
             data: extraction,

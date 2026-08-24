@@ -1,18 +1,5 @@
 import { prisma } from "../../lib/prisma.js";
-async function getDemoUser() {
-    const email = process.env.DEMO_USER_EMAIL ?? "demo@tradieassistant.com";
-    const user = await prisma.user.findUnique({
-        where: {
-            email,
-        },
-    });
-    if (!user) {
-        throw new Error("Demo user was not found. Run npm run seed in apps/api.");
-    }
-    return user;
-}
-export async function createCustomer(input) {
-    const owner = await getDemoUser();
+export async function createCustomer(ownerId, input) {
     return prisma.customer.create({
         data: {
             firstName: input.firstName,
@@ -23,15 +10,14 @@ export async function createCustomer(input) {
             address: input.address,
             abn: input.abn,
             notes: input.notes,
-            ownerId: owner.id,
+            ownerId,
         },
     });
 }
-export async function listCustomers(includeArchived = false) {
-    const owner = await getDemoUser();
+export async function listCustomers(ownerId, includeArchived = false) {
     return prisma.customer.findMany({
         where: {
-            ownerId: owner.id,
+            ownerId,
             ...(includeArchived
                 ? {}
                 : {
@@ -48,17 +34,16 @@ export async function listCustomers(includeArchived = false) {
         ],
     });
 }
-export async function getCustomerById(customerId) {
-    const owner = await getDemoUser();
+export async function getCustomerById(ownerId, customerId) {
     return prisma.customer.findFirst({
         where: {
             id: customerId,
-            ownerId: owner.id,
+            ownerId,
         },
     });
 }
-export async function updateCustomer(customerId, input) {
-    const customer = await getCustomerById(customerId);
+export async function updateCustomer(ownerId, customerId, input) {
+    const customer = await getCustomerById(ownerId, customerId);
     if (!customer) {
         return null;
     }
@@ -78,8 +63,8 @@ export async function updateCustomer(customerId, input) {
         },
     });
 }
-export async function archiveCustomer(customerId) {
-    const customer = await getCustomerById(customerId);
+export async function archiveCustomer(ownerId, customerId) {
+    const customer = await getCustomerById(ownerId, customerId);
     if (!customer) {
         return null;
     }
@@ -92,8 +77,8 @@ export async function archiveCustomer(customerId) {
         },
     });
 }
-export async function restoreCustomer(customerId) {
-    const customer = await getCustomerById(customerId);
+export async function restoreCustomer(ownerId, customerId) {
+    const customer = await getCustomerById(ownerId, customerId);
     if (!customer) {
         return null;
     }
@@ -106,8 +91,8 @@ export async function restoreCustomer(customerId) {
         },
     });
 }
-export async function deleteCustomer(customerId) {
-    const customer = await getCustomerById(customerId);
+export async function deleteCustomer(ownerId, customerId) {
+    const customer = await getCustomerById(ownerId, customerId);
     if (!customer) {
         return false;
     }

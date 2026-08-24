@@ -31,7 +31,7 @@ export async function createExpenseHandler(
       return;
     }
 
-    const expense = await createExpense(parsed.data);
+    const expense = await createExpense(request.authUser!.id, parsed.data);
 
     response.status(201).json({
       message: "Expense created successfully.",
@@ -63,7 +63,7 @@ export async function listExpensesHandler(
       status = parsed.data;
     }
 
-    const expenses = await listExpenses(status);
+    const expenses = await listExpenses(request.authUser!.id, status);
 
     response.status(200).json({
       count: expenses.length,
@@ -89,7 +89,7 @@ export async function getExpenseHandler(
       return;
     }
 
-    const expense = await getExpenseById(parsed.data.expenseId);
+    const expense = await getExpenseById(request.authUser!.id, parsed.data.expenseId);
 
     if (!expense) {
       response.status(404).json({
@@ -131,7 +131,7 @@ export async function updateExpenseHandler(
       return;
     }
 
-    const expense = await updateExpense(params.data.expenseId, body.data);
+    const expense = await updateExpense(request.authUser!.id, params.data.expenseId, body.data);
 
     if (!expense) {
       response.status(404).json({
@@ -164,7 +164,7 @@ export async function deleteExpenseHandler(
       return;
     }
 
-    const deleted = await deleteExpense(parsed.data.expenseId);
+    const deleted = await deleteExpense(request.authUser!.id, parsed.data.expenseId);
 
     if (!deleted) {
       response.status(404).json({

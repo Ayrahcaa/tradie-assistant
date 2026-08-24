@@ -10,7 +10,7 @@ export async function createQuoteHandler(request, response, next) {
             });
             return;
         }
-        const quote = await createQuote(parsedBody.data);
+        const quote = await createQuote(request.authUser.id, parsedBody.data);
         response.status(201).json({
             message: "Quote created successfully.",
             data: quote,
@@ -34,7 +34,7 @@ export async function listQuotesHandler(request, response, next) {
             }
             status = parsedStatus.data;
         }
-        const quotes = await listQuotes(status);
+        const quotes = await listQuotes(request.authUser.id, status);
         response.status(200).json({
             count: quotes.length,
             data: quotes,
@@ -53,7 +53,7 @@ export async function getQuoteHandler(request, response, next) {
             });
             return;
         }
-        const quote = await getQuoteById(parsedParams.data.quoteId);
+        const quote = await getQuoteById(request.authUser.id, parsedParams.data.quoteId);
         if (!quote) {
             response.status(404).json({
                 message: "Quote not found.",
@@ -85,7 +85,7 @@ export async function updateQuoteHandler(request, response, next) {
             });
             return;
         }
-        const quote = await updateQuote(parsedParams.data.quoteId, parsedBody.data);
+        const quote = await updateQuote(request.authUser.id, parsedParams.data.quoteId, parsedBody.data);
         if (!quote) {
             response.status(404).json({
                 message: "Quote not found.",
@@ -117,7 +117,7 @@ export async function updateQuoteStatusHandler(request, response, next) {
             });
             return;
         }
-        const quote = await updateQuoteStatus(parsedParams.data.quoteId, parsedBody.data.status);
+        const quote = await updateQuoteStatus(request.authUser.id, parsedParams.data.quoteId, parsedBody.data.status);
         if (!quote) {
             response.status(404).json({
                 message: "Quote not found.",
@@ -142,7 +142,7 @@ export async function deleteQuoteHandler(request, response, next) {
             });
             return;
         }
-        const deleted = await deleteQuote(parsedParams.data.quoteId);
+        const deleted = await deleteQuote(request.authUser.id, parsedParams.data.quoteId);
         if (!deleted) {
             response.status(404).json({
                 message: "Quote not found.",

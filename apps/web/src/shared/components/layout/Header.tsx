@@ -1,4 +1,5 @@
 import { Bell, Menu, Search } from "lucide-react";
+import { useCurrentUser } from "../../../features/auth/hooks/useCurrentUser";
 
 interface HeaderProps {
   onOpenMenu: () => void;
@@ -7,6 +8,8 @@ interface HeaderProps {
 export function Header({
   onOpenMenu,
 }: HeaderProps) {
+  const user = useCurrentUser().data;
+  const initials = `${user?.firstName.charAt(0) ?? ""}${user?.lastName.charAt(0) ?? ""}`.toUpperCase();
   return (
     <header className="sticky top-0 z-20 flex h-20 items-center gap-4 border-b border-slate-200 bg-white/95 px-4 backdrop-blur sm:px-6 lg:px-8">
       <button
@@ -44,16 +47,16 @@ export function Header({
 
         <div className="hidden text-right sm:block">
           <p className="text-sm font-bold text-slate-900">
-            Demo Tradie
+            {user?.firstName} {user?.lastName}
           </p>
 
           <p className="text-xs text-slate-500">
-            Sole trader
+            {user?.businessName || user?.tradeType || "Sole trader"}
           </p>
         </div>
 
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-950 text-sm font-bold text-white">
-          DT
+          {initials || "TA"}
         </div>
       </div>
     </header>

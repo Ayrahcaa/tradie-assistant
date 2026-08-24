@@ -76,15 +76,21 @@ enum SubcontractorCostStatus {
 }
 
 model User {
-  id           String   @id @default(uuid())
-  firstName    String
-  lastName     String
-  email        String   @unique
-  passwordHash String
-  businessName String?
-  abn          String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id            String   @id @default(uuid())
+  firstName     String
+  lastName      String
+  email         String   @unique
+  businessName  String?
+  abn           String?
+  phone         String?
+  address       String?
+  tradeType     String?
+  gstRegistered Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  passwordCredential PasswordCredential?
+  sessions           Session[]
 
   projects                  Project[]
   customers                 Customer[]
@@ -96,6 +102,30 @@ model User {
   subcontractors            Subcontractor[]
   subcontractorProjectCosts SubcontractorProjectCost[]
   subcontractorPayments     SubcontractorPayment[]
+}
+
+model PasswordCredential {
+  id           String   @id @default(uuid())
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Session {
+  id         String   @id @default(uuid())
+  tokenHash  String   @unique
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  lastUsedAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
 }
 
 model Project {
@@ -154,7 +184,7 @@ model Customer {
 
 model Quote {
   id          String      @id @default(uuid())
-  quoteNumber String      @unique
+  quoteNumber String
   title       String
   description String?
   status      QuoteStatus @default(DRAFT)
@@ -187,6 +217,7 @@ model Quote {
   @@index([customerId])
   @@index([projectId])
   @@index([status])
+  @@unique([ownerId, quoteNumber])
 }
 
 model QuoteItem {
@@ -208,7 +239,7 @@ model QuoteItem {
 
 model Invoice {
   id            String        @id @default(uuid())
-  invoiceNumber String        @unique
+  invoiceNumber String
   title         String
   description   String?
   status        InvoiceStatus @default(DRAFT)
@@ -246,6 +277,7 @@ model Invoice {
   @@index([projectId])
   @@index([status])
   @@index([dueDate])
+  @@unique([ownerId, invoiceNumber])
 }
 
 model InvoiceItem {

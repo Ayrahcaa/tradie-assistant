@@ -1,4 +1,5 @@
 import type { Customer, CustomersResponse } from "../types/customer";
+import { apiFetch } from "../../../shared/api/http";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
 
@@ -43,7 +44,7 @@ export async function getCustomers(
 ): Promise<CustomersResponse> {
   const query = includeArchived ? "?includeArchived=true" : "";
 
-  const response = await fetch(`${API_URL}/customers${query}`);
+  const response = await apiFetch(`${API_URL}/customers${query}`);
 
   if (!response.ok) {
     throw new Error(
@@ -55,7 +56,7 @@ export async function getCustomers(
 }
 
 export async function getCustomer(customerId: string): Promise<Customer> {
-  const response = await fetch(`${API_URL}/customers/${customerId}`);
+  const response = await apiFetch(`${API_URL}/customers/${customerId}`);
 
   if (!response.ok) {
     throw new Error(
@@ -71,7 +72,7 @@ export async function getCustomer(customerId: string): Promise<Customer> {
 export async function createCustomer(
   input: CreateCustomerInput,
 ): Promise<Customer> {
-  const response = await fetch(`${API_URL}/customers`, {
+  const response = await apiFetch(`${API_URL}/customers`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -94,7 +95,7 @@ export async function updateCustomer(
   customerId: string,
   input: UpdateCustomerInput,
 ): Promise<Customer> {
-  const response = await fetch(`${API_URL}/customers/${customerId}`, {
+  const response = await apiFetch(`${API_URL}/customers/${customerId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -114,7 +115,7 @@ export async function updateCustomer(
 }
 
 export async function archiveCustomer(customerId: string): Promise<Customer> {
-  const response = await fetch(`${API_URL}/customers/${customerId}/archive`, {
+  const response = await apiFetch(`${API_URL}/customers/${customerId}/archive`, {
     method: "PATCH",
   });
 
@@ -130,7 +131,7 @@ export async function archiveCustomer(customerId: string): Promise<Customer> {
 }
 
 export async function restoreCustomer(customerId: string): Promise<Customer> {
-  const response = await fetch(`${API_URL}/customers/${customerId}/restore`, {
+  const response = await apiFetch(`${API_URL}/customers/${customerId}/restore`, {
     method: "PATCH",
   });
 
@@ -146,7 +147,7 @@ export async function restoreCustomer(customerId: string): Promise<Customer> {
 }
 
 export async function deleteCustomer(customerId: string): Promise<void> {
-  const response = await fetch(`${API_URL}/customers/${customerId}`, {
+  const response = await apiFetch(`${API_URL}/customers/${customerId}`, {
     method: "DELETE",
   });
 

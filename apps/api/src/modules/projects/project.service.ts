@@ -28,21 +28,6 @@ function parseDate(value?: string | null): Date | null | undefined {
   return new Date(value);
 }
 
-async function getDemoUser() {
-  const email = process.env.DEMO_USER_EMAIL ?? "demo@tradieassistant.com";
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
-
-  if (!user) {
-    throw new Error("Demo user was not found. Run npm run seed in apps/api.");
-  }
-
-  return user;
-}
 async function validateCustomer(
   customerId: string | null | undefined,
   ownerId: string,
@@ -65,10 +50,8 @@ async function validateCustomer(
   return customer;
 }
 
-export async function createProject(input: CreateProjectInput) {
-  const owner = await getDemoUser();
-
-  const customer = await validateCustomer(input.customerId, owner.id);
+export async function createProject(ownerId: string, input: CreateProjectInput) {
+  const customer = await validateCustomer(input.customerId, ownerId);
 
   return prisma.project.create({
     data: {
@@ -86,7 +69,7 @@ export async function createProject(input: CreateProjectInput) {
       status: input.status ?? "ACTIVE",
       startDate: parseDate(input.startDate),
       endDate: parseDate(input.endDate),
-      ownerId: owner.id,
+      ownerId,
     },
 
     include: {
@@ -95,12 +78,10 @@ export async function createProject(input: CreateProjectInput) {
   });
 }
 
-export async function listProjects(status?: ProjectStatus) {
-  const owner = await getDemoUser();
-
+export async function listProjects(ownerId: string, status?: ProjectStatus) {
   return prisma.project.findMany({
     where: {
-      ownerId: owner.id,
+      ownerId,
       ...(status ? { status } : {}),
     },
     include: {
@@ -112,13 +93,11 @@ export async function listProjects(status?: ProjectStatus) {
   });
 }
 
-export async function getProjectById(projectId: string) {
-  const owner = await getDemoUser();
-
+export async function getProjectById(ownerId: string, projectId: string) {
   return prisma.project.findFirst({
     where: {
       id: projectId,
-      ownerId: owner.id,
+      ownerId,
     },
     include: {
       customer: true,
@@ -127,15 +106,14 @@ export async function getProjectById(projectId: string) {
 }
 
 export async function updateProject(
+  ownerId: string,
   projectId: string,
   input: UpdateProjectInput,
 ) {
-  const owner = await getDemoUser();
-
   const existingProject = await prisma.project.findFirst({
     where: {
       id: projectId,
-      ownerId: owner.id,
+      ownerId,
     },
   });
 
@@ -146,7 +124,7 @@ export async function updateProject(
   let customer: Awaited<ReturnType<typeof validateCustomer>> | undefined;
 
   if (input.customerId !== undefined) {
-    customer = await validateCustomer(input.customerId, owner.id);
+    customer = await validateCustomer(input.customerId, ownerId);
   }
 
   return prisma.project.update({
@@ -181,8 +159,8 @@ export async function updateProject(
   });
 }
 
-export async function archiveProject(projectId: string) {
-  const existingProject = await getProjectById(projectId);
+export async function archiveProject(ownerId: string, projectId: string) {
+  const existingProject = await getProjectById(ownerId, projectId);
 
   if (!existingProject) {
     return null;
@@ -198,8 +176,8 @@ export async function archiveProject(projectId: string) {
   });
 }
 
-export async function deleteProject(projectId: string) {
-  const existingProject = await getProjectById(projectId);
+export async function deleteProject(ownerId: string, projectId: string) {
+  const existingProject = await getProjectById(ownerId, projectId);
 
   if (!existingProject) {
     return false;

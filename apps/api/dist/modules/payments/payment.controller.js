@@ -10,7 +10,7 @@ export async function createPaymentHandler(request, response, next) {
             });
             return;
         }
-        const result = await createPayment(parsed.data);
+        const result = await createPayment(request.authUser.id, parsed.data);
         response.status(201).json({
             message: "Payment recorded successfully.",
             data: result,
@@ -29,7 +29,7 @@ export async function listInvoicePaymentsHandler(request, response, next) {
             });
             return;
         }
-        const payments = await listInvoicePayments(parsed.data.invoiceId);
+        const payments = await listInvoicePayments(request.authUser.id, parsed.data.invoiceId);
         if (!payments) {
             response.status(404).json({
                 message: "Invoice not found.",
@@ -54,7 +54,7 @@ export async function deletePaymentHandler(request, response, next) {
             });
             return;
         }
-        const invoice = await deletePayment(parsed.data.paymentId);
+        const invoice = await deletePayment(request.authUser.id, parsed.data.paymentId);
         if (!invoice) {
             response.status(404).json({
                 message: "Payment not found.",

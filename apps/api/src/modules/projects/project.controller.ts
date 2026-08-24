@@ -36,7 +36,7 @@ export async function createProjectHandler(
       return;
     }
 
-    const project = await createProject(parsedBody.data);
+    const project = await createProject(request.authUser!.id, parsedBody.data);
 
     response.status(201).json({
       message: "Project created successfully.",
@@ -76,7 +76,7 @@ export async function listProjectsHandler(
       status = parsedStatus.data;
     }
 
-    const projects = await listProjects(status);
+    const projects = await listProjects(request.authUser!.id, status);
 
     response.status(200).json({
       count: projects.length,
@@ -106,6 +106,7 @@ export async function getProjectHandler(
     }
 
     const project = await getProjectById(
+      request.authUser!.id,
       parsedParams.data.projectId,
     );
 
@@ -155,6 +156,7 @@ export async function updateProjectHandler(
     }
 
     const project = await updateProject(
+      request.authUser!.id,
       parsedParams.data.projectId,
       parsedBody.data,
     );
@@ -194,6 +196,7 @@ export async function archiveProjectHandler(
     }
 
     const project = await archiveProject(
+      request.authUser!.id,
       parsedParams.data.projectId,
     );
 
@@ -232,6 +235,7 @@ export async function deleteProjectHandler(
     }
 
     const deleted = await deleteProject(
+      request.authUser!.id,
       parsedParams.data.projectId,
     );
 

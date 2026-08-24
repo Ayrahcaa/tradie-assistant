@@ -6,6 +6,8 @@ import {
   FolderKanban,
   Gauge,
   HandCoins,
+  Landmark,
+  LogOut,
   Menu,
   ReceiptText,
   Settings,
@@ -14,6 +16,10 @@ import {
   X,
 } from "lucide-react";
 import { NavLink } from "react-router";
+import { useNavigate } from "react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { logout } from "../../../features/auth/api/auth";
+import { useCurrentUser } from "../../../features/auth/hooks/useCurrentUser";
 
 interface SidebarProps {
   open: boolean;
@@ -21,57 +27,22 @@ interface SidebarProps {
 }
 
 const navigation = [
-  {
-    label: "Dashboard",
-    path: "/",
-    icon: Gauge,
-  },
-  {
-    label: "Projects",
-    path: "/projects",
-    icon: FolderKanban,
-  },
-  {
-    label: "Customers",
-    path: "/customers",
-    icon: Users,
-  },
-  {
-    label: "Expenses",
-    path: "/expenses",
-    icon: WalletCards,
-  },
-  {
-    label: "Receipts",
-    path: "/receipts",
-    icon: ReceiptText,
-  },
-  {
-    label: "Quotes",
-    path: "/quotes",
-    icon: FileText,
-  },
-  {
-    label: "Invoices",
-    path: "/invoices",
-    icon: HandCoins,
-  },
-  {
-    label: "Subcontractors",
-    path: "/subcontractors",
-    icon: BriefcaseBusiness,
-  },
-  {
-    label: "AI Assistant",
-    path: "/assistant",
-    icon: Bot,
-  },
+  { label: "Overview", items: [{ label: "Dashboard", path: "/", icon: Gauge }] },
+  { label: "Work", items: [{ label: "Projects", path: "/projects", icon: FolderKanban }, { label: "Customers", path: "/customers", icon: Users }] },
+  { label: "Sales", items: [{ label: "Quotes", path: "/quotes", icon: FileText }, { label: "Invoices", path: "/invoices", icon: HandCoins }] },
+  { label: "Money", items: [{ label: "Expenses", path: "/expenses", icon: WalletCards }, { label: "Outstanding", path: "/outstanding", icon: Landmark }, { label: "Financial overview", path: "/finances", icon: HandCoins }] },
+  { label: "People & tools", items: [{ label: "Subcontractors", path: "/subcontractors", icon: BriefcaseBusiness }, { label: "Receipts", path: "/receipts", icon: ReceiptText }, { label: "AI Assistant", path: "/assistant", icon: Bot }] },
 ];
 
 export function Sidebar({
   open,
   onClose,
 }: SidebarProps) {
+  const user = useCurrentUser().data;
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const logoutMutation = useMutation({ mutationFn: logout, onSettled: () => { queryClient.clear(); onClose(); navigate("/login", { replace: true }); } });
+  const initials = `${user?.firstName.charAt(0) ?? ""}${user?.lastName.charAt(0) ?? ""}`.toUpperCase();
   return (
     <>
       {open && (
@@ -103,7 +74,7 @@ export function Sidebar({
 
             <span>
               <span className="block text-lg font-bold text-slate-950">
-                TradieMate
+                Tradie Assistant
               </span>
 
               <span className="block text-xs font-medium text-slate-500">
@@ -111,6 +82,11 @@ export function Sidebar({
               </span>
             </span>
           </NavLink>
+
+          <button type="button" onClick={() => logoutMutation.mutate()} disabled={logoutMutation.isPending} className="mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-red-700 hover:bg-red-50 disabled:opacity-50">
+            <LogOut size={20} />
+            {logoutMutation.isPending ? "Logging out…" : "Log out"}
+          </button>
 
           <button
             type="button"
@@ -122,16 +98,11 @@ export function Sidebar({
           </button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto px-4 py-6">
-          <p className="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
-            Workspace
-          </p>
-
-          <div className="space-y-1">
-            {navigation.map((item) => {
-              const Icon = item.icon;
-
-              return (
+        <nav className="flex-1 overflow-y-auto px-4 py-5">
+          <div className="space-y-5">
+            {navigation.map((section) => <div key={section.label}>
+              <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">{section.label}</p>
+              <div className="space-y-1">{section.items.map((item) => { const Icon = item.icon; return (
                 <NavLink
                   key={item.path}
                   to={item.path}
@@ -150,8 +121,8 @@ export function Sidebar({
                   <Icon size={20} />
                   {item.label}
                 </NavLink>
-              );
-            })}
+              ); })}</div>
+            </div>)}
           </div>
         </nav>
 
@@ -167,16 +138,16 @@ export function Sidebar({
 
           <div className="mt-3 flex items-center gap-3 rounded-xl bg-slate-100 p-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-400 text-sm font-bold text-slate-950">
-              DT
+              {initials || "TA"}
             </div>
 
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-bold text-slate-900">
-                Demo Tradie
+                {user?.firstName} {user?.lastName}
               </p>
 
               <p className="truncate text-xs text-slate-500">
-                Demo Trade Services
+                {user?.businessName || user?.email}
               </p>
             </div>
           </div>

@@ -2,6 +2,7 @@ import type {
   Subcontractor,
   SubcontractorsResponse,
 } from "../types/subcontractor";
+import { apiFetch } from "../../../shared/api/http";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
 
@@ -47,7 +48,7 @@ export async function getSubcontractors(
 ): Promise<SubcontractorsResponse> {
   const query = includeArchived ? "?includeArchived=true" : "";
 
-  const response = await fetch(`${API_URL}/subcontractors${query}`);
+  const response = await apiFetch(`${API_URL}/subcontractors${query}`);
 
   if (!response.ok) {
     throw new Error(
@@ -61,7 +62,7 @@ export async function getSubcontractors(
 export async function getSubcontractor(
   subcontractorId: string,
 ): Promise<Subcontractor> {
-  const response = await fetch(`${API_URL}/subcontractors/${subcontractorId}`);
+  const response = await apiFetch(`${API_URL}/subcontractors/${subcontractorId}`);
 
   if (!response.ok) {
     throw new Error(
@@ -77,7 +78,7 @@ export async function getSubcontractor(
 export async function createSubcontractor(
   input: CreateSubcontractorInput,
 ): Promise<Subcontractor> {
-  const response = await fetch(`${API_URL}/subcontractors`, {
+  const response = await apiFetch(`${API_URL}/subcontractors`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -100,7 +101,7 @@ export async function updateSubcontractor(
   subcontractorId: string,
   input: UpdateSubcontractorInput,
 ): Promise<Subcontractor> {
-  const response = await fetch(`${API_URL}/subcontractors/${subcontractorId}`, {
+  const response = await apiFetch(`${API_URL}/subcontractors/${subcontractorId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -122,7 +123,7 @@ export async function updateSubcontractor(
 export async function archiveSubcontractor(
   subcontractorId: string,
 ): Promise<Subcontractor> {
-  const response = await fetch(
+  const response = await apiFetch(
     `${API_URL}/subcontractors/${subcontractorId}/archive`,
     {
       method: "PATCH",
@@ -143,7 +144,7 @@ export async function archiveSubcontractor(
 export async function restoreSubcontractor(
   subcontractorId: string,
 ): Promise<Subcontractor> {
-  const response = await fetch(
+  const response = await apiFetch(
     `${API_URL}/subcontractors/${subcontractorId}/restore`,
     {
       method: "PATCH",
@@ -164,7 +165,7 @@ export async function restoreSubcontractor(
 export async function deleteSubcontractor(
   subcontractorId: string,
 ): Promise<void> {
-  const response = await fetch(`${API_URL}/subcontractors/${subcontractorId}`, {
+  const response = await apiFetch(`${API_URL}/subcontractors/${subcontractorId}`, {
     method: "DELETE",
   });
 

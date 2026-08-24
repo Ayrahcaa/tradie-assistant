@@ -10,7 +10,7 @@ export async function createExpenseHandler(request, response, next) {
             });
             return;
         }
-        const expense = await createExpense(parsed.data);
+        const expense = await createExpense(request.authUser.id, parsed.data);
         response.status(201).json({
             message: "Expense created successfully.",
             data: expense,
@@ -33,7 +33,7 @@ export async function listExpensesHandler(request, response, next) {
             }
             status = parsed.data;
         }
-        const expenses = await listExpenses(status);
+        const expenses = await listExpenses(request.authUser.id, status);
         response.status(200).json({
             count: expenses.length,
             data: expenses,
@@ -52,7 +52,7 @@ export async function getExpenseHandler(request, response, next) {
             });
             return;
         }
-        const expense = await getExpenseById(parsed.data.expenseId);
+        const expense = await getExpenseById(request.authUser.id, parsed.data.expenseId);
         if (!expense) {
             response.status(404).json({
                 message: "Expense not found.",
@@ -84,7 +84,7 @@ export async function updateExpenseHandler(request, response, next) {
             });
             return;
         }
-        const expense = await updateExpense(params.data.expenseId, body.data);
+        const expense = await updateExpense(request.authUser.id, params.data.expenseId, body.data);
         if (!expense) {
             response.status(404).json({
                 message: "Expense not found.",
@@ -109,7 +109,7 @@ export async function deleteExpenseHandler(request, response, next) {
             });
             return;
         }
-        const deleted = await deleteExpense(parsed.data.expenseId);
+        const deleted = await deleteExpense(request.authUser.id, parsed.data.expenseId);
         if (!deleted) {
             response.status(404).json({
                 message: "Expense not found.",

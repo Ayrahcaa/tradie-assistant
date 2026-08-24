@@ -5,6 +5,7 @@ import type {
 } from "../types/project";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
+import { apiFetch } from "../../../shared/api/http";
 
 interface ProjectResponse {
   data: Project;
@@ -13,7 +14,7 @@ interface ProjectResponse {
 export async function getProjectById(
   projectId: string,
 ): Promise<ProjectResponse> {
-  const response = await fetch(`${API_URL}/projects/${projectId}`);
+  const response = await apiFetch(`${API_URL}/projects/${projectId}`);
 
   if (!response.ok) {
     throw new Error(await getErrorMessage(response, "Unable to load project."));
@@ -69,7 +70,7 @@ export async function getProjects(
 ): Promise<ProjectsResponse> {
   const query = status ? `?status=${encodeURIComponent(status)}` : "";
 
-  const response = await fetch(`${API_URL}/projects${query}`);
+  const response = await apiFetch(`${API_URL}/projects${query}`);
 
   if (!response.ok) {
     throw new Error(
@@ -83,7 +84,7 @@ export async function getProjects(
 export async function createProject(
   input: CreateProjectInput,
 ): Promise<CreateProjectResponse> {
-  const response = await fetch(`${API_URL}/projects`, {
+  const response = await apiFetch(`${API_URL}/projects`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -101,7 +102,7 @@ export async function createProject(
 }
 
 export async function getProject(projectId: string): Promise<Project> {
-  const response = await fetch(`${API_URL}/projects/${projectId}`);
+  const response = await apiFetch(`${API_URL}/projects/${projectId}`);
 
   if (!response.ok) {
     throw new Error(
@@ -117,7 +118,7 @@ export async function updateProject(
   projectId: string,
   input: UpdateProjectInput,
 ): Promise<Project> {
-  const response = await fetch(`${API_URL}/projects/${projectId}`, {
+  const response = await apiFetch(`${API_URL}/projects/${projectId}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
@@ -134,7 +135,7 @@ export async function updateProject(
 }
 
 export async function archiveProject(projectId: string): Promise<Project> {
-  const response = await fetch(`${API_URL}/projects/${projectId}/archive`, {
+  const response = await apiFetch(`${API_URL}/projects/${projectId}/archive`, {
     method: "PATCH",
   });
 
@@ -149,7 +150,7 @@ export async function archiveProject(projectId: string): Promise<Project> {
 }
 
 export async function deleteProject(projectId: string): Promise<void> {
-  const response = await fetch(`${API_URL}/projects/${projectId}`, {
+  const response = await apiFetch(`${API_URL}/projects/${projectId}`, {
     method: "DELETE",
   });
 

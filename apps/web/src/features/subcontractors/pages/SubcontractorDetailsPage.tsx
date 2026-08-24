@@ -41,7 +41,12 @@ export function SubcontractorDetailsPage() {
   if (subcontractorQuery.isError) return <p className="rounded-xl bg-red-50 p-4 text-red-700">{subcontractorQuery.error.message}</p>;
   const subcontractor = subcontractorQuery.data; const name = [subcontractor.firstName, subcontractor.lastName].filter(Boolean).join(" "); const costs = costsQuery.data?.data ?? [];
   const totalAgreed = costs.reduce((sum, cost) => sum + Number(cost.agreedAmount), 0); const totalPaid = costs.reduce((sum, cost) => sum + Number(cost.amountPaid), 0); const outstanding = costs.filter((cost) => cost.status !== "CANCELLED").reduce((sum, cost) => sum + Number(cost.amountPending), 0); const activeCount = costs.filter((cost) => cost.status !== "CANCELLED").length;
-  const toggle = (id: string) => setExpanded((current) => { const next = new Set(current); next.has(id) ? next.delete(id) : next.add(id); return next; });
+  const toggle = (id: string) => setExpanded((current) => {
+    const next = new Set(current);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    return next;
+  });
 
   return <>
     <Link to="/subcontractors" className="inline-flex items-center gap-2 text-sm font-bold text-slate-500"><ArrowLeft size={18}/>Back to subcontractors</Link>

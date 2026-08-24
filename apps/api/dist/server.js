@@ -13,13 +13,36 @@ import { receiptRouter } from "./modules/receipts/receipt.routes.js";
 import { subcontractorRouter } from "./modules/subcontractors/subcontractor.routes.js";
 import { subcontractorCostRouter } from "./modules/subcontractor-costs/subcontractor-cost.routes.js";
 import { subcontractorPaymentRouter } from "./modules/subcontractor-payments/subcontractor-payment.routes.js";
+import { analyticsRouter } from "./modules/analytics/analytics.routes.js";
+import { HttpError } from "./lib/http-error.js";
+import { ZodError } from "zod";
+import { authRouter } from "./modules/auth/auth.routes.js";
+import { requireAuth } from "./modules/auth/auth.middleware.js";
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
 app.use(helmet());
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: process.env.WEB_ORIGIN ?? "http://localhost:5173",
+    credentials: true,
 }));
 app.use(express.json());
+app.get("/", (_request, response) => {
+    response.json({ message: "Tradie Assistant API is running" });
+});
+app.get("/api/health", (_request, response) => {
+    response.status(200).json({ status: "healthy", service: "tradie-assistant-api", timestamp: new Date().toISOString() });
+});
+app.get("/api/health/database", async (_request, response, next) => {
+    try {
+        await prisma.$queryRaw `SELECT 1`;
+        response.status(200).json({ status: "healthy", database: "connected", timestamp: new Date().toISOString() });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+app.use("/api/auth", authRouter);
+app.use("/api", requireAuth);
 app.use("/api/projects", projectRouter);
 app.use("/api/customers", customerRouter);
 app.use("/api/quotes", quoteRouter);
@@ -30,51 +53,24 @@ app.use("/api/receipts", receiptRouter);
 app.use("/api/subcontractors", subcontractorRouter);
 app.use("/api/subcontractor-costs", subcontractorCostRouter);
 app.use("/api/subcontractor-payments", subcontractorPaymentRouter);
-app.get("/", (_request, response) => {
-    response.json({
-        message: "Tradie Assistant API is running",
-    });
-});
-app.get("/api/health", (_request, response) => {
-    response.status(200).json({
-        status: "healthy",
-        service: "tradie-assistant-api",
-        timestamp: new Date().toISOString(),
-    });
-});
-app.get("/api/health/database", async (_request, response, next) => {
-    try {
-        await prisma.$queryRaw `SELECT 1`;
-        response.status(200).json({
-            status: "healthy",
-            database: "connected",
-            timestamp: new Date().toISOString(),
-        });
-    }
-    catch (error) {
-        next(error);
-    }
-});
+app.use("/api/analytics", analyticsRouter);
 app.use((error, _request, response, _next) => {
+    if (error instanceof ZodError) {
+        response.status(400).json({
+            message: "The submitted data is invalid.",
+            errors: error.flatten(),
+        });
+        return;
+    }
+    if (error instanceof HttpError) {
+        response.status(error.statusCode).json({ message: error.message });
+        return;
+    }
     console.error(error);
     response.status(500).json({
         message: "An unexpected server error occurred.",
     });
 });
-// app.use(
-//   (
-//     error: Error,
-//     _request: Request,
-//     response: Response,
-//     _next: NextFunction,
-//   ) => {
-//     console.error("SERVER ERROR:", error);
-//     response.status(500).json({
-//       message: "An unexpected server error occurred.",
-//       error: process.env.NODE_ENV === "production" ? undefined : error.message,
-//     });
-//   },
-// );
 const server = app.listen(PORT, () => {
     console.log(`Tradie Assistant API running on http://localhost:${PORT}`);
 });

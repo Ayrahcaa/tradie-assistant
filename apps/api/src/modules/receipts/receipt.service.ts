@@ -2,32 +2,15 @@ import fs from "node:fs/promises";
 
 import { prisma } from "../../lib/prisma.js";
 
-async function getDemoUser() {
-  const email = process.env.DEMO_USER_EMAIL ?? "demo@tradieassistant.com";
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
-
-  if (!user) {
-    throw new Error("Demo user was not found.");
-  }
-
-  return user;
-}
-
 export async function createReceipt(
+  ownerId: string,
   expenseId: string,
   file: Express.Multer.File,
 ) {
-  const owner = await getDemoUser();
-
   const expense = await prisma.expense.findFirst({
     where: {
       id: expenseId,
-      ownerId: owner.id,
+      ownerId,
     },
   });
 
@@ -51,18 +34,16 @@ export async function createReceipt(
 
       expenseId: expense.id,
 
-      ownerId: owner.id,
+      ownerId,
     },
   });
 }
 
-export async function listExpenseReceipts(expenseId: string) {
-  const owner = await getDemoUser();
-
+export async function listExpenseReceipts(ownerId: string, expenseId: string) {
   const expense = await prisma.expense.findFirst({
     where: {
       id: expenseId,
-      ownerId: owner.id,
+      ownerId,
     },
   });
 
@@ -73,7 +54,7 @@ export async function listExpenseReceipts(expenseId: string) {
   return prisma.receipt.findMany({
     where: {
       expenseId,
-      ownerId: owner.id,
+      ownerId,
     },
 
     orderBy: {
@@ -82,19 +63,17 @@ export async function listExpenseReceipts(expenseId: string) {
   });
 }
 
-export async function getReceiptById(receiptId: string) {
-  const owner = await getDemoUser();
-
+export async function getReceiptById(ownerId: string, receiptId: string) {
   return prisma.receipt.findFirst({
     where: {
       id: receiptId,
-      ownerId: owner.id,
+      ownerId,
     },
   });
 }
 
-export async function deleteReceipt(receiptId: string) {
-  const receipt = await getReceiptById(receiptId);
+export async function deleteReceipt(ownerId: string, receiptId: string) {
+  const receipt = await getReceiptById(ownerId, receiptId);
 
   if (!receipt) {
     return false;

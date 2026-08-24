@@ -32,7 +32,7 @@ export async function createCustomerHandler(
       return;
     }
 
-    const customer = await createCustomer(parsedBody.data);
+    const customer = await createCustomer(request.authUser!.id, parsedBody.data);
 
     response.status(201).json({
       message: "Customer created successfully.",
@@ -51,7 +51,7 @@ export async function listCustomersHandler(
   try {
     const includeArchived = request.query.includeArchived === "true";
 
-    const customers = await listCustomers(includeArchived);
+    const customers = await listCustomers(request.authUser!.id, includeArchived);
 
     response.status(200).json({
       count: customers.length,
@@ -77,7 +77,7 @@ export async function getCustomerHandler(
       return;
     }
 
-    const customer = await getCustomerById(parsedParams.data.customerId);
+    const customer = await getCustomerById(request.authUser!.id, parsedParams.data.customerId);
 
     if (!customer) {
       response.status(404).json({
@@ -120,6 +120,7 @@ export async function updateCustomerHandler(
     }
 
     const customer = await updateCustomer(
+      request.authUser!.id,
       parsedParams.data.customerId,
       parsedBody.data,
     );
@@ -155,7 +156,7 @@ export async function archiveCustomerHandler(
       return;
     }
 
-    const customer = await archiveCustomer(parsedParams.data.customerId);
+    const customer = await archiveCustomer(request.authUser!.id, parsedParams.data.customerId);
 
     if (!customer) {
       response.status(404).json({
@@ -188,7 +189,7 @@ export async function restoreCustomerHandler(
       return;
     }
 
-    const customer = await restoreCustomer(parsedParams.data.customerId);
+    const customer = await restoreCustomer(request.authUser!.id, parsedParams.data.customerId);
 
     if (!customer) {
       response.status(404).json({
@@ -221,7 +222,7 @@ export async function deleteCustomerHandler(
       return;
     }
 
-    const deleted = await deleteCustomer(parsedParams.data.customerId);
+    const deleted = await deleteCustomer(request.authUser!.id, parsedParams.data.customerId);
 
     if (!deleted) {
       response.status(404).json({

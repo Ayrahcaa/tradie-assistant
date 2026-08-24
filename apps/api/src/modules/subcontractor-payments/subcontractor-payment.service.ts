@@ -2,22 +2,6 @@ import { prisma } from "../../lib/prisma.js";
 
 import type { CreateSubcontractorPaymentInput } from "./subcontractor-payment.schema.js";
 
-async function getDemoUser() {
-  const email = process.env.DEMO_USER_EMAIL ?? "demo@tradieassistant.com";
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
-
-  if (!user) {
-    throw new Error("Demo user was not found.");
-  }
-
-  return user;
-}
-
 function deriveCostStatus(
   agreedAmount: number,
   amountPaid: number,
@@ -34,15 +18,14 @@ function deriveCostStatus(
 }
 
 export async function createSubcontractorPayment(
+  ownerId: string,
   input: CreateSubcontractorPaymentInput,
 ) {
-  const owner = await getDemoUser();
-
   return prisma.$transaction(async (tx) => {
     const cost = await tx.subcontractorProjectCost.findFirst({
       where: {
         id: input.costId,
-        ownerId: owner.id,
+        ownerId,
       },
 
       include: {
@@ -83,7 +66,7 @@ export async function createSubcontractorPayment(
       data: {
         costId: cost.id,
 
-        ownerId: owner.id,
+        ownerId,
 
         amount: input.amount,
 
@@ -132,14 +115,12 @@ export async function createSubcontractorPayment(
   });
 }
 
-export async function deleteSubcontractorPayment(paymentId: string) {
-  const owner = await getDemoUser();
-
+export async function deleteSubcontractorPayment(ownerId: string, paymentId: string) {
   return prisma.$transaction(async (tx) => {
     const payment = await tx.subcontractorPayment.findFirst({
       where: {
         id: paymentId,
-        ownerId: owner.id,
+        ownerId,
       },
     });
 
@@ -156,7 +137,7 @@ export async function deleteSubcontractorPayment(paymentId: string) {
     const cost = await tx.subcontractorProjectCost.findFirst({
       where: {
         id: payment.costId,
-        ownerId: owner.id,
+        ownerId,
       },
 
       include: {

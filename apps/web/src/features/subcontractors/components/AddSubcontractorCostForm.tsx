@@ -77,6 +77,7 @@ export function AddSubcontractorCostForm({ subcontractorId, cost, onSuccess, onC
     const quantity = form.quantity === "" ? null : Number(form.quantity);
     if (!form.projectId) return setValidation("Select a project.");
     if (!Number.isFinite(agreedAmount) || agreedAmount <= 0) return setValidation("Agreed amount must be greater than zero.");
+    if (cost && agreedAmount < Number(cost.amountPaid)) return setValidation(`Agreed amount cannot be less than the ${money.format(Number(cost.amountPaid))} already paid.`);
     if ((rate !== null && (!Number.isFinite(rate) || rate < 0)) || (quantity !== null && (!Number.isFinite(quantity) || quantity <= 0))) return setValidation("Rate and quantity must be valid non-negative values.");
     mutation.mutate({ subcontractorId, projectId: form.projectId, description: form.description.trim() || null, rateType: form.rateType, rate, quantity, agreedAmount, notes: form.notes.trim() || null });
   }

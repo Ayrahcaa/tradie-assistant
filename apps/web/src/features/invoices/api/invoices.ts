@@ -3,6 +3,7 @@ import type {
   InvoicesResponse,
   InvoiceStatus,
 } from "../types/invoice";
+import { apiFetch } from "../../../shared/api/http";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
 
@@ -54,7 +55,7 @@ export async function getInvoices(
 ): Promise<InvoicesResponse> {
   const query = status ? `?status=${encodeURIComponent(status)}` : "";
 
-  const response = await fetch(`${API_URL}/invoices${query}`);
+  const response = await apiFetch(`${API_URL}/invoices${query}`);
 
   if (!response.ok) {
     throw new Error(
@@ -66,7 +67,7 @@ export async function getInvoices(
 }
 
 export async function getInvoice(invoiceId: string): Promise<Invoice> {
-  const response = await fetch(`${API_URL}/invoices/${invoiceId}`);
+  const response = await apiFetch(`${API_URL}/invoices/${invoiceId}`);
 
   if (!response.ok) {
     throw new Error(await getErrorMessage(response, "Unable to load invoice."));
@@ -80,7 +81,7 @@ export async function getInvoice(invoiceId: string): Promise<Invoice> {
 export async function createInvoice(
   input: CreateInvoiceInput,
 ): Promise<Invoice> {
-  const response = await fetch(`${API_URL}/invoices`, {
+  const response = await apiFetch(`${API_URL}/invoices`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -103,7 +104,7 @@ export async function updateInvoice(
   invoiceId: string,
   input: UpdateInvoiceInput,
 ): Promise<Invoice> {
-  const response = await fetch(`${API_URL}/invoices/${invoiceId}`, {
+  const response = await apiFetch(`${API_URL}/invoices/${invoiceId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -126,7 +127,7 @@ export async function updateInvoiceStatus(
   invoiceId: string,
   status: InvoiceStatus,
 ): Promise<Invoice> {
-  const response = await fetch(`${API_URL}/invoices/${invoiceId}/status`, {
+  const response = await apiFetch(`${API_URL}/invoices/${invoiceId}/status`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -146,7 +147,7 @@ export async function updateInvoiceStatus(
 }
 
 export async function deleteInvoice(invoiceId: string): Promise<void> {
-  const response = await fetch(`${API_URL}/invoices/${invoiceId}`, {
+  const response = await apiFetch(`${API_URL}/invoices/${invoiceId}`, {
     method: "DELETE",
   });
 

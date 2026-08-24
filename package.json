@@ -11,6 +11,9 @@
     "dev:web": "npm run dev --workspace=@tradie-assistant/web",
     "dev:api": "npm run dev --workspace=@tradie-assistant/api",
     "build:web": "npm run build --workspace=@tradie-assistant/web",
-    "build:api": "npm run build --workspace=@tradie-assistant/api"
+    "build:api": "npm run build --workspace=@tradie-assistant/api",
+    "lint:web": "npm run lint --workspace=@tradie-assistant/web",
+    "typecheck:api": "npm run typecheck --workspace=@tradie-assistant/api",
+    "seed": "npm run seed --workspace=@tradie-assistant/api"
   }
 }

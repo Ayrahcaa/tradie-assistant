@@ -26,7 +26,7 @@ export async function createSubcontractorPaymentHandler(
       return;
     }
 
-    const result = await createSubcontractorPayment(parsed.data);
+    const result = await createSubcontractorPayment(request.authUser!.id, parsed.data);
 
     response.status(201).json({
       message: "Subcontractor payment recorded successfully.",
@@ -52,7 +52,7 @@ export async function deleteSubcontractorPaymentHandler(
       return;
     }
 
-    const result = await deleteSubcontractorPayment(parsed.data.paymentId);
+    const result = await deleteSubcontractorPayment(request.authUser!.id, parsed.data.paymentId);
 
     if (!result) {
       response.status(404).json({

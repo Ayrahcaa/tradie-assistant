@@ -1,4 +1,5 @@
 import type { Invoice, Payment, PaymentMethod } from "../types/invoice";
+import { apiFetch } from "../../../shared/api/http";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
 
@@ -38,7 +39,7 @@ async function getErrorMessage(response: Response, fallback: string) {
 export async function createPayment(
   input: CreatePaymentInput,
 ): Promise<CreatePaymentResponse["data"]> {
-  const response = await fetch(`${API_URL}/payments`, {
+  const response = await apiFetch(`${API_URL}/payments`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -58,7 +59,7 @@ export async function createPayment(
 }
 
 export async function deletePayment(paymentId: string): Promise<Invoice> {
-  const response = await fetch(`${API_URL}/payments/${paymentId}`, {
+  const response = await apiFetch(`${API_URL}/payments/${paymentId}`, {
     method: "DELETE",
   });
 

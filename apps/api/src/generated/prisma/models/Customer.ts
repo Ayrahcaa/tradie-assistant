@@ -582,10 +582,6 @@ export type CustomerUpdateOneWithoutProjectsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CustomerUpdateToOneWithWhereWithoutProjectsInput, Prisma.CustomerUpdateWithoutProjectsInput>, Prisma.CustomerUncheckedUpdateWithoutProjectsInput>
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type CustomerCreateNestedOneWithoutQuotesInput = {
   create?: Prisma.XOR<Prisma.CustomerCreateWithoutQuotesInput, Prisma.CustomerUncheckedCreateWithoutQuotesInput>
   connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutQuotesInput

@@ -10,7 +10,7 @@ export async function createCustomerHandler(request, response, next) {
             });
             return;
         }
-        const customer = await createCustomer(parsedBody.data);
+        const customer = await createCustomer(request.authUser.id, parsedBody.data);
         response.status(201).json({
             message: "Customer created successfully.",
             data: customer,
@@ -23,7 +23,7 @@ export async function createCustomerHandler(request, response, next) {
 export async function listCustomersHandler(request, response, next) {
     try {
         const includeArchived = request.query.includeArchived === "true";
-        const customers = await listCustomers(includeArchived);
+        const customers = await listCustomers(request.authUser.id, includeArchived);
         response.status(200).json({
             count: customers.length,
             data: customers,
@@ -42,7 +42,7 @@ export async function getCustomerHandler(request, response, next) {
             });
             return;
         }
-        const customer = await getCustomerById(parsedParams.data.customerId);
+        const customer = await getCustomerById(request.authUser.id, parsedParams.data.customerId);
         if (!customer) {
             response.status(404).json({
                 message: "Customer not found.",
@@ -74,7 +74,7 @@ export async function updateCustomerHandler(request, response, next) {
             });
             return;
         }
-        const customer = await updateCustomer(parsedParams.data.customerId, parsedBody.data);
+        const customer = await updateCustomer(request.authUser.id, parsedParams.data.customerId, parsedBody.data);
         if (!customer) {
             response.status(404).json({
                 message: "Customer not found.",
@@ -99,7 +99,7 @@ export async function archiveCustomerHandler(request, response, next) {
             });
             return;
         }
-        const customer = await archiveCustomer(parsedParams.data.customerId);
+        const customer = await archiveCustomer(request.authUser.id, parsedParams.data.customerId);
         if (!customer) {
             response.status(404).json({
                 message: "Customer not found.",
@@ -124,7 +124,7 @@ export async function restoreCustomerHandler(request, response, next) {
             });
             return;
         }
-        const customer = await restoreCustomer(parsedParams.data.customerId);
+        const customer = await restoreCustomer(request.authUser.id, parsedParams.data.customerId);
         if (!customer) {
             response.status(404).json({
                 message: "Customer not found.",
@@ -149,7 +149,7 @@ export async function deleteCustomerHandler(request, response, next) {
             });
             return;
         }
-        const deleted = await deleteCustomer(parsedParams.data.customerId);
+        const deleted = await deleteCustomer(request.authUser.id, parsedParams.data.customerId);
         if (!deleted) {
             response.status(404).json({
                 message: "Customer not found.",

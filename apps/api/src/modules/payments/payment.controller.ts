@@ -28,7 +28,7 @@ export async function createPaymentHandler(
       return;
     }
 
-    const result = await createPayment(parsed.data);
+    const result = await createPayment(request.authUser!.id, parsed.data);
 
     response.status(201).json({
       message: "Payment recorded successfully.",
@@ -54,7 +54,7 @@ export async function listInvoicePaymentsHandler(
       return;
     }
 
-    const payments = await listInvoicePayments(parsed.data.invoiceId);
+    const payments = await listInvoicePayments(request.authUser!.id, parsed.data.invoiceId);
 
     if (!payments) {
       response.status(404).json({
@@ -87,7 +87,7 @@ export async function deletePaymentHandler(
       return;
     }
 
-    const invoice = await deletePayment(parsed.data.paymentId);
+    const invoice = await deletePayment(request.authUser!.id, parsed.data.paymentId);
 
     if (!invoice) {
       response.status(404).json({

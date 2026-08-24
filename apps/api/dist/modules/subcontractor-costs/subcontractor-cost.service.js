@@ -1,14 +1,5 @@
 import { prisma } from "../../lib/prisma.js";
-async function getDemoUser() {
-    const email = process.env.DEMO_USER_EMAIL ?? "demo@tradieassistant.com";
-    const user = await prisma.user.findUnique({
-        where: { email },
-    });
-    if (!user) {
-        throw new Error("Demo user was not found.");
-    }
-    return user;
-}
+import { HttpError } from "../../lib/http-error.js";
 function calculateAmount(rate, quantity) {
     if (rate === undefined ||
         rate === null ||
@@ -51,10 +42,9 @@ async function validateProject(projectId, ownerId) {
     }
     return project;
 }
-export async function createSubcontractorCost(input) {
-    const owner = await getDemoUser();
-    await validateSubcontractor(input.subcontractorId, owner.id);
-    await validateProject(input.projectId, owner.id);
+export async function createSubcontractorCost(ownerId, input) {
+    await validateSubcontractor(input.subcontractorId, ownerId);
+    await validateProject(input.projectId, ownerId);
     const calculatedAmount = calculateAmount(input.rate, input.quantity);
     const agreedAmount = input.agreedAmount;
     return prisma.subcontractorProjectCost.create({
@@ -71,7 +61,7 @@ export async function createSubcontractorCost(input) {
             amountPending: agreedAmount,
             status: "UNPAID",
             notes: input.notes,
-            ownerId: owner.id,
+            ownerId,
         },
         include: {
             subcontractor: true,
@@ -80,11 +70,10 @@ export async function createSubcontractorCost(input) {
         },
     });
 }
-export async function listSubcontractorCosts(subcontractorId, projectId) {
-    const owner = await getDemoUser();
+export async function listSubcontractorCosts(ownerId, subcontractorId, projectId) {
     return prisma.subcontractorProjectCost.findMany({
         where: {
-            ownerId: owner.id,
+            ownerId,
             ...(subcontractorId ? { subcontractorId } : {}),
             ...(projectId ? { projectId } : {}),
         },
@@ -102,12 +91,11 @@ export async function listSubcontractorCosts(subcontractorId, projectId) {
         },
     });
 }
-export async function getSubcontractorCostById(costId) {
-    const owner = await getDemoUser();
+export async function getSubcontractorCostById(ownerId, costId) {
     return prisma.subcontractorProjectCost.findFirst({
         where: {
             id: costId,
-            ownerId: owner.id,
+            ownerId,
         },
         include: {
             subcontractor: true,
@@ -120,17 +108,16 @@ export async function getSubcontractorCostById(costId) {
         },
     });
 }
-export async function updateSubcontractorCost(costId, input) {
-    const owner = await getDemoUser();
-    const existing = await getSubcontractorCostById(costId);
+export async function updateSubcontractorCost(ownerId, costId, input) {
+    const existing = await getSubcontractorCostById(ownerId, costId);
     if (!existing) {
         return null;
     }
     if (input.subcontractorId) {
-        await validateSubcontractor(input.subcontractorId, owner.id);
+        await validateSubcontractor(input.subcontractorId, ownerId);
     }
     if (input.projectId) {
-        await validateProject(input.projectId, owner.id);
+        await validateProject(input.projectId, ownerId);
     }
     const rate = input.rate === undefined
         ? existing.rate
@@ -145,6 +132,9 @@ export async function updateSubcontractorCost(costId, input) {
     const calculatedAmount = calculateAmount(rate, quantity);
     const agreedAmount = input.agreedAmount ?? Number(existing.agreedAmount);
     const amountPaid = Number(existing.amountPaid);
+    if (agreedAmount < amountPaid) {
+        throw new HttpError(400, `Agreed amount cannot be less than the ${amountPaid.toFixed(2)} already paid.`);
+    }
     const amountPending = Math.max(agreedAmount - amountPaid, 0);
     const status = existing.status === "CANCELLED"
         ? "CANCELLED"
@@ -177,8 +167,8 @@ export async function updateSubcontractorCost(costId, input) {
         },
     });
 }
-export async function cancelSubcontractorCost(costId) {
-    const existing = await getSubcontractorCostById(costId);
+export async function cancelSubcontractorCost(ownerId, costId) {
+    const existing = await getSubcontractorCostById(ownerId, costId);
     if (!existing) {
         return null;
     }
@@ -196,8 +186,8 @@ export async function cancelSubcontractorCost(costId) {
         },
     });
 }
-export async function deleteSubcontractorCost(costId) {
-    const existing = await getSubcontractorCostById(costId);
+export async function deleteSubcontractorCost(ownerId, costId) {
+    const existing = await getSubcontractorCostById(ownerId, costId);
     if (!existing) {
         return false;
     }

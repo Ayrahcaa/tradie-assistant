@@ -4,6 +4,10 @@ import {
   ArrowLeft,
   Building2,
   CircleAlert,
+  CircleDollarSign,
+  FileText,
+  FolderKanban,
+  HandCoins,
   Mail,
   MapPin,
   Pencil,
@@ -24,6 +28,10 @@ import {
 import { EditCustomerForm } from "../components/EditCustomerForm";
 
 import { Modal } from "../../../shared/components/ui/Modal";
+import { getCustomerOverview } from "../../analytics/api";
+
+const money = (value: string | number) =>
+  new Intl.NumberFormat("en-AU", { style: "currency", currency: "AUD" }).format(Number(value));
 
 export function CustomerDetailsPage() {
   const { customerId } = useParams<{
@@ -42,6 +50,11 @@ export function CustomerDetailsPage() {
   const customerQuery = useQuery({
     queryKey: ["customer", customerId],
     queryFn: () => getCustomer(customerId!),
+    enabled: Boolean(customerId),
+  });
+  const overviewQuery = useQuery({
+    queryKey: ["customer-overview", customerId],
+    queryFn: () => getCustomerOverview(customerId!),
     enabled: Boolean(customerId),
   });
 
@@ -244,6 +257,32 @@ export function CustomerDetailsPage() {
           </p>
         </article>
       </section>
+
+      {overviewQuery.isPending ? (
+        <section className="mt-6 grid gap-5 md:grid-cols-4">
+          {[1, 2, 3, 4].map((item) => <div key={item} className="h-28 animate-pulse rounded-2xl bg-slate-200" />)}
+        </section>
+      ) : overviewQuery.isError ? (
+        <p className="mt-6 rounded-xl bg-red-50 p-4 text-sm text-red-700">Financial relationships could not be loaded: {overviewQuery.error.message}</p>
+      ) : (
+        <>
+          <section className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {[
+              [FolderKanban, "Projects", String(overviewQuery.data.customer.projects.length)],
+              [CircleDollarSign, "Total invoiced", money(overviewQuery.data.financials.totalInvoiced)],
+              [HandCoins, "Total paid", money(overviewQuery.data.financials.totalPaid)],
+              [FileText, "Outstanding", money(overviewQuery.data.financials.outstanding)],
+            ].map(([Icon, label, value]) => {
+              const CardIcon = Icon as typeof FolderKanban;
+              return <article key={label as string} className="rounded-2xl bg-slate-950 p-5 text-white"><CardIcon size={20} className="text-amber-400"/><p className="mt-4 text-xs font-bold uppercase text-slate-400">{label as string}</p><p className="mt-1 text-2xl font-bold">{value as string}</p></article>;
+            })}
+          </section>
+          <section className="mt-6 grid items-start gap-6 xl:grid-cols-2">
+            <div className="rounded-2xl border bg-white p-6 shadow-sm"><h2 className="text-lg font-bold">Projects</h2><div className="mt-4 space-y-3">{overviewQuery.data.customer.projects.length ? overviewQuery.data.customer.projects.map((project) => <Link key={project.id} to={`/projects/${project.id}`} className="flex items-center justify-between rounded-xl border p-4 hover:bg-slate-50"><div><p className="font-bold">{project.name}</p><p className="mt-1 text-xs text-slate-500">{project.status} · {project.address || "No address"}</p></div><strong>{project.quotedValue ? money(project.quotedValue) : "Not quoted"}</strong></Link>) : <p className="rounded-xl border border-dashed p-6 text-center text-sm text-slate-500">No projects linked.</p>}</div></div>
+            <div className="rounded-2xl border bg-white p-6 shadow-sm"><h2 className="text-lg font-bold">Invoices</h2><div className="mt-4 space-y-3">{overviewQuery.data.customer.invoices.length ? overviewQuery.data.customer.invoices.map((invoice) => <Link key={invoice.id} to={`/invoices/${invoice.id}`} className="flex items-center justify-between rounded-xl border p-4 hover:bg-slate-50"><div><p className="font-bold">{invoice.invoiceNumber} · {invoice.title}</p><p className="mt-1 text-xs text-slate-500">{invoice.project?.name || "No project"} · {invoice.status.replace("_", " ")}</p></div><div className="text-right"><strong>{money(invoice.totalAmount)}</strong><p className="text-xs text-amber-700">Owing {money(invoice.balanceDue)}</p></div></Link>) : <p className="rounded-xl border border-dashed p-6 text-center text-sm text-slate-500">No invoices linked.</p>}</div></div>
+          </section>
+        </>
+      )}
 
       <section className="mt-6 grid gap-6 xl:grid-cols-[1fr_0.8fr]">
         <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">

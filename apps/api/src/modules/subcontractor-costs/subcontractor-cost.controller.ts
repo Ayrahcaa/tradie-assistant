@@ -31,7 +31,7 @@ export async function createSubcontractorCostHandler(
       return;
     }
 
-    const cost = await createSubcontractorCost(parsed.data);
+    const cost = await createSubcontractorCost(request.authUser!.id, parsed.data);
 
     response.status(201).json({
       message: "Subcontractor project cost created successfully.",
@@ -58,7 +58,7 @@ export async function listSubcontractorCostsHandler(
         ? request.query.projectId
         : undefined;
 
-    const costs = await listSubcontractorCosts(subcontractorId, projectId);
+    const costs = await listSubcontractorCosts(request.authUser!.id, subcontractorId, projectId);
 
     response.status(200).json({
       count: costs.length,
@@ -84,7 +84,7 @@ export async function getSubcontractorCostHandler(
       return;
     }
 
-    const cost = await getSubcontractorCostById(parsed.data.costId);
+    const cost = await getSubcontractorCostById(request.authUser!.id, parsed.data.costId);
 
     if (!cost) {
       response.status(404).json({
@@ -126,7 +126,7 @@ export async function updateSubcontractorCostHandler(
       return;
     }
 
-    const cost = await updateSubcontractorCost(params.data.costId, body.data);
+    const cost = await updateSubcontractorCost(request.authUser!.id, params.data.costId, body.data);
 
     if (!cost) {
       response.status(404).json({
@@ -159,7 +159,7 @@ export async function cancelSubcontractorCostHandler(
       return;
     }
 
-    const cost = await cancelSubcontractorCost(parsed.data.costId);
+    const cost = await cancelSubcontractorCost(request.authUser!.id, parsed.data.costId);
 
     if (!cost) {
       response.status(404).json({
@@ -192,7 +192,7 @@ export async function deleteSubcontractorCostHandler(
       return;
     }
 
-    const deleted = await deleteSubcontractorCost(parsed.data.costId);
+    const deleted = await deleteSubcontractorCost(request.authUser!.id, parsed.data.costId);
 
     if (!deleted) {
       response.status(404).json({

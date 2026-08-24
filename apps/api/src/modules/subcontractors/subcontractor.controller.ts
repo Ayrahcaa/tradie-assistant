@@ -24,7 +24,7 @@ export async function createSubcontractorHandler(
   try {
     const input = createSubcontractorSchema.parse(request.body);
 
-    const subcontractor = await createSubcontractor(input);
+    const subcontractor = await createSubcontractor(request.authUser!.id, input);
 
     response.status(201).json({
       message: "Subcontractor created successfully.",
@@ -43,7 +43,7 @@ export async function listSubcontractorsHandler(
   try {
     const includeArchived = request.query.includeArchived === "true";
 
-    const subcontractors = await listSubcontractors(includeArchived);
+    const subcontractors = await listSubcontractors(request.authUser!.id, includeArchived);
 
     response.status(200).json({
       count: subcontractors.length,
@@ -62,7 +62,7 @@ export async function getSubcontractorHandler(
   try {
     const { subcontractorId } = subcontractorIdSchema.parse(request.params);
 
-    const subcontractor = await getSubcontractorById(subcontractorId);
+    const subcontractor = await getSubcontractorById(request.authUser!.id, subcontractorId);
 
     if (!subcontractor) {
       response.status(404).json({
@@ -90,7 +90,7 @@ export async function updateSubcontractorHandler(
 
     const input = updateSubcontractorSchema.parse(request.body);
 
-    const subcontractor = await updateSubcontractor(subcontractorId, input);
+    const subcontractor = await updateSubcontractor(request.authUser!.id, subcontractorId, input);
 
     if (!subcontractor) {
       response.status(404).json({
@@ -117,7 +117,7 @@ export async function archiveSubcontractorHandler(
   try {
     const { subcontractorId } = subcontractorIdSchema.parse(request.params);
 
-    const subcontractor = await archiveSubcontractor(subcontractorId);
+    const subcontractor = await archiveSubcontractor(request.authUser!.id, subcontractorId);
 
     if (!subcontractor) {
       response.status(404).json({
@@ -144,7 +144,7 @@ export async function restoreSubcontractorHandler(
   try {
     const { subcontractorId } = subcontractorIdSchema.parse(request.params);
 
-    const subcontractor = await restoreSubcontractor(subcontractorId);
+    const subcontractor = await restoreSubcontractor(request.authUser!.id, subcontractorId);
 
     if (!subcontractor) {
       response.status(404).json({
@@ -171,7 +171,7 @@ export async function deleteSubcontractorHandler(
   try {
     const { subcontractorId } = subcontractorIdSchema.parse(request.params);
 
-    const deleted = await deleteSubcontractor(subcontractorId);
+    const deleted = await deleteSubcontractor(request.authUser!.id, subcontractorId);
 
     if (!deleted) {
       response.status(404).json({

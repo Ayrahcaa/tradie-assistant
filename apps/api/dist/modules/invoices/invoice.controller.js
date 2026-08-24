@@ -10,7 +10,7 @@ export async function createInvoiceHandler(request, response, next) {
             });
             return;
         }
-        const invoice = await createInvoice(parsed.data);
+        const invoice = await createInvoice(request.authUser.id, parsed.data);
         response.status(201).json({
             message: "Invoice created successfully.",
             data: invoice,
@@ -33,7 +33,7 @@ export async function listInvoicesHandler(request, response, next) {
             }
             status = parsed.data;
         }
-        const invoices = await listInvoices(status);
+        const invoices = await listInvoices(request.authUser.id, status);
         response.status(200).json({
             count: invoices.length,
             data: invoices,
@@ -52,7 +52,7 @@ export async function getInvoiceHandler(request, response, next) {
             });
             return;
         }
-        const invoice = await getInvoiceById(parsed.data.invoiceId);
+        const invoice = await getInvoiceById(request.authUser.id, parsed.data.invoiceId);
         if (!invoice) {
             response.status(404).json({
                 message: "Invoice not found.",
@@ -84,7 +84,7 @@ export async function updateInvoiceHandler(request, response, next) {
             });
             return;
         }
-        const invoice = await updateInvoice(params.data.invoiceId, body.data);
+        const invoice = await updateInvoice(request.authUser.id, params.data.invoiceId, body.data);
         if (!invoice) {
             response.status(404).json({
                 message: "Invoice not found.",
@@ -110,7 +110,7 @@ export async function updateInvoiceStatusHandler(request, response, next) {
             });
             return;
         }
-        const invoice = await updateInvoiceStatus(params.data.invoiceId, body.data.status);
+        const invoice = await updateInvoiceStatus(request.authUser.id, params.data.invoiceId, body.data.status);
         if (!invoice) {
             response.status(404).json({
                 message: "Invoice not found.",
@@ -135,7 +135,7 @@ export async function deleteInvoiceHandler(request, response, next) {
             });
             return;
         }
-        const deleted = await deleteInvoice(parsed.data.invoiceId);
+        const deleted = await deleteInvoice(request.authUser.id, parsed.data.invoiceId);
         if (!deleted) {
             response.status(404).json({
                 message: "Invoice not found.",

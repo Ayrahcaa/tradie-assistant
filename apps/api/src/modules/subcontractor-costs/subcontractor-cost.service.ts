@@ -1,23 +1,10 @@
 import { prisma } from "../../lib/prisma.js";
+import { HttpError } from "../../lib/http-error.js";
 
 import type {
   CreateSubcontractorCostInput,
   UpdateSubcontractorCostInput,
 } from "./subcontractor-cost.schema.js";
-
-async function getDemoUser() {
-  const email = process.env.DEMO_USER_EMAIL ?? "demo@tradieassistant.com";
-
-  const user = await prisma.user.findUnique({
-    where: { email },
-  });
-
-  if (!user) {
-    throw new Error("Demo user was not found.");
-  }
-
-  return user;
-}
 
 function calculateAmount(
   rate?: number | null,
@@ -81,13 +68,12 @@ async function validateProject(projectId: string, ownerId: string) {
 }
 
 export async function createSubcontractorCost(
+  ownerId: string,
   input: CreateSubcontractorCostInput,
 ) {
-  const owner = await getDemoUser();
+  await validateSubcontractor(input.subcontractorId, ownerId);
 
-  await validateSubcontractor(input.subcontractorId, owner.id);
-
-  await validateProject(input.projectId, owner.id);
+  await validateProject(input.projectId, ownerId);
 
   const calculatedAmount = calculateAmount(input.rate, input.quantity);
 
@@ -119,7 +105,7 @@ export async function createSubcontractorCost(
 
       notes: input.notes,
 
-      ownerId: owner.id,
+      ownerId,
     },
 
     include: {
@@ -131,14 +117,13 @@ export async function createSubcontractorCost(
 }
 
 export async function listSubcontractorCosts(
+  ownerId: string,
   subcontractorId?: string,
   projectId?: string,
 ) {
-  const owner = await getDemoUser();
-
   return prisma.subcontractorProjectCost.findMany({
     where: {
-      ownerId: owner.id,
+      ownerId,
 
       ...(subcontractorId ? { subcontractorId } : {}),
 
@@ -161,13 +146,11 @@ export async function listSubcontractorCosts(
   });
 }
 
-export async function getSubcontractorCostById(costId: string) {
-  const owner = await getDemoUser();
-
+export async function getSubcontractorCostById(ownerId: string, costId: string) {
   return prisma.subcontractorProjectCost.findFirst({
     where: {
       id: costId,
-      ownerId: owner.id,
+      ownerId,
     },
 
     include: {
@@ -184,23 +167,22 @@ export async function getSubcontractorCostById(costId: string) {
 }
 
 export async function updateSubcontractorCost(
+  ownerId: string,
   costId: string,
   input: UpdateSubcontractorCostInput,
 ) {
-  const owner = await getDemoUser();
-
-  const existing = await getSubcontractorCostById(costId);
+  const existing = await getSubcontractorCostById(ownerId, costId);
 
   if (!existing) {
     return null;
   }
 
   if (input.subcontractorId) {
-    await validateSubcontractor(input.subcontractorId, owner.id);
+    await validateSubcontractor(input.subcontractorId, ownerId);
   }
 
   if (input.projectId) {
-    await validateProject(input.projectId, owner.id);
+    await validateProject(input.projectId, ownerId);
   }
 
   const rate =
@@ -222,6 +204,13 @@ export async function updateSubcontractorCost(
   const agreedAmount = input.agreedAmount ?? Number(existing.agreedAmount);
 
   const amountPaid = Number(existing.amountPaid);
+
+  if (agreedAmount < amountPaid) {
+    throw new HttpError(
+      400,
+      `Agreed amount cannot be less than the ${amountPaid.toFixed(2)} already paid.`,
+    );
+  }
 
   const amountPending = Math.max(agreedAmount - amountPaid, 0);
 
@@ -272,8 +261,8 @@ export async function updateSubcontractorCost(
   });
 }
 
-export async function cancelSubcontractorCost(costId: string) {
-  const existing = await getSubcontractorCostById(costId);
+export async function cancelSubcontractorCost(ownerId: string, costId: string) {
+  const existing = await getSubcontractorCostById(ownerId, costId);
 
   if (!existing) {
     return null;
@@ -296,8 +285,8 @@ export async function cancelSubcontractorCost(costId: string) {
   });
 }
 
-export async function deleteSubcontractorCost(costId: string) {
-  const existing = await getSubcontractorCostById(costId);
+export async function deleteSubcontractorCost(ownerId: string, costId: string) {
+  const existing = await getSubcontractorCostById(ownerId, costId);
 
   if (!existing) {
     return false;

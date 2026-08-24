@@ -31,20 +31,6 @@ export interface CreateExpenseInput {
 
 export type UpdateExpenseInput = Partial<CreateExpenseInput>;
 
-async function getDemoUser() {
-  const email = process.env.DEMO_USER_EMAIL ?? "demo@tradieassistant.com";
-
-  const user = await prisma.user.findUnique({
-    where: { email },
-  });
-
-  if (!user) {
-    throw new Error("Demo user was not found.");
-  }
-
-  return user;
-}
-
 async function validateProject(
   projectId: string | null | undefined,
   ownerId: string,
@@ -83,10 +69,8 @@ function deriveExpenseStatus(input: {
   return input.requestedStatus ?? "PENDING";
 }
 
-export async function createExpense(input: CreateExpenseInput) {
-  const owner = await getDemoUser();
-
-  await validateProject(input.projectId, owner.id);
+export async function createExpense(ownerId: string, input: CreateExpenseInput) {
+  await validateProject(input.projectId, ownerId);
 
   const dueDate = input.dueDate ? new Date(input.dueDate) : null;
 
@@ -111,7 +95,7 @@ export async function createExpense(input: CreateExpenseInput) {
       paidAt,
       projectId: input.projectId ?? null,
       notes: input.notes,
-      ownerId: owner.id,
+      ownerId,
     },
 
     include: {
@@ -120,12 +104,10 @@ export async function createExpense(input: CreateExpenseInput) {
   });
 }
 
-export async function listExpenses(status?: ExpenseStatus) {
-  const owner = await getDemoUser();
-
+export async function listExpenses(ownerId: string, status?: ExpenseStatus) {
   const expenses = await prisma.expense.findMany({
     where: {
-      ownerId: owner.id,
+      ownerId,
     },
 
     include: {
@@ -170,13 +152,11 @@ export async function listExpenses(status?: ExpenseStatus) {
     : updated;
 }
 
-export async function getExpenseById(expenseId: string) {
-  const owner = await getDemoUser();
-
+export async function getExpenseById(ownerId: string, expenseId: string) {
   return prisma.expense.findFirst({
     where: {
       id: expenseId,
-      ownerId: owner.id,
+      ownerId,
     },
 
     include: {
@@ -186,19 +166,18 @@ export async function getExpenseById(expenseId: string) {
 }
 
 export async function updateExpense(
+  ownerId: string,
   expenseId: string,
   input: UpdateExpenseInput,
 ) {
-  const owner = await getDemoUser();
-
-  const existing = await getExpenseById(expenseId);
+  const existing = await getExpenseById(ownerId, expenseId);
 
   if (!existing) {
     return null;
   }
 
   if (input.projectId !== undefined) {
-    await validateProject(input.projectId, owner.id);
+    await validateProject(input.projectId, ownerId);
   }
 
   const dueDate =
@@ -253,8 +232,8 @@ export async function updateExpense(
   });
 }
 
-export async function deleteExpense(expenseId: string) {
-  const expense = await getExpenseById(expenseId);
+export async function deleteExpense(ownerId: string, expenseId: string) {
+  const expense = await getExpenseById(ownerId, expenseId);
 
   if (!expense) {
     return false;

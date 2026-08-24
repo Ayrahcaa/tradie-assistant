@@ -69,6 +69,9 @@ export function EditProjectForm({
         queryClient.invalidateQueries({
           queryKey: ["projects"],
         }),
+        queryClient.invalidateQueries({
+          queryKey: ["project-overview", project.id],
+        }),
       ]);
 
       setValidationError(null);

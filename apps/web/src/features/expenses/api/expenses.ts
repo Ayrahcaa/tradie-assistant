@@ -4,6 +4,7 @@ import type {
   ExpensesResponse,
   ExpenseStatus,
 } from "../types/expense";
+import { apiFetch } from "../../../shared/api/http";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
 
@@ -51,7 +52,7 @@ export async function getExpenses(
 ): Promise<ExpensesResponse> {
   const query = status ? `?status=${encodeURIComponent(status)}` : "";
 
-  const response = await fetch(`${API_URL}/expenses${query}`);
+  const response = await apiFetch(`${API_URL}/expenses${query}`);
 
   if (!response.ok) {
     throw new Error(
@@ -63,7 +64,7 @@ export async function getExpenses(
 }
 
 export async function getExpense(expenseId: string): Promise<Expense> {
-  const response = await fetch(`${API_URL}/expenses/${expenseId}`);
+  const response = await apiFetch(`${API_URL}/expenses/${expenseId}`);
 
   if (!response.ok) {
     throw new Error(await getErrorMessage(response, "Unable to load expense."));
@@ -77,7 +78,7 @@ export async function getExpense(expenseId: string): Promise<Expense> {
 export async function createExpense(
   input: CreateExpenseInput,
 ): Promise<Expense> {
-  const response = await fetch(`${API_URL}/expenses`, {
+  const response = await apiFetch(`${API_URL}/expenses`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -100,7 +101,7 @@ export async function updateExpense(
   expenseId: string,
   input: UpdateExpenseInput,
 ): Promise<Expense> {
-  const response = await fetch(`${API_URL}/expenses/${expenseId}`, {
+  const response = await apiFetch(`${API_URL}/expenses/${expenseId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -120,7 +121,7 @@ export async function updateExpense(
 }
 
 export async function deleteExpense(expenseId: string): Promise<void> {
-  const response = await fetch(`${API_URL}/expenses/${expenseId}`, {
+  const response = await apiFetch(`${API_URL}/expenses/${expenseId}`, {
     method: "DELETE",
   });
 

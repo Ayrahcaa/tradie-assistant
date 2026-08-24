@@ -33,7 +33,7 @@ export async function createQuoteHandler(
       return;
     }
 
-    const quote = await createQuote(parsedBody.data);
+    const quote = await createQuote(request.authUser!.id, parsedBody.data);
 
     response.status(201).json({
       message: "Quote created successfully.",
@@ -73,7 +73,7 @@ export async function listQuotesHandler(
       status = parsedStatus.data;
     }
 
-    const quotes = await listQuotes(status);
+    const quotes = await listQuotes(request.authUser!.id, status);
 
     response.status(200).json({
       count: quotes.length,
@@ -99,7 +99,7 @@ export async function getQuoteHandler(
       return;
     }
 
-    const quote = await getQuoteById(parsedParams.data.quoteId);
+    const quote = await getQuoteById(request.authUser!.id, parsedParams.data.quoteId);
 
     if (!quote) {
       response.status(404).json({
@@ -141,7 +141,7 @@ export async function updateQuoteHandler(
       return;
     }
 
-    const quote = await updateQuote(parsedParams.data.quoteId, parsedBody.data);
+    const quote = await updateQuote(request.authUser!.id, parsedParams.data.quoteId, parsedBody.data);
 
     if (!quote) {
       response.status(404).json({
@@ -184,6 +184,7 @@ export async function updateQuoteStatusHandler(
     }
 
     const quote = await updateQuoteStatus(
+      request.authUser!.id,
       parsedParams.data.quoteId,
       parsedBody.data.status,
     );
@@ -219,7 +220,7 @@ export async function deleteQuoteHandler(
       return;
     }
 
-    const deleted = await deleteQuote(parsedParams.data.quoteId);
+    const deleted = await deleteQuote(request.authUser!.id, parsedParams.data.quoteId);
 
     if (!deleted) {
       response.status(404).json({

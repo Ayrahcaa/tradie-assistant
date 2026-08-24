@@ -4,7 +4,6 @@ import { ProjectDetailsPage } from "../features/projects/pages/ProjectDetailsPag
 import { ProjectsPage } from "../features/projects/pages/ProjectsPage";
 import { AppLayout } from "../shared/components/layout/AppLayout";
 import { DashboardPage } from "../shared/pages/DashboardPage";
-import { PlaceholderPage } from "../shared/pages/PlaceholderPage";
 import { CustomersPage } from "../features/customers/pages/CustomersPage";
 import { CustomerDetailsPage } from "../features/customers/pages/CustomerDetailsPage";
 import { QuotesPage } from "../features/quotes/pages/QuotesPage";
@@ -15,11 +14,26 @@ import { ExpensesPage } from "../features/expenses/pages/ExpensesPage";
 import { ExpenseDetailsPage } from "../features/expenses/pages/ExpenseDetailsPage";
 import { SubcontractorsPage } from "../features/subcontractors/pages/SubcontractorsPage";
 import { SubcontractorDetailsPage } from "../features/subcontractors/pages/SubcontractorDetailsPage";
+import { FinancialOverviewPage } from "../features/analytics/FinancialOverviewPage";
+import { OutstandingPage } from "../features/analytics/OutstandingPage";
+import { AssistantPage } from "../shared/pages/AssistantPage";
+import { ReceiptsPage } from "../shared/pages/ReceiptsPage";
+import { SettingsPage } from "../shared/pages/SettingsPage";
+import { LoginPage } from "../features/auth/pages/LoginPage";
+import { RegisterPage } from "../features/auth/pages/RegisterPage";
+import { ProtectedRoute, PublicOnlyRoute } from "../features/auth/components/AuthGuards";
 
 const router = createBrowserRouter([
   {
+    element: <PublicOnlyRoute />,
+    children: [
+      { path: "/login", element: <LoginPage /> },
+      { path: "/register", element: <RegisterPage /> },
+    ],
+  },
+  {
     path: "/",
-    element: <AppLayout />,
+    element: <ProtectedRoute><AppLayout /></ProtectedRoute>,
     children: [
       {
         index: true,
@@ -47,12 +61,7 @@ const router = createBrowserRouter([
       },
       {
         path: "receipts",
-        element: (
-          <PlaceholderPage
-            title="Receipts"
-            description="Upload receipts and use AI to extract supplier, amount and GST information."
-          />
-        ),
+        element: <ReceiptsPage />,
       },
       {
         path: "quotes",
@@ -83,22 +92,20 @@ const router = createBrowserRouter([
         element: <SubcontractorDetailsPage />,
       },
       {
+        path: "finances",
+        element: <FinancialOverviewPage />,
+      },
+      {
+        path: "outstanding",
+        element: <OutstandingPage />,
+      },
+      {
         path: "assistant",
-        element: (
-          <PlaceholderPage
-            title="AI Assistant"
-            description="Ask questions about projects, expenses, invoices and business performance."
-          />
-        ),
+        element: <AssistantPage />,
       },
       {
         path: "settings",
-        element: (
-          <PlaceholderPage
-            title="Settings"
-            description="Manage business details, GST registration, preferences and security."
-          />
-        ),
+        element: <SettingsPage />,
       },
     ],
   },

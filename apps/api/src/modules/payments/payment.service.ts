@@ -11,22 +11,6 @@ export interface CreatePaymentInput {
   paidAt?: string;
 }
 
-async function getDemoUser() {
-  const email = process.env.DEMO_USER_EMAIL ?? "demo@tradieassistant.com";
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
-
-  if (!user) {
-    throw new Error("Demo user was not found.");
-  }
-
-  return user;
-}
-
 function calculateInvoiceStatus(
   amountPaid: number,
   totalAmount: number,
@@ -51,14 +35,12 @@ function calculateInvoiceStatus(
   return "SENT";
 }
 
-export async function createPayment(input: CreatePaymentInput) {
-  const owner = await getDemoUser();
-
+export async function createPayment(ownerId: string, input: CreatePaymentInput) {
   return prisma.$transaction(async (tx) => {
     const invoice = await tx.invoice.findFirst({
       where: {
         id: input.invoiceId,
-        ownerId: owner.id,
+        ownerId,
       },
 
       include: {
@@ -105,7 +87,7 @@ export async function createPayment(input: CreatePaymentInput) {
         paidAt: input.paidAt ? new Date(input.paidAt) : new Date(),
 
         invoiceId: invoice.id,
-        ownerId: owner.id,
+        ownerId,
       },
     });
 
@@ -155,13 +137,11 @@ export async function createPayment(input: CreatePaymentInput) {
   });
 }
 
-export async function listInvoicePayments(invoiceId: string) {
-  const owner = await getDemoUser();
-
+export async function listInvoicePayments(ownerId: string, invoiceId: string) {
   const invoice = await prisma.invoice.findFirst({
     where: {
       id: invoiceId,
-      ownerId: owner.id,
+      ownerId,
     },
   });
 
@@ -172,7 +152,7 @@ export async function listInvoicePayments(invoiceId: string) {
   return prisma.payment.findMany({
     where: {
       invoiceId,
-      ownerId: owner.id,
+      ownerId,
     },
 
     orderBy: {
@@ -181,14 +161,12 @@ export async function listInvoicePayments(invoiceId: string) {
   });
 }
 
-export async function deletePayment(paymentId: string) {
-  const owner = await getDemoUser();
-
+export async function deletePayment(ownerId: string, paymentId: string) {
   return prisma.$transaction(async (tx) => {
     const payment = await tx.payment.findFirst({
       where: {
         id: paymentId,
-        ownerId: owner.id,
+        ownerId,
       },
     });
 
@@ -205,7 +183,7 @@ export async function deletePayment(paymentId: string) {
     const invoice = await tx.invoice.findFirst({
       where: {
         id: payment.invoiceId,
-        ownerId: owner.id,
+        ownerId,
       },
 
       include: {

@@ -1,23 +1,10 @@
 import fs from "node:fs/promises";
 import { prisma } from "../../lib/prisma.js";
-async function getDemoUser() {
-    const email = process.env.DEMO_USER_EMAIL ?? "demo@tradieassistant.com";
-    const user = await prisma.user.findUnique({
-        where: {
-            email,
-        },
-    });
-    if (!user) {
-        throw new Error("Demo user was not found.");
-    }
-    return user;
-}
-export async function createReceipt(expenseId, file) {
-    const owner = await getDemoUser();
+export async function createReceipt(ownerId, expenseId, file) {
     const expense = await prisma.expense.findFirst({
         where: {
             id: expenseId,
-            ownerId: owner.id,
+            ownerId,
         },
     });
     if (!expense) {
@@ -32,16 +19,15 @@ export async function createReceipt(expenseId, file) {
             fileSize: file.size,
             storagePath: file.path,
             expenseId: expense.id,
-            ownerId: owner.id,
+            ownerId,
         },
     });
 }
-export async function listExpenseReceipts(expenseId) {
-    const owner = await getDemoUser();
+export async function listExpenseReceipts(ownerId, expenseId) {
     const expense = await prisma.expense.findFirst({
         where: {
             id: expenseId,
-            ownerId: owner.id,
+            ownerId,
         },
     });
     if (!expense) {
@@ -50,24 +36,23 @@ export async function listExpenseReceipts(expenseId) {
     return prisma.receipt.findMany({
         where: {
             expenseId,
-            ownerId: owner.id,
+            ownerId,
         },
         orderBy: {
             createdAt: "desc",
         },
     });
 }
-export async function getReceiptById(receiptId) {
-    const owner = await getDemoUser();
+export async function getReceiptById(ownerId, receiptId) {
     return prisma.receipt.findFirst({
         where: {
             id: receiptId,
-            ownerId: owner.id,
+            ownerId,
         },
     });
 }
-export async function deleteReceipt(receiptId) {
-    const receipt = await getReceiptById(receiptId);
+export async function deleteReceipt(ownerId, receiptId) {
+    const receipt = await getReceiptById(ownerId, receiptId);
     if (!receipt) {
         return false;
     }

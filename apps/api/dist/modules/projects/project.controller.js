@@ -10,7 +10,7 @@ export async function createProjectHandler(request, response, next) {
             });
             return;
         }
-        const project = await createProject(parsedBody.data);
+        const project = await createProject(request.authUser.id, parsedBody.data);
         response.status(201).json({
             message: "Project created successfully.",
             data: project,
@@ -34,7 +34,7 @@ export async function listProjectsHandler(request, response, next) {
             }
             status = parsedStatus.data;
         }
-        const projects = await listProjects(status);
+        const projects = await listProjects(request.authUser.id, status);
         response.status(200).json({
             count: projects.length,
             data: projects,
@@ -54,7 +54,7 @@ export async function getProjectHandler(request, response, next) {
             });
             return;
         }
-        const project = await getProjectById(parsedParams.data.projectId);
+        const project = await getProjectById(request.authUser.id, parsedParams.data.projectId);
         if (!project) {
             response.status(404).json({
                 message: "Project not found.",
@@ -87,7 +87,7 @@ export async function updateProjectHandler(request, response, next) {
             });
             return;
         }
-        const project = await updateProject(parsedParams.data.projectId, parsedBody.data);
+        const project = await updateProject(request.authUser.id, parsedParams.data.projectId, parsedBody.data);
         if (!project) {
             response.status(404).json({
                 message: "Project not found.",
@@ -113,7 +113,7 @@ export async function archiveProjectHandler(request, response, next) {
             });
             return;
         }
-        const project = await archiveProject(parsedParams.data.projectId);
+        const project = await archiveProject(request.authUser.id, parsedParams.data.projectId);
         if (!project) {
             response.status(404).json({
                 message: "Project not found.",
@@ -139,7 +139,7 @@ export async function deleteProjectHandler(request, response, next) {
             });
             return;
         }
-        const deleted = await deleteProject(parsedParams.data.projectId);
+        const deleted = await deleteProject(request.authUser.id, parsedParams.data.projectId);
         if (!deleted) {
             response.status(404).json({
                 message: "Project not found.",

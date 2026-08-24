@@ -352,10 +352,11 @@ export type QuoteOrderByWithRelationInput = {
 
 export type QuoteWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  quoteNumber?: string
+  ownerId_quoteNumber?: Prisma.QuoteOwnerIdQuoteNumberCompoundUniqueInput
   AND?: Prisma.QuoteWhereInput | Prisma.QuoteWhereInput[]
   OR?: Prisma.QuoteWhereInput[]
   NOT?: Prisma.QuoteWhereInput | Prisma.QuoteWhereInput[]
+  quoteNumber?: Prisma.StringFilter<"Quote"> | string
   title?: Prisma.StringFilter<"Quote"> | string
   description?: Prisma.StringNullableFilter<"Quote"> | string | null
   status?: Prisma.EnumQuoteStatusFilter<"Quote"> | $Enums.QuoteStatus
@@ -375,7 +376,7 @@ export type QuoteWhereUniqueInput = Prisma.AtLeast<{
   customer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
   project?: Prisma.XOR<Prisma.ProjectNullableScalarRelationFilter, Prisma.ProjectWhereInput> | null
   items?: Prisma.QuoteItemListRelationFilter
-}, "id" | "quoteNumber">
+}, "id" | "ownerId_quoteNumber">
 
 export type QuoteOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -574,6 +575,11 @@ export type QuoteListRelationFilter = {
 
 export type QuoteOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type QuoteOwnerIdQuoteNumberCompoundUniqueInput = {
+  ownerId: string
+  quoteNumber: string
 }
 
 export type QuoteCountOrderByAggregateInput = {

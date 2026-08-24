@@ -10,33 +10,15 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-async function getDemoUser() {
-  const email = process.env.DEMO_USER_EMAIL ?? "demo@tradieassistant.com";
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
-
-  if (!user) {
-    throw new Error("Demo user was not found.");
-  }
-
-  return user;
-}
-
-export async function extractReceiptData(receiptId: string) {
+export async function extractReceiptData(ownerId: string, receiptId: string) {
   if (!process.env.OPENAI_API_KEY) {
     throw new Error("OPENAI_API_KEY is not configured.");
   }
 
-  const owner = await getDemoUser();
-
   const receipt = await prisma.receipt.findFirst({
     where: {
       id: receiptId,
-      ownerId: owner.id,
+      ownerId,
     },
   });
 

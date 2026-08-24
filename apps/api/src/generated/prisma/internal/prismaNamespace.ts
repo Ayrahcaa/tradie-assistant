@@ -398,6 +398,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
+  PasswordCredential: 'PasswordCredential',
+  Session: 'Session',
   Project: 'Project',
   Customer: 'Customer',
   Quote: 'Quote',
@@ -425,7 +427,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "project" | "customer" | "quote" | "quoteItem" | "invoice" | "invoiceItem" | "payment" | "expense" | "receipt" | "subcontractor" | "subcontractorProjectCost" | "subcontractorPayment"
+    modelProps: "user" | "passwordCredential" | "session" | "project" | "customer" | "quote" | "quoteItem" | "invoice" | "invoiceItem" | "payment" | "expense" | "receipt" | "subcontractor" | "subcontractorProjectCost" | "subcontractorPayment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -500,6 +502,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    PasswordCredential: {
+      payload: Prisma.$PasswordCredentialPayload<ExtArgs>
+      fields: Prisma.PasswordCredentialFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PasswordCredentialFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordCredentialPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PasswordCredentialFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordCredentialPayload>
+        }
+        findFirst: {
+          args: Prisma.PasswordCredentialFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordCredentialPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PasswordCredentialFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordCredentialPayload>
+        }
+        findMany: {
+          args: Prisma.PasswordCredentialFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordCredentialPayload>[]
+        }
+        create: {
+          args: Prisma.PasswordCredentialCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordCredentialPayload>
+        }
+        createMany: {
+          args: Prisma.PasswordCredentialCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PasswordCredentialCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordCredentialPayload>[]
+        }
+        delete: {
+          args: Prisma.PasswordCredentialDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordCredentialPayload>
+        }
+        update: {
+          args: Prisma.PasswordCredentialUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordCredentialPayload>
+        }
+        deleteMany: {
+          args: Prisma.PasswordCredentialDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PasswordCredentialUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PasswordCredentialUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordCredentialPayload>[]
+        }
+        upsert: {
+          args: Prisma.PasswordCredentialUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordCredentialPayload>
+        }
+        aggregate: {
+          args: Prisma.PasswordCredentialAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePasswordCredential>
+        }
+        groupBy: {
+          args: Prisma.PasswordCredentialGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PasswordCredentialGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PasswordCredentialCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PasswordCredentialCountAggregateOutputType> | number
+        }
+      }
+    }
+    Session: {
+      payload: Prisma.$SessionPayload<ExtArgs>
+      fields: Prisma.SessionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SessionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SessionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionPayload>
+        }
+        findFirst: {
+          args: Prisma.SessionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SessionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionPayload>
+        }
+        findMany: {
+          args: Prisma.SessionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionPayload>[]
+        }
+        create: {
+          args: Prisma.SessionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionPayload>
+        }
+        createMany: {
+          args: Prisma.SessionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SessionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionPayload>[]
+        }
+        delete: {
+          args: Prisma.SessionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionPayload>
+        }
+        update: {
+          args: Prisma.SessionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionPayload>
+        }
+        deleteMany: {
+          args: Prisma.SessionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SessionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SessionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionPayload>[]
+        }
+        upsert: {
+          args: Prisma.SessionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionPayload>
+        }
+        aggregate: {
+          args: Prisma.SessionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSession>
+        }
+        groupBy: {
+          args: Prisma.SessionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SessionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SessionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SessionCountAggregateOutputType> | number
         }
       }
     }
@@ -1435,14 +1585,40 @@ export const UserScalarFieldEnum = {
   firstName: 'firstName',
   lastName: 'lastName',
   email: 'email',
-  passwordHash: 'passwordHash',
   businessName: 'businessName',
   abn: 'abn',
+  phone: 'phone',
+  address: 'address',
+  tradeType: 'tradeType',
+  gstRegistered: 'gstRegistered',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const PasswordCredentialScalarFieldEnum = {
+  id: 'id',
+  passwordHash: 'passwordHash',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+} as const
+
+export type PasswordCredentialScalarFieldEnum = (typeof PasswordCredentialScalarFieldEnum)[keyof typeof PasswordCredentialScalarFieldEnum]
+
+
+export const SessionScalarFieldEnum = {
+  id: 'id',
+  tokenHash: 'tokenHash',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  lastUsedAt: 'lastUsedAt',
+  userId: 'userId'
+} as const
+
+export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
 
 
 export const ProjectScalarFieldEnum = {
@@ -1715,6 +1891,13 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -1753,13 +1936,6 @@ export type EnumProjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'ProjectStatus[]'
  */
 export type ListEnumProjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -2040,6 +2216,8 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
+  passwordCredential?: Prisma.PasswordCredentialOmit
+  session?: Prisma.SessionOmit
   project?: Prisma.ProjectOmit
   customer?: Prisma.CustomerOmit
   quote?: Prisma.QuoteOmit

@@ -1,18 +1,6 @@
 import { prisma } from "../../lib/prisma.js";
-async function getDemoUser() {
-    const email = process.env.DEMO_USER_EMAIL ?? "demo@tradieassistant.com";
-    const user = await prisma.user.findUnique({
-        where: {
-            email,
-        },
-    });
-    if (!user) {
-        throw new Error("Demo user was not found.");
-    }
-    return user;
-}
-export async function createSubcontractor(input) {
-    const owner = await getDemoUser();
+import { HttpError } from "../../lib/http-error.js";
+export async function createSubcontractor(ownerId, input) {
     return prisma.subcontractor.create({
         data: {
             firstName: input.firstName,
@@ -24,15 +12,14 @@ export async function createSubcontractor(input) {
             address: input.address,
             notes: input.notes,
             isArchived: input.isArchived ?? false,
-            ownerId: owner.id,
+            ownerId,
         },
     });
 }
-export async function listSubcontractors(includeArchived = false) {
-    const owner = await getDemoUser();
+export async function listSubcontractors(ownerId, includeArchived = false) {
     return prisma.subcontractor.findMany({
         where: {
-            ownerId: owner.id,
+            ownerId,
             ...(includeArchived
                 ? {}
                 : {
@@ -49,17 +36,16 @@ export async function listSubcontractors(includeArchived = false) {
         ],
     });
 }
-export async function getSubcontractorById(subcontractorId) {
-    const owner = await getDemoUser();
+export async function getSubcontractorById(ownerId, subcontractorId) {
     return prisma.subcontractor.findFirst({
         where: {
             id: subcontractorId,
-            ownerId: owner.id,
+            ownerId,
         },
     });
 }
-export async function updateSubcontractor(subcontractorId, input) {
-    const existing = await getSubcontractorById(subcontractorId);
+export async function updateSubcontractor(ownerId, subcontractorId, input) {
+    const existing = await getSubcontractorById(ownerId, subcontractorId);
     if (!existing) {
         return null;
     }
@@ -70,20 +56,26 @@ export async function updateSubcontractor(subcontractorId, input) {
         data: input,
     });
 }
-export async function archiveSubcontractor(subcontractorId) {
-    return updateSubcontractor(subcontractorId, {
+export async function archiveSubcontractor(ownerId, subcontractorId) {
+    return updateSubcontractor(ownerId, subcontractorId, {
         isArchived: true,
     });
 }
-export async function restoreSubcontractor(subcontractorId) {
-    return updateSubcontractor(subcontractorId, {
+export async function restoreSubcontractor(ownerId, subcontractorId) {
+    return updateSubcontractor(ownerId, subcontractorId, {
         isArchived: false,
     });
 }
-export async function deleteSubcontractor(subcontractorId) {
-    const existing = await getSubcontractorById(subcontractorId);
+export async function deleteSubcontractor(ownerId, subcontractorId) {
+    const existing = await getSubcontractorById(ownerId, subcontractorId);
     if (!existing) {
         return false;
+    }
+    const costCount = await prisma.subcontractorProjectCost.count({
+        where: { subcontractorId, ownerId: existing.ownerId },
+    });
+    if (costCount > 0) {
+        throw new HttpError(409, "This subcontractor has project work history. Archive them instead of deleting the financial record.");
     }
     await prisma.subcontractor.delete({
         where: {

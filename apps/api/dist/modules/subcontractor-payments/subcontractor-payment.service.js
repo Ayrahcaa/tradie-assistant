@@ -1,16 +1,4 @@
 import { prisma } from "../../lib/prisma.js";
-async function getDemoUser() {
-    const email = process.env.DEMO_USER_EMAIL ?? "demo@tradieassistant.com";
-    const user = await prisma.user.findUnique({
-        where: {
-            email,
-        },
-    });
-    if (!user) {
-        throw new Error("Demo user was not found.");
-    }
-    return user;
-}
 function deriveCostStatus(agreedAmount, amountPaid) {
     if (amountPaid <= 0) {
         return "UNPAID";
@@ -20,13 +8,12 @@ function deriveCostStatus(agreedAmount, amountPaid) {
     }
     return "PARTIALLY_PAID";
 }
-export async function createSubcontractorPayment(input) {
-    const owner = await getDemoUser();
+export async function createSubcontractorPayment(ownerId, input) {
     return prisma.$transaction(async (tx) => {
         const cost = await tx.subcontractorProjectCost.findFirst({
             where: {
                 id: input.costId,
-                ownerId: owner.id,
+                ownerId,
             },
             include: {
                 payments: true,
@@ -50,7 +37,7 @@ export async function createSubcontractorPayment(input) {
         const payment = await tx.subcontractorPayment.create({
             data: {
                 costId: cost.id,
-                ownerId: owner.id,
+                ownerId,
                 amount: input.amount,
                 paidAt: input.paidAt ? new Date(input.paidAt) : new Date(),
                 reference: input.reference ?? null,
@@ -85,13 +72,12 @@ export async function createSubcontractorPayment(input) {
         };
     });
 }
-export async function deleteSubcontractorPayment(paymentId) {
-    const owner = await getDemoUser();
+export async function deleteSubcontractorPayment(ownerId, paymentId) {
     return prisma.$transaction(async (tx) => {
         const payment = await tx.subcontractorPayment.findFirst({
             where: {
                 id: paymentId,
-                ownerId: owner.id,
+                ownerId,
             },
         });
         if (!payment) {
@@ -105,7 +91,7 @@ export async function deleteSubcontractorPayment(paymentId) {
         const cost = await tx.subcontractorProjectCost.findFirst({
             where: {
                 id: payment.costId,
-                ownerId: owner.id,
+                ownerId,
             },
             include: {
                 payments: true,
