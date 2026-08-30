@@ -1,4 +1,5 @@
 import { prisma } from "../../lib/prisma.js";
+import { Prisma } from "../../generated/prisma/client.js";
 function deriveInvoiceStatus(input) {
     const { currentStatus, totalAmount, amountPaid, dueDate } = input;
     if (currentStatus === "CANCELLED") {
@@ -45,10 +46,11 @@ async function validateProject(projectId, ownerId) {
     }
     return project;
 }
-function calculateTotals(items) {
-    const subtotal = items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
-    const gstAmount = subtotal * 0.1;
-    const totalAmount = subtotal + gstAmount;
+export function calculateInvoiceTotals(items, gstRegistered) {
+    const subtotal = items.reduce((sum, item) => sum.plus(new Prisma.Decimal(item.quantity).times(item.unitPrice)), new Prisma.Decimal(0));
+    const taxableSubtotal = gstRegistered ? items.filter((item) => item.gstApplicable !== false).reduce((sum, item) => sum.plus(new Prisma.Decimal(item.quantity).times(item.unitPrice)), new Prisma.Decimal(0)) : new Prisma.Decimal(0);
+    const gstAmount = taxableSubtotal.times("0.10").toDecimalPlaces(2);
+    const totalAmount = subtotal.plus(gstAmount);
     return {
         subtotal,
         gstAmount,
@@ -63,7 +65,8 @@ async function generateInvoiceNumber(ownerId) {
 export async function createInvoice(ownerId, input) {
     await validateCustomer(input.customerId, ownerId);
     await validateProject(input.projectId, ownerId);
-    const totals = calculateTotals(input.items);
+    const owner = await prisma.user.findUniqueOrThrow({ where: { id: ownerId }, select: { gstRegistered: true } });
+    const totals = calculateInvoiceTotals(input.items, owner.gstRegistered);
     const invoiceNumber = await generateInvoiceNumber(ownerId);
     return prisma.invoice.create({
         data: {
@@ -88,6 +91,7 @@ export async function createInvoice(ownerId, input) {
                     unitPrice: item.unitPrice,
                     lineTotal: item.quantity * item.unitPrice,
                     sortOrder: item.sortOrder ?? index,
+                    gstApplicable: owner.gstRegistered && item.gstApplicable !== false,
                 })),
             },
         },
@@ -221,7 +225,8 @@ export async function updateInvoice(ownerId, invoiceId, input) {
     if (input.projectId !== undefined) {
         await validateProject(input.projectId, ownerId);
     }
-    const totals = input.items ? calculateTotals(input.items) : null;
+    const owner = await prisma.user.findUniqueOrThrow({ where: { id: ownerId }, select: { gstRegistered: true } });
+    const totals = input.items ? calculateInvoiceTotals(input.items, owner.gstRegistered) : null;
     return prisma.$transaction(async (tx) => {
         if (input.items) {
             await tx.invoiceItem.deleteMany({
@@ -253,7 +258,7 @@ export async function updateInvoice(ownerId, invoiceId, input) {
                 totalAmount,
                 balanceDue: totalAmount === undefined
                     ? undefined
-                    : Math.max(totalAmount - amountPaid, 0),
+                    : Prisma.Decimal.max(totalAmount.minus(amountPaid), 0),
                 ...(input.items
                     ? {
                         items: {
@@ -263,6 +268,7 @@ export async function updateInvoice(ownerId, invoiceId, input) {
                                 unitPrice: item.unitPrice,
                                 lineTotal: item.quantity * item.unitPrice,
                                 sortOrder: item.sortOrder ?? index,
+                                gstApplicable: owner.gstRegistered && item.gstApplicable !== false,
                             })),
                         },
                     }

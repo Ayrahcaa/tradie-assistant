@@ -6,16 +6,22 @@ import { getCustomers } from "../../customers/api/customers";
 import { getProjects } from "../../projects/api/projects";
 
 import { createInvoice, type CreateInvoiceInput } from "../api/invoices";
+import { useCurrentUser } from "../../auth/hooks/useCurrentUser";
 
 interface NewInvoiceFormProps {
   onSuccess: () => void;
   onCancel: () => void;
+  projectId?: string;
+  projectName?: string;
+  customerId?: string;
+  customerName?: string;
 }
 
 interface InvoiceItemForm {
   description: string;
   quantity: string;
   unitPrice: string;
+  gstApplicable: boolean;
 }
 
 interface InvoiceFormState {
@@ -42,6 +48,7 @@ const initialItem: InvoiceItemForm = {
   description: "",
   quantity: "1",
   unitPrice: "",
+  gstApplicable: true,
 };
 
 function money(value: number): string {
@@ -51,10 +58,11 @@ function money(value: number): string {
   }).format(value);
 }
 
-export function NewInvoiceForm({ onSuccess, onCancel }: NewInvoiceFormProps) {
+export function NewInvoiceForm({ onSuccess, onCancel, projectId, projectName, customerId, customerName }: NewInvoiceFormProps) {
   const queryClient = useQueryClient();
+  const currentUser = useCurrentUser().data;
 
-  const [form, setForm] = useState<InvoiceFormState>(initialFormState);
+  const [form, setForm] = useState<InvoiceFormState>({ ...initialFormState, projectId: projectId ?? "", customerId: customerId ?? "" });
 
   const [items, setItems] = useState<InvoiceItemForm[]>([{ ...initialItem }]);
 
@@ -74,9 +82,11 @@ export function NewInvoiceForm({ onSuccess, onCancel }: NewInvoiceFormProps) {
     mutationFn: createInvoice,
 
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["invoices"],
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["invoices"] }),
+        ...(projectId ? [queryClient.invalidateQueries({ queryKey: ["project-overview", projectId] })] : []),
+        queryClient.invalidateQueries({ queryKey: ["business-overview"] }),
+      ]);
 
       setForm(initialFormState);
       setItems([{ ...initialItem }]);
@@ -138,7 +148,8 @@ export function NewInvoiceForm({ onSuccess, onCancel }: NewInvoiceFormProps) {
     return sum + quantity * unitPrice;
   }, 0);
 
-  const gstAmount = subtotal * 0.1;
+  const taxableSubtotal = items.reduce((sum,item)=>sum+(item.gstApplicable?(Number(item.quantity)||0)*(Number(item.unitPrice)||0):0),0);
+  const gstAmount = currentUser?.gstRegistered ? taxableSubtotal * 0.1 : 0;
 
   const totalAmount = subtotal + gstAmount;
 
@@ -198,6 +209,8 @@ export function NewInvoiceForm({ onSuccess, onCancel }: NewInvoiceFormProps) {
         quantity: Number(item.quantity),
 
         unitPrice: Number(item.unitPrice),
+
+        gstApplicable: item.gstApplicable,
 
         sortOrder: index,
       })),
@@ -270,7 +283,7 @@ export function NewInvoiceForm({ onSuccess, onCancel }: NewInvoiceFormProps) {
           <div>
             <label className="text-sm font-bold text-slate-700">Customer</label>
 
-            <select
+            {customerId ? <div className="mt-2 flex h-11 items-center rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700">{customerName ?? "Project customer"}</div> : <select
               name="customerId"
               value={form.customerId}
               onChange={handleChange}
@@ -285,13 +298,13 @@ export function NewInvoiceForm({ onSuccess, onCancel }: NewInvoiceFormProps) {
                   {customer.businessName ? ` — ${customer.businessName}` : ""}
                 </option>
               ))}
-            </select>
+            </select>}
           </div>
 
           <div>
             <label className="text-sm font-bold text-slate-700">Project</label>
 
-            <select
+            {projectId ? <div className="mt-2 flex h-11 items-center rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700">{projectName ?? "Current project"}</div> : <select
               name="projectId"
               value={form.projectId}
               onChange={handleChange}
@@ -304,7 +317,7 @@ export function NewInvoiceForm({ onSuccess, onCancel }: NewInvoiceFormProps) {
                   {project.name}
                 </option>
               ))}
-            </select>
+            </select>}
           </div>
         </div>
 
@@ -422,6 +435,7 @@ export function NewInvoiceForm({ onSuccess, onCancel }: NewInvoiceFormProps) {
                       <Trash2 size={17} />
                     </button>
                   </div>
+                  <label className="mt-3 flex items-center gap-2 text-sm font-medium text-slate-600"><input type="checkbox" checked={item.gstApplicable} onChange={(event)=>setItems((current)=>current.map((entry,itemIndex)=>itemIndex===index?{...entry,gstApplicable:event.target.checked}:entry))} className="h-4 w-4 accent-amber-500"/>GST applies to this line when the business is GST registered</label>
                 </div>
               );
             })}

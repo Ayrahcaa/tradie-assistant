@@ -22,7 +22,7 @@ export async function requireAuth(request: Request, response: Response, next: Ne
     const token = getRequestSessionToken(request);
     if (!token) { response.status(401).json({ message: "Authentication required." }); return; }
     const tokenHash = hashSessionToken(token);
-    const session = await prisma.session.findFirst({ where: { tokenHash, expiresAt: { gt: new Date() } }, include: { user: { select: { id: true, email: true, firstName: true, lastName: true, businessName: true, abn: true, phone: true, address: true, tradeType: true, gstRegistered: true } } } });
+    const session = await prisma.session.findFirst({ where: { tokenHash, expiresAt: { gt: new Date() } }, include: { user: { select: { id: true, email: true, firstName: true, lastName: true, businessName: true, abn: true, phone: true, address: true, tradeType: true, gstRegistered: true, businessStructure: true, gstAccountingMethod: true, basFrequency: true, taxProfile: true, taxFinancialYear: true, otherTaxableIncome: true, additionalDeductions: true } } } });
     if (!session) {
       await prisma.session.deleteMany({ where: { tokenHash } });
       response.status(401).json({ message: "Your session is invalid or has expired." });

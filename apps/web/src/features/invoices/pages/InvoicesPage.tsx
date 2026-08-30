@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { CircleAlert, FilePlus2, ReceiptText } from "lucide-react";
+import { CircleAlert, FilePlus2, ReceiptText, Search } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
 
@@ -48,10 +48,10 @@ function statusClasses(status: InvoiceStatus): string {
       return "bg-slate-100 text-slate-700";
 
     case "SENT":
-      return "bg-blue-100 text-blue-700";
+      return "bg-slate-100 text-slate-700";
 
     case "PARTIALLY_PAID":
-      return "bg-violet-100 text-violet-700";
+      return "bg-amber-100 text-amber-800";
 
     case "PAID":
       return "bg-emerald-100 text-emerald-700";
@@ -150,6 +150,7 @@ export function InvoicesPage() {
   const [filter, setFilter] = useState<InvoiceFilter>("ALL");
 
   const [newInvoiceOpen, setNewInvoiceOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
   const status = filter === "ALL" ? undefined : filter;
 
@@ -158,6 +159,7 @@ export function InvoicesPage() {
 
     queryFn: () => getInvoices(status),
   });
+  const displayedInvoices = invoicesQuery.data?.data.filter((invoice) => `${invoice.invoiceNumber} ${invoice.title} ${invoice.customer.firstName} ${invoice.customer.lastName} ${invoice.project?.name ?? ""}`.toLowerCase().includes(search.toLowerCase())) ?? [];
 
   return (
     <>
@@ -177,7 +179,9 @@ export function InvoicesPage() {
         }
       />
 
-      <div className="mb-6 flex gap-2 overflow-x-auto pb-1">
+      <div className="surface-card mb-6 flex flex-col gap-3 p-3 lg:flex-row lg:items-center">
+        <label className="relative min-w-0 flex-1"><Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"/><span className="sr-only">Search invoices</span><input type="search" value={search} onChange={(event)=>setSearch(event.target.value)} placeholder="Search invoices, customers or projects" className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 pl-11 pr-4 text-sm outline-none focus:bg-white"/></label>
+        <div className="flex gap-2 overflow-x-auto pb-1 lg:pb-0">
         {filters.map((item) => (
           <button
             key={item}
@@ -193,6 +197,7 @@ export function InvoicesPage() {
             {item === "ALL" ? "All invoices" : item.replace("_", " ")}
           </button>
         ))}
+        </div>
       </div>
 
       {invoicesQuery.isPending && (
@@ -216,21 +221,21 @@ export function InvoicesPage() {
         </div>
       )}
 
-      {invoicesQuery.isSuccess && invoicesQuery.data.data.length === 0 && (
+      {invoicesQuery.isSuccess && displayedInvoices.length === 0 && (
         <EmptyState
           title="No invoices found"
           description="Create your first invoice and begin tracking amounts due and paid."
         />
       )}
 
-      {invoicesQuery.isSuccess && invoicesQuery.data.data.length > 0 && (
+      {invoicesQuery.isSuccess && displayedInvoices.length > 0 && (
         <>
           <p className="mb-4 text-sm font-semibold text-slate-500">
-            {invoicesQuery.data.count} invoices
+            {displayedInvoices.length} invoice{displayedInvoices.length === 1 ? "" : "s"}
           </p>
 
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {invoicesQuery.data.data.map((invoice) => (
+            {displayedInvoices.map((invoice) => (
               <InvoiceCard key={invoice.id} invoice={invoice} />
             ))}
           </div>

@@ -17,6 +17,7 @@ export interface Project {
   ownerId: string;
   createdAt: string;
   updatedAt: string;
+  financialSummary?: { revenue: number; costs: number; profit: number; margin: number };
 }
 
 export interface ProjectCustomer {

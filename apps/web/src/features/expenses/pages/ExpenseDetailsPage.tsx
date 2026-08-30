@@ -356,7 +356,7 @@ export function ExpenseDetailsPage() {
                 type="button"
                 onClick={() => markPaidMutation.mutate()}
                 disabled={markPaidMutation.isPending}
-                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 text-sm font-bold text-white hover:bg-emerald-700 disabled:opacity-50"
+                className="btn-primary w-full"
               >
                 <Clock3 size={18} />
 

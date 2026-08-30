@@ -18,6 +18,8 @@ export interface ExpenseProject {
   name: string;
 }
 
+import type { Receipt } from "./receipt";
+
 export interface Expense {
   id: string;
   description: string;
@@ -27,6 +29,9 @@ export interface Expense {
 
   amount: string;
   gstAmount: string;
+  gstTreatment: "GST_INCLUDED"|"GST_FREE"|"MANUAL"|"NOT_CLAIMABLE"|"UNKNOWN";
+  gstClaimable: boolean;
+  receipts?: Receipt[];
 
   expenseDate: string;
   dueDate: string | null;

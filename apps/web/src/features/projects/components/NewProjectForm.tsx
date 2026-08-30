@@ -1,9 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CircleAlert, LoaderCircle } from "lucide-react";
+import { CircleAlert, LoaderCircle, UserPlus } from "lucide-react";
 import { type ChangeEvent, type FormEvent, useState } from "react";
 
 import { createProject, type CreateProjectInput } from "../api/projects";
 import { getCustomers } from "../../customers/api/customers";
+import { NewCustomerForm } from "../../customers/components/NewCustomerForm";
+import { Modal } from "../../../shared/components/ui/Modal";
 
 interface NewProjectFormProps {
   onSuccess: () => void;
@@ -36,6 +38,7 @@ export function NewProjectForm({ onSuccess, onCancel }: NewProjectFormProps) {
   const [form, setForm] = useState<ProjectFormState>(initialFormState);
 
   const [validationError, setValidationError] = useState<string | null>(null);
+  const [newCustomerOpen, setNewCustomerOpen] = useState(false);
 
   const customersQuery = useQuery({
     queryKey: ["customers", false],
@@ -137,6 +140,7 @@ export function NewProjectForm({ onSuccess, onCancel }: NewProjectFormProps) {
     "mt-2 h-11 w-full rounded-xl border border-slate-200 bg-white px-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-500 focus:ring-2 focus:ring-slate-200";
 
   return (
+    <>
     <form onSubmit={handleSubmit}>
       <div className="space-y-5 p-6">
         {(validationError || createProjectMutation.isError) && (
@@ -228,6 +232,7 @@ export function NewProjectForm({ onSuccess, onCancel }: NewProjectFormProps) {
                 Unable to load customers.
               </p>
             )}
+            <button type="button" onClick={() => setNewCustomerOpen(true)} className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-amber-800 hover:text-amber-950"><UserPlus size={17}/>Create new customer</button>
           </div>
 
           <div>
@@ -342,5 +347,9 @@ export function NewProjectForm({ onSuccess, onCancel }: NewProjectFormProps) {
         </button>
       </div>
     </form>
+    <Modal open={newCustomerOpen} title="Create customer" description="The new customer will be selected automatically for this project." onClose={() => setNewCustomerOpen(false)}>
+      <NewCustomerForm onCancel={() => setNewCustomerOpen(false)} onSuccess={(customer) => { setForm((current) => ({ ...current, customerId: customer.id, address: current.address || customer.address || "" })); setNewCustomerOpen(false); }} />
+    </Modal>
+    </>
   );
 }

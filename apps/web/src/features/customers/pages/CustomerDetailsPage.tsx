@@ -28,6 +28,7 @@ import {
 import { EditCustomerForm } from "../components/EditCustomerForm";
 
 import { Modal } from "../../../shared/components/ui/Modal";
+import { ContactActions } from "../../../shared/components/ui/ContactActions";
 import { getCustomerOverview } from "../../analytics/api";
 
 const money = (value: string | number) =>
@@ -191,6 +192,7 @@ export function CustomerDetailsPage() {
             <p className="mt-2 text-sm text-slate-500">
               {customer.businessName || "Residential customer"}
             </p>
+            <div className="mt-4"><ContactActions phone={customer.phone} email={customer.email}/></div>
           </div>
 
           <button

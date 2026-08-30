@@ -50,6 +50,7 @@ export const ModelName = {
     InvoiceItem: 'InvoiceItem',
     Payment: 'Payment',
     Expense: 'Expense',
+    PaygInstalment: 'PaygInstalment',
     Receipt: 'Receipt',
     Subcontractor: 'Subcontractor',
     SubcontractorProjectCost: 'SubcontractorProjectCost',
@@ -75,6 +76,13 @@ export const UserScalarFieldEnum = {
     address: 'address',
     tradeType: 'tradeType',
     gstRegistered: 'gstRegistered',
+    businessStructure: 'businessStructure',
+    gstAccountingMethod: 'gstAccountingMethod',
+    basFrequency: 'basFrequency',
+    taxProfile: 'taxProfile',
+    taxFinancialYear: 'taxFinancialYear',
+    otherTaxableIncome: 'otherTaxableIncome',
+    additionalDeductions: 'additionalDeductions',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
@@ -181,6 +189,7 @@ export const InvoiceItemScalarFieldEnum = {
     unitPrice: 'unitPrice',
     lineTotal: 'lineTotal',
     sortOrder: 'sortOrder',
+    gstApplicable: 'gstApplicable',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     invoiceId: 'invoiceId'
@@ -205,6 +214,8 @@ export const ExpenseScalarFieldEnum = {
     status: 'status',
     amount: 'amount',
     gstAmount: 'gstAmount',
+    gstTreatment: 'gstTreatment',
+    gstClaimable: 'gstClaimable',
     expenseDate: 'expenseDate',
     dueDate: 'dueDate',
     paidAt: 'paidAt',
@@ -213,6 +224,17 @@ export const ExpenseScalarFieldEnum = {
     updatedAt: 'updatedAt',
     ownerId: 'ownerId',
     projectId: 'projectId'
+};
+export const PaygInstalmentScalarFieldEnum = {
+    id: 'id',
+    amount: 'amount',
+    paidAt: 'paidAt',
+    period: 'period',
+    reference: 'reference',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    ownerId: 'ownerId'
 };
 export const ReceiptScalarFieldEnum = {
     id: 'id',

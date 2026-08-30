@@ -1,4 +1,13 @@
 import { prisma } from "../../lib/prisma.js";
+import { Prisma } from "../../generated/prisma/client.js";
+export function calculateExpenseGst(amount, treatment, manualAmount = 0) {
+    const gross = new Prisma.Decimal(amount);
+    if (treatment === "GST_INCLUDED")
+        return gross.dividedBy(11).toDecimalPlaces(2);
+    if (treatment === "MANUAL")
+        return Prisma.Decimal.min(new Prisma.Decimal(manualAmount), gross).toDecimalPlaces(2);
+    return new Prisma.Decimal(0);
+}
 async function validateProject(projectId, ownerId) {
     if (!projectId) {
         return null;
@@ -32,6 +41,10 @@ export async function createExpense(ownerId, input) {
         dueDate,
         paidAt,
     });
+    const owner = await prisma.user.findUniqueOrThrow({ where: { id: ownerId }, select: { gstRegistered: true } });
+    const treatment = input.gstTreatment ?? "UNKNOWN";
+    const gstClaimable = owner.gstRegistered && input.gstClaimable === true && !["UNKNOWN", "GST_FREE", "NOT_CLAIMABLE"].includes(treatment);
+    const gstAmount = gstClaimable ? calculateExpenseGst(input.amount, treatment, input.gstAmount) : new Prisma.Decimal(0);
     return prisma.expense.create({
         data: {
             description: input.description,
@@ -39,7 +52,9 @@ export async function createExpense(ownerId, input) {
             category: input.category,
             status,
             amount: input.amount,
-            gstAmount: input.gstAmount ?? 0,
+            gstAmount,
+            gstTreatment: treatment,
+            gstClaimable,
             expenseDate: new Date(input.expenseDate),
             dueDate,
             paidAt,
@@ -49,6 +64,7 @@ export async function createExpense(ownerId, input) {
         },
         include: {
             project: true,
+            receipts: true,
         },
     });
 }
@@ -59,6 +75,7 @@ export async function listExpenses(ownerId, status) {
         },
         include: {
             project: true,
+            receipts: true,
         },
         orderBy: {
             expenseDate: "desc",
@@ -82,6 +99,7 @@ export async function listExpenses(ownerId, status) {
             },
             include: {
                 project: true,
+                receipts: true,
             },
         });
     }));
@@ -97,6 +115,7 @@ export async function getExpenseById(ownerId, expenseId) {
         },
         include: {
             project: true,
+            receipts: true,
         },
     });
 }
@@ -123,6 +142,12 @@ export async function updateExpense(ownerId, expenseId, input) {
         dueDate: dueDate === undefined ? existing.dueDate : dueDate,
         paidAt: paidAt === undefined ? existing.paidAt : paidAt,
     });
+    const owner = await prisma.user.findUniqueOrThrow({ where: { id: ownerId }, select: { gstRegistered: true } });
+    const treatment = input.gstTreatment ?? existing.gstTreatment;
+    const requestedClaimable = input.gstClaimable ?? existing.gstClaimable;
+    const gstClaimable = owner.gstRegistered && requestedClaimable && !["UNKNOWN", "GST_FREE", "NOT_CLAIMABLE"].includes(treatment);
+    const amount = input.amount ?? Number(existing.amount);
+    const gstAmount = gstClaimable ? calculateExpenseGst(amount, treatment, input.gstAmount ?? Number(existing.gstAmount)) : new Prisma.Decimal(0);
     return prisma.expense.update({
         where: {
             id: expenseId,
@@ -133,7 +158,9 @@ export async function updateExpense(ownerId, expenseId, input) {
             category: input.category,
             status,
             amount: input.amount,
-            gstAmount: input.gstAmount,
+            gstAmount,
+            gstTreatment: treatment,
+            gstClaimable,
             expenseDate: input.expenseDate === undefined
                 ? undefined
                 : new Date(input.expenseDate),
@@ -144,6 +171,7 @@ export async function updateExpense(ownerId, expenseId, input) {
         },
         include: {
             project: true,
+            receipts: true,
         },
     });
 }

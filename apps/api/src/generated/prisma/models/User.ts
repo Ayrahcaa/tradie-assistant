@@ -20,8 +20,20 @@ export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayloa
 
 export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
+}
+
+export type UserAvgAggregateOutputType = {
+  otherTaxableIncome: runtime.Decimal | null
+  additionalDeductions: runtime.Decimal | null
+}
+
+export type UserSumAggregateOutputType = {
+  otherTaxableIncome: runtime.Decimal | null
+  additionalDeductions: runtime.Decimal | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -35,6 +47,13 @@ export type UserMinAggregateOutputType = {
   address: string | null
   tradeType: string | null
   gstRegistered: boolean | null
+  businessStructure: $Enums.BusinessStructure | null
+  gstAccountingMethod: $Enums.GstAccountingMethod | null
+  basFrequency: $Enums.BasFrequency | null
+  taxProfile: $Enums.TaxProfile | null
+  taxFinancialYear: string | null
+  otherTaxableIncome: runtime.Decimal | null
+  additionalDeductions: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -50,6 +69,13 @@ export type UserMaxAggregateOutputType = {
   address: string | null
   tradeType: string | null
   gstRegistered: boolean | null
+  businessStructure: $Enums.BusinessStructure | null
+  gstAccountingMethod: $Enums.GstAccountingMethod | null
+  basFrequency: $Enums.BasFrequency | null
+  taxProfile: $Enums.TaxProfile | null
+  taxFinancialYear: string | null
+  otherTaxableIncome: runtime.Decimal | null
+  additionalDeductions: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -65,11 +91,28 @@ export type UserCountAggregateOutputType = {
   address: number
   tradeType: number
   gstRegistered: number
+  businessStructure: number
+  gstAccountingMethod: number
+  basFrequency: number
+  taxProfile: number
+  taxFinancialYear: number
+  otherTaxableIncome: number
+  additionalDeductions: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
+
+export type UserAvgAggregateInputType = {
+  otherTaxableIncome?: true
+  additionalDeductions?: true
+}
+
+export type UserSumAggregateInputType = {
+  otherTaxableIncome?: true
+  additionalDeductions?: true
+}
 
 export type UserMinAggregateInputType = {
   id?: true
@@ -82,6 +125,13 @@ export type UserMinAggregateInputType = {
   address?: true
   tradeType?: true
   gstRegistered?: true
+  businessStructure?: true
+  gstAccountingMethod?: true
+  basFrequency?: true
+  taxProfile?: true
+  taxFinancialYear?: true
+  otherTaxableIncome?: true
+  additionalDeductions?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -97,6 +147,13 @@ export type UserMaxAggregateInputType = {
   address?: true
   tradeType?: true
   gstRegistered?: true
+  businessStructure?: true
+  gstAccountingMethod?: true
+  basFrequency?: true
+  taxProfile?: true
+  taxFinancialYear?: true
+  otherTaxableIncome?: true
+  additionalDeductions?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -112,6 +169,13 @@ export type UserCountAggregateInputType = {
   address?: true
   tradeType?: true
   gstRegistered?: true
+  businessStructure?: true
+  gstAccountingMethod?: true
+  basFrequency?: true
+  taxProfile?: true
+  taxFinancialYear?: true
+  otherTaxableIncome?: true
+  additionalDeductions?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -155,6 +219,18 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: UserAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: UserSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserMinAggregateInputType
@@ -185,6 +261,8 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: UserCountAggregateInputType | true
+  _avg?: UserAvgAggregateInputType
+  _sum?: UserSumAggregateInputType
   _min?: UserMinAggregateInputType
   _max?: UserMaxAggregateInputType
 }
@@ -200,9 +278,18 @@ export type UserGroupByOutputType = {
   address: string | null
   tradeType: string | null
   gstRegistered: boolean
+  businessStructure: $Enums.BusinessStructure
+  gstAccountingMethod: $Enums.GstAccountingMethod
+  basFrequency: $Enums.BasFrequency
+  taxProfile: $Enums.TaxProfile
+  taxFinancialYear: string
+  otherTaxableIncome: runtime.Decimal
+  additionalDeductions: runtime.Decimal
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
@@ -236,6 +323,13 @@ export type UserWhereInput = {
   address?: Prisma.StringNullableFilter<"User"> | string | null
   tradeType?: Prisma.StringNullableFilter<"User"> | string | null
   gstRegistered?: Prisma.BoolFilter<"User"> | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFilter<"User"> | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFilter<"User"> | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFilter<"User"> | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFilter<"User"> | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFilter<"User"> | string
+  otherTaxableIncome?: Prisma.DecimalFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   passwordCredential?: Prisma.XOR<Prisma.PasswordCredentialNullableScalarRelationFilter, Prisma.PasswordCredentialWhereInput> | null
@@ -250,6 +344,7 @@ export type UserWhereInput = {
   subcontractors?: Prisma.SubcontractorListRelationFilter
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostListRelationFilter
   subcontractorPayments?: Prisma.SubcontractorPaymentListRelationFilter
+  paygInstalments?: Prisma.PaygInstalmentListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -263,6 +358,13 @@ export type UserOrderByWithRelationInput = {
   address?: Prisma.SortOrderInput | Prisma.SortOrder
   tradeType?: Prisma.SortOrderInput | Prisma.SortOrder
   gstRegistered?: Prisma.SortOrder
+  businessStructure?: Prisma.SortOrder
+  gstAccountingMethod?: Prisma.SortOrder
+  basFrequency?: Prisma.SortOrder
+  taxProfile?: Prisma.SortOrder
+  taxFinancialYear?: Prisma.SortOrder
+  otherTaxableIncome?: Prisma.SortOrder
+  additionalDeductions?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   passwordCredential?: Prisma.PasswordCredentialOrderByWithRelationInput
@@ -277,6 +379,7 @@ export type UserOrderByWithRelationInput = {
   subcontractors?: Prisma.SubcontractorOrderByRelationAggregateInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostOrderByRelationAggregateInput
   subcontractorPayments?: Prisma.SubcontractorPaymentOrderByRelationAggregateInput
+  paygInstalments?: Prisma.PaygInstalmentOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -293,6 +396,13 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   address?: Prisma.StringNullableFilter<"User"> | string | null
   tradeType?: Prisma.StringNullableFilter<"User"> | string | null
   gstRegistered?: Prisma.BoolFilter<"User"> | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFilter<"User"> | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFilter<"User"> | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFilter<"User"> | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFilter<"User"> | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFilter<"User"> | string
+  otherTaxableIncome?: Prisma.DecimalFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   passwordCredential?: Prisma.XOR<Prisma.PasswordCredentialNullableScalarRelationFilter, Prisma.PasswordCredentialWhereInput> | null
@@ -307,6 +417,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   subcontractors?: Prisma.SubcontractorListRelationFilter
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostListRelationFilter
   subcontractorPayments?: Prisma.SubcontractorPaymentListRelationFilter
+  paygInstalments?: Prisma.PaygInstalmentListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -320,11 +431,20 @@ export type UserOrderByWithAggregationInput = {
   address?: Prisma.SortOrderInput | Prisma.SortOrder
   tradeType?: Prisma.SortOrderInput | Prisma.SortOrder
   gstRegistered?: Prisma.SortOrder
+  businessStructure?: Prisma.SortOrder
+  gstAccountingMethod?: Prisma.SortOrder
+  basFrequency?: Prisma.SortOrder
+  taxProfile?: Prisma.SortOrder
+  taxFinancialYear?: Prisma.SortOrder
+  otherTaxableIncome?: Prisma.SortOrder
+  additionalDeductions?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
+  _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
+  _sum?: Prisma.UserSumOrderByAggregateInput
 }
 
 export type UserScalarWhereWithAggregatesInput = {
@@ -341,6 +461,13 @@ export type UserScalarWhereWithAggregatesInput = {
   address?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   tradeType?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   gstRegistered?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  businessStructure?: Prisma.EnumBusinessStructureWithAggregatesFilter<"User"> | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodWithAggregatesFilter<"User"> | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyWithAggregatesFilter<"User"> | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileWithAggregatesFilter<"User"> | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringWithAggregatesFilter<"User"> | string
+  otherTaxableIncome?: Prisma.DecimalWithAggregatesFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalWithAggregatesFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -356,6 +483,13 @@ export type UserCreateInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialCreateNestedOneWithoutUserInput
@@ -370,6 +504,7 @@ export type UserCreateInput = {
   subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -383,6 +518,13 @@ export type UserUncheckedCreateInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedCreateNestedOneWithoutUserInput
@@ -397,6 +539,7 @@ export type UserUncheckedCreateInput = {
   subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUpdateInput = {
@@ -410,6 +553,13 @@ export type UserUpdateInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUpdateOneWithoutUserNestedInput
@@ -424,6 +574,7 @@ export type UserUpdateInput = {
   subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -437,6 +588,13 @@ export type UserUncheckedUpdateInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedUpdateOneWithoutUserNestedInput
@@ -451,6 +609,7 @@ export type UserUncheckedUpdateInput = {
   subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -464,6 +623,13 @@ export type UserCreateManyInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -479,6 +645,13 @@ export type UserUpdateManyMutationInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -494,6 +667,13 @@ export type UserUncheckedUpdateManyInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -509,8 +689,20 @@ export type UserCountOrderByAggregateInput = {
   address?: Prisma.SortOrder
   tradeType?: Prisma.SortOrder
   gstRegistered?: Prisma.SortOrder
+  businessStructure?: Prisma.SortOrder
+  gstAccountingMethod?: Prisma.SortOrder
+  basFrequency?: Prisma.SortOrder
+  taxProfile?: Prisma.SortOrder
+  taxFinancialYear?: Prisma.SortOrder
+  otherTaxableIncome?: Prisma.SortOrder
+  additionalDeductions?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserAvgOrderByAggregateInput = {
+  otherTaxableIncome?: Prisma.SortOrder
+  additionalDeductions?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -524,6 +716,13 @@ export type UserMaxOrderByAggregateInput = {
   address?: Prisma.SortOrder
   tradeType?: Prisma.SortOrder
   gstRegistered?: Prisma.SortOrder
+  businessStructure?: Prisma.SortOrder
+  gstAccountingMethod?: Prisma.SortOrder
+  basFrequency?: Prisma.SortOrder
+  taxProfile?: Prisma.SortOrder
+  taxFinancialYear?: Prisma.SortOrder
+  otherTaxableIncome?: Prisma.SortOrder
+  additionalDeductions?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -539,8 +738,20 @@ export type UserMinOrderByAggregateInput = {
   address?: Prisma.SortOrder
   tradeType?: Prisma.SortOrder
   gstRegistered?: Prisma.SortOrder
+  businessStructure?: Prisma.SortOrder
+  gstAccountingMethod?: Prisma.SortOrder
+  basFrequency?: Prisma.SortOrder
+  taxProfile?: Prisma.SortOrder
+  taxFinancialYear?: Prisma.SortOrder
+  otherTaxableIncome?: Prisma.SortOrder
+  additionalDeductions?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserSumOrderByAggregateInput = {
+  otherTaxableIncome?: Prisma.SortOrder
+  additionalDeductions?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -558,6 +769,30 @@ export type NullableStringFieldUpdateOperationsInput = {
 
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
+}
+
+export type EnumBusinessStructureFieldUpdateOperationsInput = {
+  set?: $Enums.BusinessStructure
+}
+
+export type EnumGstAccountingMethodFieldUpdateOperationsInput = {
+  set?: $Enums.GstAccountingMethod
+}
+
+export type EnumBasFrequencyFieldUpdateOperationsInput = {
+  set?: $Enums.BasFrequency
+}
+
+export type EnumTaxProfileFieldUpdateOperationsInput = {
+  set?: $Enums.TaxProfile
+}
+
+export type DecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -676,6 +911,20 @@ export type UserUpdateOneRequiredWithoutExpensesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutExpensesInput, Prisma.UserUpdateWithoutExpensesInput>, Prisma.UserUncheckedUpdateWithoutExpensesInput>
 }
 
+export type UserCreateNestedOneWithoutPaygInstalmentsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPaygInstalmentsInput, Prisma.UserUncheckedCreateWithoutPaygInstalmentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaygInstalmentsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPaygInstalmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPaygInstalmentsInput, Prisma.UserUncheckedCreateWithoutPaygInstalmentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaygInstalmentsInput
+  upsert?: Prisma.UserUpsertWithoutPaygInstalmentsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPaygInstalmentsInput, Prisma.UserUpdateWithoutPaygInstalmentsInput>, Prisma.UserUncheckedUpdateWithoutPaygInstalmentsInput>
+}
+
 export type UserCreateNestedOneWithoutReceiptsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutReceiptsInput, Prisma.UserUncheckedCreateWithoutReceiptsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutReceiptsInput
@@ -743,6 +992,13 @@ export type UserCreateWithoutPasswordCredentialInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -756,6 +1012,7 @@ export type UserCreateWithoutPasswordCredentialInput = {
   subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutPasswordCredentialInput = {
@@ -769,6 +1026,13 @@ export type UserUncheckedCreateWithoutPasswordCredentialInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -782,6 +1046,7 @@ export type UserUncheckedCreateWithoutPasswordCredentialInput = {
   subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutPasswordCredentialInput = {
@@ -811,6 +1076,13 @@ export type UserUpdateWithoutPasswordCredentialInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -824,6 +1096,7 @@ export type UserUpdateWithoutPasswordCredentialInput = {
   subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPasswordCredentialInput = {
@@ -837,6 +1110,13 @@ export type UserUncheckedUpdateWithoutPasswordCredentialInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -850,6 +1130,7 @@ export type UserUncheckedUpdateWithoutPasswordCredentialInput = {
   subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -863,6 +1144,13 @@ export type UserCreateWithoutSessionsInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialCreateNestedOneWithoutUserInput
@@ -876,6 +1164,7 @@ export type UserCreateWithoutSessionsInput = {
   subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -889,6 +1178,13 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedCreateNestedOneWithoutUserInput
@@ -902,6 +1198,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -931,6 +1228,13 @@ export type UserUpdateWithoutSessionsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUpdateOneWithoutUserNestedInput
@@ -944,6 +1248,7 @@ export type UserUpdateWithoutSessionsInput = {
   subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -957,6 +1262,13 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedUpdateOneWithoutUserNestedInput
@@ -970,6 +1282,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutProjectsInput = {
@@ -983,6 +1296,13 @@ export type UserCreateWithoutProjectsInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialCreateNestedOneWithoutUserInput
@@ -996,6 +1316,7 @@ export type UserCreateWithoutProjectsInput = {
   subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutProjectsInput = {
@@ -1009,6 +1330,13 @@ export type UserUncheckedCreateWithoutProjectsInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedCreateNestedOneWithoutUserInput
@@ -1022,6 +1350,7 @@ export type UserUncheckedCreateWithoutProjectsInput = {
   subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutProjectsInput = {
@@ -1051,6 +1380,13 @@ export type UserUpdateWithoutProjectsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUpdateOneWithoutUserNestedInput
@@ -1064,6 +1400,7 @@ export type UserUpdateWithoutProjectsInput = {
   subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProjectsInput = {
@@ -1077,6 +1414,13 @@ export type UserUncheckedUpdateWithoutProjectsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedUpdateOneWithoutUserNestedInput
@@ -1090,6 +1434,7 @@ export type UserUncheckedUpdateWithoutProjectsInput = {
   subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutCustomersInput = {
@@ -1103,6 +1448,13 @@ export type UserCreateWithoutCustomersInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialCreateNestedOneWithoutUserInput
@@ -1116,6 +1468,7 @@ export type UserCreateWithoutCustomersInput = {
   subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutCustomersInput = {
@@ -1129,6 +1482,13 @@ export type UserUncheckedCreateWithoutCustomersInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedCreateNestedOneWithoutUserInput
@@ -1142,6 +1502,7 @@ export type UserUncheckedCreateWithoutCustomersInput = {
   subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutCustomersInput = {
@@ -1171,6 +1532,13 @@ export type UserUpdateWithoutCustomersInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUpdateOneWithoutUserNestedInput
@@ -1184,6 +1552,7 @@ export type UserUpdateWithoutCustomersInput = {
   subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCustomersInput = {
@@ -1197,6 +1566,13 @@ export type UserUncheckedUpdateWithoutCustomersInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedUpdateOneWithoutUserNestedInput
@@ -1210,6 +1586,7 @@ export type UserUncheckedUpdateWithoutCustomersInput = {
   subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutQuotesInput = {
@@ -1223,6 +1600,13 @@ export type UserCreateWithoutQuotesInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialCreateNestedOneWithoutUserInput
@@ -1236,6 +1620,7 @@ export type UserCreateWithoutQuotesInput = {
   subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutQuotesInput = {
@@ -1249,6 +1634,13 @@ export type UserUncheckedCreateWithoutQuotesInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedCreateNestedOneWithoutUserInput
@@ -1262,6 +1654,7 @@ export type UserUncheckedCreateWithoutQuotesInput = {
   subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutQuotesInput = {
@@ -1291,6 +1684,13 @@ export type UserUpdateWithoutQuotesInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUpdateOneWithoutUserNestedInput
@@ -1304,6 +1704,7 @@ export type UserUpdateWithoutQuotesInput = {
   subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutQuotesInput = {
@@ -1317,6 +1718,13 @@ export type UserUncheckedUpdateWithoutQuotesInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedUpdateOneWithoutUserNestedInput
@@ -1330,6 +1738,7 @@ export type UserUncheckedUpdateWithoutQuotesInput = {
   subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutInvoicesInput = {
@@ -1343,6 +1752,13 @@ export type UserCreateWithoutInvoicesInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialCreateNestedOneWithoutUserInput
@@ -1356,6 +1772,7 @@ export type UserCreateWithoutInvoicesInput = {
   subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutInvoicesInput = {
@@ -1369,6 +1786,13 @@ export type UserUncheckedCreateWithoutInvoicesInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedCreateNestedOneWithoutUserInput
@@ -1382,6 +1806,7 @@ export type UserUncheckedCreateWithoutInvoicesInput = {
   subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutInvoicesInput = {
@@ -1411,6 +1836,13 @@ export type UserUpdateWithoutInvoicesInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUpdateOneWithoutUserNestedInput
@@ -1424,6 +1856,7 @@ export type UserUpdateWithoutInvoicesInput = {
   subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInvoicesInput = {
@@ -1437,6 +1870,13 @@ export type UserUncheckedUpdateWithoutInvoicesInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedUpdateOneWithoutUserNestedInput
@@ -1450,6 +1890,7 @@ export type UserUncheckedUpdateWithoutInvoicesInput = {
   subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutPaymentsInput = {
@@ -1463,6 +1904,13 @@ export type UserCreateWithoutPaymentsInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialCreateNestedOneWithoutUserInput
@@ -1476,6 +1924,7 @@ export type UserCreateWithoutPaymentsInput = {
   subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutPaymentsInput = {
@@ -1489,6 +1938,13 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedCreateNestedOneWithoutUserInput
@@ -1502,6 +1958,7 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutPaymentsInput = {
@@ -1531,6 +1988,13 @@ export type UserUpdateWithoutPaymentsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUpdateOneWithoutUserNestedInput
@@ -1544,6 +2008,7 @@ export type UserUpdateWithoutPaymentsInput = {
   subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentsInput = {
@@ -1557,6 +2022,13 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedUpdateOneWithoutUserNestedInput
@@ -1570,6 +2042,7 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutExpensesInput = {
@@ -1583,6 +2056,13 @@ export type UserCreateWithoutExpensesInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialCreateNestedOneWithoutUserInput
@@ -1596,6 +2076,7 @@ export type UserCreateWithoutExpensesInput = {
   subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutExpensesInput = {
@@ -1609,6 +2090,13 @@ export type UserUncheckedCreateWithoutExpensesInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedCreateNestedOneWithoutUserInput
@@ -1622,6 +2110,7 @@ export type UserUncheckedCreateWithoutExpensesInput = {
   subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutExpensesInput = {
@@ -1651,6 +2140,13 @@ export type UserUpdateWithoutExpensesInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUpdateOneWithoutUserNestedInput
@@ -1664,6 +2160,7 @@ export type UserUpdateWithoutExpensesInput = {
   subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutExpensesInput = {
@@ -1677,6 +2174,13 @@ export type UserUncheckedUpdateWithoutExpensesInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedUpdateOneWithoutUserNestedInput
@@ -1686,6 +2190,159 @@ export type UserUncheckedUpdateWithoutExpensesInput = {
   quotes?: Prisma.QuoteUncheckedUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutOwnerNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutOwnerNestedInput
+  receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserCreateWithoutPaygInstalmentsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  businessName?: string | null
+  abn?: string | null
+  phone?: string | null
+  address?: string | null
+  tradeType?: string | null
+  gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordCredential?: Prisma.PasswordCredentialCreateNestedOneWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutOwnerInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutOwnerInput
+  quotes?: Prisma.QuoteCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutOwnerInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOwnerInput
+  expenses?: Prisma.ExpenseCreateNestedManyWithoutOwnerInput
+  receipts?: Prisma.ReceiptCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
+}
+
+export type UserUncheckedCreateWithoutPaygInstalmentsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  businessName?: string | null
+  abn?: string | null
+  phone?: string | null
+  address?: string | null
+  tradeType?: string | null
+  gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordCredential?: Prisma.PasswordCredentialUncheckedCreateNestedOneWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutOwnerInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutOwnerInput
+  quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutOwnerInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOwnerInput
+  expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutOwnerInput
+  receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutPaygInstalmentsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPaygInstalmentsInput, Prisma.UserUncheckedCreateWithoutPaygInstalmentsInput>
+}
+
+export type UserUpsertWithoutPaygInstalmentsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPaygInstalmentsInput, Prisma.UserUncheckedUpdateWithoutPaygInstalmentsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPaygInstalmentsInput, Prisma.UserUncheckedCreateWithoutPaygInstalmentsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPaygInstalmentsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPaygInstalmentsInput, Prisma.UserUncheckedUpdateWithoutPaygInstalmentsInput>
+}
+
+export type UserUpdateWithoutPaygInstalmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  abn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordCredential?: Prisma.PasswordCredentialUpdateOneWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutOwnerNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutOwnerNestedInput
+  quotes?: Prisma.QuoteUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutOwnerNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOwnerNestedInput
+  expenses?: Prisma.ExpenseUpdateManyWithoutOwnerNestedInput
+  receipts?: Prisma.ReceiptUpdateManyWithoutOwnerNestedInput
+  subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
+  subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
+  subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPaygInstalmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  abn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordCredential?: Prisma.PasswordCredentialUncheckedUpdateOneWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutOwnerNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutOwnerNestedInput
+  quotes?: Prisma.QuoteUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutOwnerNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOwnerNestedInput
+  expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutOwnerNestedInput
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
@@ -1703,6 +2360,13 @@ export type UserCreateWithoutReceiptsInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialCreateNestedOneWithoutUserInput
@@ -1716,6 +2380,7 @@ export type UserCreateWithoutReceiptsInput = {
   subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutReceiptsInput = {
@@ -1729,6 +2394,13 @@ export type UserUncheckedCreateWithoutReceiptsInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedCreateNestedOneWithoutUserInput
@@ -1742,6 +2414,7 @@ export type UserUncheckedCreateWithoutReceiptsInput = {
   subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutReceiptsInput = {
@@ -1771,6 +2444,13 @@ export type UserUpdateWithoutReceiptsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUpdateOneWithoutUserNestedInput
@@ -1784,6 +2464,7 @@ export type UserUpdateWithoutReceiptsInput = {
   subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReceiptsInput = {
@@ -1797,6 +2478,13 @@ export type UserUncheckedUpdateWithoutReceiptsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedUpdateOneWithoutUserNestedInput
@@ -1810,6 +2498,7 @@ export type UserUncheckedUpdateWithoutReceiptsInput = {
   subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutSubcontractorsInput = {
@@ -1823,6 +2512,13 @@ export type UserCreateWithoutSubcontractorsInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialCreateNestedOneWithoutUserInput
@@ -1836,6 +2532,7 @@ export type UserCreateWithoutSubcontractorsInput = {
   receipts?: Prisma.ReceiptCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutSubcontractorsInput = {
@@ -1849,6 +2546,13 @@ export type UserUncheckedCreateWithoutSubcontractorsInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedCreateNestedOneWithoutUserInput
@@ -1862,6 +2566,7 @@ export type UserUncheckedCreateWithoutSubcontractorsInput = {
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutSubcontractorsInput = {
@@ -1891,6 +2596,13 @@ export type UserUpdateWithoutSubcontractorsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUpdateOneWithoutUserNestedInput
@@ -1904,6 +2616,7 @@ export type UserUpdateWithoutSubcontractorsInput = {
   receipts?: Prisma.ReceiptUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSubcontractorsInput = {
@@ -1917,6 +2630,13 @@ export type UserUncheckedUpdateWithoutSubcontractorsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedUpdateOneWithoutUserNestedInput
@@ -1930,6 +2650,7 @@ export type UserUncheckedUpdateWithoutSubcontractorsInput = {
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutSubcontractorProjectCostsInput = {
@@ -1943,6 +2664,13 @@ export type UserCreateWithoutSubcontractorProjectCostsInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialCreateNestedOneWithoutUserInput
@@ -1956,6 +2684,7 @@ export type UserCreateWithoutSubcontractorProjectCostsInput = {
   receipts?: Prisma.ReceiptCreateNestedManyWithoutOwnerInput
   subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutSubcontractorProjectCostsInput = {
@@ -1969,6 +2698,13 @@ export type UserUncheckedCreateWithoutSubcontractorProjectCostsInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedCreateNestedOneWithoutUserInput
@@ -1982,6 +2718,7 @@ export type UserUncheckedCreateWithoutSubcontractorProjectCostsInput = {
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutOwnerInput
   subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutSubcontractorProjectCostsInput = {
@@ -2011,6 +2748,13 @@ export type UserUpdateWithoutSubcontractorProjectCostsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUpdateOneWithoutUserNestedInput
@@ -2024,6 +2768,7 @@ export type UserUpdateWithoutSubcontractorProjectCostsInput = {
   receipts?: Prisma.ReceiptUpdateManyWithoutOwnerNestedInput
   subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSubcontractorProjectCostsInput = {
@@ -2037,6 +2782,13 @@ export type UserUncheckedUpdateWithoutSubcontractorProjectCostsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedUpdateOneWithoutUserNestedInput
@@ -2050,6 +2802,7 @@ export type UserUncheckedUpdateWithoutSubcontractorProjectCostsInput = {
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorPayments?: Prisma.SubcontractorPaymentUncheckedUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutSubcontractorPaymentsInput = {
@@ -2063,6 +2816,13 @@ export type UserCreateWithoutSubcontractorPaymentsInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialCreateNestedOneWithoutUserInput
@@ -2076,6 +2836,7 @@ export type UserCreateWithoutSubcontractorPaymentsInput = {
   receipts?: Prisma.ReceiptCreateNestedManyWithoutOwnerInput
   subcontractors?: Prisma.SubcontractorCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutSubcontractorPaymentsInput = {
@@ -2089,6 +2850,13 @@ export type UserUncheckedCreateWithoutSubcontractorPaymentsInput = {
   address?: string | null
   tradeType?: string | null
   gstRegistered?: boolean
+  businessStructure?: $Enums.BusinessStructure
+  gstAccountingMethod?: $Enums.GstAccountingMethod
+  basFrequency?: $Enums.BasFrequency
+  taxProfile?: $Enums.TaxProfile
+  taxFinancialYear?: string
+  otherTaxableIncome?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedCreateNestedOneWithoutUserInput
@@ -2102,6 +2870,7 @@ export type UserUncheckedCreateWithoutSubcontractorPaymentsInput = {
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutOwnerInput
   subcontractors?: Prisma.SubcontractorUncheckedCreateNestedManyWithoutOwnerInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedCreateNestedManyWithoutOwnerInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutSubcontractorPaymentsInput = {
@@ -2131,6 +2900,13 @@ export type UserUpdateWithoutSubcontractorPaymentsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUpdateOneWithoutUserNestedInput
@@ -2144,6 +2920,7 @@ export type UserUpdateWithoutSubcontractorPaymentsInput = {
   receipts?: Prisma.ReceiptUpdateManyWithoutOwnerNestedInput
   subcontractors?: Prisma.SubcontractorUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSubcontractorPaymentsInput = {
@@ -2157,6 +2934,13 @@ export type UserUncheckedUpdateWithoutSubcontractorPaymentsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstRegistered?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  businessStructure?: Prisma.EnumBusinessStructureFieldUpdateOperationsInput | $Enums.BusinessStructure
+  gstAccountingMethod?: Prisma.EnumGstAccountingMethodFieldUpdateOperationsInput | $Enums.GstAccountingMethod
+  basFrequency?: Prisma.EnumBasFrequencyFieldUpdateOperationsInput | $Enums.BasFrequency
+  taxProfile?: Prisma.EnumTaxProfileFieldUpdateOperationsInput | $Enums.TaxProfile
+  taxFinancialYear?: Prisma.StringFieldUpdateOperationsInput | string
+  otherTaxableIncome?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  additionalDeductions?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordCredential?: Prisma.PasswordCredentialUncheckedUpdateOneWithoutUserNestedInput
@@ -2170,6 +2954,7 @@ export type UserUncheckedUpdateWithoutSubcontractorPaymentsInput = {
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractors?: Prisma.SubcontractorUncheckedUpdateManyWithoutOwnerNestedInput
   subcontractorProjectCosts?: Prisma.SubcontractorProjectCostUncheckedUpdateManyWithoutOwnerNestedInput
+  paygInstalments?: Prisma.PaygInstalmentUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 
@@ -2189,6 +2974,7 @@ export type UserCountOutputType = {
   subcontractors: number
   subcontractorProjectCosts: number
   subcontractorPayments: number
+  paygInstalments: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2203,6 +2989,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   subcontractors?: boolean | UserCountOutputTypeCountSubcontractorsArgs
   subcontractorProjectCosts?: boolean | UserCountOutputTypeCountSubcontractorProjectCostsArgs
   subcontractorPayments?: boolean | UserCountOutputTypeCountSubcontractorPaymentsArgs
+  paygInstalments?: boolean | UserCountOutputTypeCountPaygInstalmentsArgs
 }
 
 /**
@@ -2292,6 +3079,13 @@ export type UserCountOutputTypeCountSubcontractorPaymentsArgs<ExtArgs extends ru
   where?: Prisma.SubcontractorPaymentWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPaygInstalmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaygInstalmentWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2304,6 +3098,13 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   address?: boolean
   tradeType?: boolean
   gstRegistered?: boolean
+  businessStructure?: boolean
+  gstAccountingMethod?: boolean
+  basFrequency?: boolean
+  taxProfile?: boolean
+  taxFinancialYear?: boolean
+  otherTaxableIncome?: boolean
+  additionalDeductions?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   passwordCredential?: boolean | Prisma.User$passwordCredentialArgs<ExtArgs>
@@ -2318,6 +3119,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   subcontractors?: boolean | Prisma.User$subcontractorsArgs<ExtArgs>
   subcontractorProjectCosts?: boolean | Prisma.User$subcontractorProjectCostsArgs<ExtArgs>
   subcontractorPayments?: boolean | Prisma.User$subcontractorPaymentsArgs<ExtArgs>
+  paygInstalments?: boolean | Prisma.User$paygInstalmentsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2332,6 +3134,13 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   address?: boolean
   tradeType?: boolean
   gstRegistered?: boolean
+  businessStructure?: boolean
+  gstAccountingMethod?: boolean
+  basFrequency?: boolean
+  taxProfile?: boolean
+  taxFinancialYear?: boolean
+  otherTaxableIncome?: boolean
+  additionalDeductions?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -2347,6 +3156,13 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   address?: boolean
   tradeType?: boolean
   gstRegistered?: boolean
+  businessStructure?: boolean
+  gstAccountingMethod?: boolean
+  basFrequency?: boolean
+  taxProfile?: boolean
+  taxFinancialYear?: boolean
+  otherTaxableIncome?: boolean
+  additionalDeductions?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -2362,11 +3178,18 @@ export type UserSelectScalar = {
   address?: boolean
   tradeType?: boolean
   gstRegistered?: boolean
+  businessStructure?: boolean
+  gstAccountingMethod?: boolean
+  basFrequency?: boolean
+  taxProfile?: boolean
+  taxFinancialYear?: boolean
+  otherTaxableIncome?: boolean
+  additionalDeductions?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "businessName" | "abn" | "phone" | "address" | "tradeType" | "gstRegistered" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "businessName" | "abn" | "phone" | "address" | "tradeType" | "gstRegistered" | "businessStructure" | "gstAccountingMethod" | "basFrequency" | "taxProfile" | "taxFinancialYear" | "otherTaxableIncome" | "additionalDeductions" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   passwordCredential?: boolean | Prisma.User$passwordCredentialArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
@@ -2380,6 +3203,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   subcontractors?: boolean | Prisma.User$subcontractorsArgs<ExtArgs>
   subcontractorProjectCosts?: boolean | Prisma.User$subcontractorProjectCostsArgs<ExtArgs>
   subcontractorPayments?: boolean | Prisma.User$subcontractorPaymentsArgs<ExtArgs>
+  paygInstalments?: boolean | Prisma.User$paygInstalmentsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2400,6 +3224,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     subcontractors: Prisma.$SubcontractorPayload<ExtArgs>[]
     subcontractorProjectCosts: Prisma.$SubcontractorProjectCostPayload<ExtArgs>[]
     subcontractorPayments: Prisma.$SubcontractorPaymentPayload<ExtArgs>[]
+    paygInstalments: Prisma.$PaygInstalmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2412,6 +3237,13 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     address: string | null
     tradeType: string | null
     gstRegistered: boolean
+    businessStructure: $Enums.BusinessStructure
+    gstAccountingMethod: $Enums.GstAccountingMethod
+    basFrequency: $Enums.BasFrequency
+    taxProfile: $Enums.TaxProfile
+    taxFinancialYear: string
+    otherTaxableIncome: runtime.Decimal
+    additionalDeductions: runtime.Decimal
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -2820,6 +3652,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   subcontractors<T extends Prisma.User$subcontractorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$subcontractorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubcontractorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subcontractorProjectCosts<T extends Prisma.User$subcontractorProjectCostsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$subcontractorProjectCostsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubcontractorProjectCostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subcontractorPayments<T extends Prisma.User$subcontractorPaymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$subcontractorPaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubcontractorPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  paygInstalments<T extends Prisma.User$paygInstalmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paygInstalmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaygInstalmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2859,6 +3692,13 @@ export interface UserFieldRefs {
   readonly address: Prisma.FieldRef<"User", 'String'>
   readonly tradeType: Prisma.FieldRef<"User", 'String'>
   readonly gstRegistered: Prisma.FieldRef<"User", 'Boolean'>
+  readonly businessStructure: Prisma.FieldRef<"User", 'BusinessStructure'>
+  readonly gstAccountingMethod: Prisma.FieldRef<"User", 'GstAccountingMethod'>
+  readonly basFrequency: Prisma.FieldRef<"User", 'BasFrequency'>
+  readonly taxProfile: Prisma.FieldRef<"User", 'TaxProfile'>
+  readonly taxFinancialYear: Prisma.FieldRef<"User", 'String'>
+  readonly otherTaxableIncome: Prisma.FieldRef<"User", 'Decimal'>
+  readonly additionalDeductions: Prisma.FieldRef<"User", 'Decimal'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -3534,6 +4374,30 @@ export type User$subcontractorPaymentsArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.SubcontractorPaymentScalarFieldEnum | Prisma.SubcontractorPaymentScalarFieldEnum[]
+}
+
+/**
+ * User.paygInstalments
+ */
+export type User$paygInstalmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaygInstalment
+   */
+  select?: Prisma.PaygInstalmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaygInstalment
+   */
+  omit?: Prisma.PaygInstalmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaygInstalmentInclude<ExtArgs> | null
+  where?: Prisma.PaygInstalmentWhereInput
+  orderBy?: Prisma.PaygInstalmentOrderByWithRelationInput | Prisma.PaygInstalmentOrderByWithRelationInput[]
+  cursor?: Prisma.PaygInstalmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaygInstalmentScalarFieldEnum | Prisma.PaygInstalmentScalarFieldEnum[]
 }
 
 /**

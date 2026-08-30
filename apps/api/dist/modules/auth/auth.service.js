@@ -4,7 +4,7 @@ import { prisma } from "../../lib/prisma.js";
 import { hashPassword, verifyPassword } from "./password.js";
 export const SESSION_COOKIE = "tradie_session";
 export const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000;
-const safeUserSelect = { id: true, email: true, firstName: true, lastName: true, businessName: true, abn: true, phone: true, address: true, tradeType: true, gstRegistered: true };
+const safeUserSelect = { id: true, email: true, firstName: true, lastName: true, businessName: true, abn: true, phone: true, address: true, tradeType: true, gstRegistered: true, businessStructure: true, gstAccountingMethod: true, basFrequency: true, taxProfile: true, taxFinancialYear: true, otherTaxableIncome: true, additionalDeductions: true };
 const dummyPasswordHash = hashPassword("invalid-credential-timing-value");
 export const hashSessionToken = (token) => createHash("sha256").update(token).digest("hex");
 export async function createSession(userId) {

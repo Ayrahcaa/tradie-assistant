@@ -52,6 +52,34 @@ export const ExpenseStatus = {
     PENDING: 'PENDING',
     OVERDUE: 'OVERDUE'
 };
+export const BusinessStructure = {
+    SOLE_TRADER: 'SOLE_TRADER',
+    COMPANY: 'COMPANY',
+    PARTNERSHIP: 'PARTNERSHIP',
+    TRUST: 'TRUST',
+    OTHER: 'OTHER'
+};
+export const GstAccountingMethod = {
+    CASH: 'CASH',
+    ACCRUAL: 'ACCRUAL'
+};
+export const BasFrequency = {
+    MONTHLY: 'MONTHLY',
+    QUARTERLY: 'QUARTERLY',
+    ANNUALLY: 'ANNUALLY'
+};
+export const TaxProfile = {
+    UNSPECIFIED: 'UNSPECIFIED',
+    AUSTRALIAN_RESIDENT_INDIVIDUAL: 'AUSTRALIAN_RESIDENT_INDIVIDUAL',
+    UNSUPPORTED: 'UNSUPPORTED'
+};
+export const GstTreatment = {
+    GST_INCLUDED: 'GST_INCLUDED',
+    GST_FREE: 'GST_FREE',
+    MANUAL: 'MANUAL',
+    NOT_CLAIMABLE: 'NOT_CLAIMABLE',
+    UNKNOWN: 'UNKNOWN'
+};
 export const SubcontractorRateType = {
     HOURLY: 'HOURLY',
     SQUARE_METRE: 'SQUARE_METRE',

@@ -16,6 +16,9 @@ import { EditQuoteForm } from "../components/EditQuoteForm";
 import type { QuoteStatus } from "../types/quote";
 
 import { Modal } from "../../../shared/components/ui/Modal";
+import { ShareMenu } from "../../../shared/components/ui/ShareMenu";
+import { useCurrentUser } from "../../auth/hooks/useCurrentUser";
+import { shareOrFallback } from "../../../shared/utils/sharing";
 
 function money(value: string): string {
   return new Intl.NumberFormat("en-AU", {
@@ -29,7 +32,7 @@ function statusClasses(status: QuoteStatus) {
     case "DRAFT":
       return "bg-slate-100 text-slate-700";
     case "SENT":
-      return "bg-blue-100 text-blue-700";
+      return "bg-slate-100 text-slate-700";
     case "ACCEPTED":
       return "bg-emerald-100 text-emerald-700";
     case "REJECTED":
@@ -50,12 +53,14 @@ export function QuoteDetailsPage() {
   const [editOpen, setEditOpen] = useState(false);
 
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
 
   const quoteQuery = useQuery({
     queryKey: ["quote", quoteId],
     queryFn: () => getQuote(quoteId!),
     enabled: Boolean(quoteId),
   });
+  const currentUserQuery = useCurrentUser();
 
   const statusMutation = useMutation({
     mutationFn: (status: QuoteStatus) => updateQuoteStatus(quoteId!, status),
@@ -98,6 +103,7 @@ export function QuoteDetailsPage() {
   }
 
   const quote = quoteQuery.data;
+  const shareInput = { kind: "Quote" as const, number: quote.quoteNumber, businessName: currentUserQuery.data?.businessName || [currentUserQuery.data?.firstName, currentUserQuery.data?.lastName].filter(Boolean).join(" ") || "Your business", customerName: `${quote.customer.firstName} ${quote.customer.lastName}`, customerEmail: quote.customer.email, customerPhone: quote.customer.phone, projectName: quote.project?.name, total: quote.totalAmount };
 
   return (
     <>
@@ -193,6 +199,14 @@ export function QuoteDetailsPage() {
         <h2 className="font-bold">Quote actions</h2>
 
         <div className="mt-4 flex flex-wrap gap-3">
+          <button
+            onClick={() => void shareOrFallback(shareInput, () => setShareOpen(true))}
+            className="inline-flex items-center gap-2 rounded-xl bg-amber-400 px-4 py-2 font-bold text-slate-950 hover:bg-amber-300"
+          >
+            <Send size={18} />
+            Send quote
+          </button>
+
           {quote.status === "DRAFT" && (
             <button
               onClick={() => statusMutation.mutate("SENT")}
@@ -232,6 +246,12 @@ export function QuoteDetailsPage() {
           </button>
         </div>
       </section>
+
+      <ShareMenu
+        open={shareOpen}
+        onClose={() => setShareOpen(false)}
+        document={shareInput}
+      />
 
       <Modal
         open={editOpen}

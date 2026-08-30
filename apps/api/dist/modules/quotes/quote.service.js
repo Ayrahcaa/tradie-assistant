@@ -1,4 +1,5 @@
 import { prisma } from "../../lib/prisma.js";
+import { Prisma } from "../../generated/prisma/client.js";
 async function validateCustomer(customerId, ownerId) {
     const customer = await prisma.customer.findFirst({
         where: {
@@ -26,10 +27,10 @@ async function validateProject(projectId, ownerId) {
     }
     return project;
 }
-function calculateTotals(items) {
-    const subtotal = items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
-    const gstAmount = subtotal * 0.1;
-    const totalAmount = subtotal + gstAmount;
+function calculateTotals(items, gstRegistered) {
+    const subtotal = items.reduce((sum, item) => sum.plus(new Prisma.Decimal(item.quantity).times(item.unitPrice)), new Prisma.Decimal(0));
+    const gstAmount = gstRegistered ? subtotal.times("0.10").toDecimalPlaces(2) : new Prisma.Decimal(0);
+    const totalAmount = subtotal.plus(gstAmount);
     return {
         subtotal,
         gstAmount,
@@ -45,7 +46,8 @@ export async function createQuote(ownerId, input) {
     await validateCustomer(input.customerId, ownerId);
     await validateProject(input.projectId, ownerId);
     const quoteNumber = await generateQuoteNumber(ownerId);
-    const totals = calculateTotals(input.items);
+    const owner = await prisma.user.findUniqueOrThrow({ where: { id: ownerId }, select: { gstRegistered: true } });
+    const totals = calculateTotals(input.items, owner.gstRegistered);
     return prisma.quote.create({
         data: {
             quoteNumber,
@@ -125,7 +127,8 @@ export async function updateQuote(ownerId, quoteId, input) {
     if (input.projectId !== undefined) {
         await validateProject(input.projectId, ownerId);
     }
-    const totals = input.items ? calculateTotals(input.items) : null;
+    const owner = await prisma.user.findUniqueOrThrow({ where: { id: ownerId }, select: { gstRegistered: true } });
+    const totals = input.items ? calculateTotals(input.items, owner.gstRegistered) : null;
     return prisma.$transaction(async (tx) => {
         if (input.items) {
             await tx.quoteItem.deleteMany({

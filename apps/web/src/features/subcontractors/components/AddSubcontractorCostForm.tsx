@@ -3,11 +3,14 @@ import { CircleAlert, LoaderCircle } from "lucide-react";
 import { type ChangeEvent, type FormEvent, useMemo, useState } from "react";
 
 import { getProjects } from "../../projects/api/projects";
+import { getSubcontractors } from "../api/subcontractors";
 import { createSubcontractorCost, updateSubcontractorCost, type SubcontractorCostInput } from "../api/subcontractor-costs";
 import type { SubcontractorProjectCost, SubcontractorRateType } from "../types/subcontractor-cost";
 
 interface Props {
-  subcontractorId: string;
+  subcontractorId?: string;
+  projectId?: string;
+  projectName?: string;
   cost?: SubcontractorProjectCost;
   onSuccess: () => void;
   onCancel: () => void;
@@ -31,10 +34,10 @@ function labels(type: SubcontractorRateType) {
   return { rate: "Rate", quantity: "Quantity" };
 }
 
-export function AddSubcontractorCostForm({ subcontractorId, cost, onSuccess, onCancel }: Props) {
+export function AddSubcontractorCostForm({ subcontractorId, projectId, projectName, cost, onSuccess, onCancel }: Props) {
   const queryClient = useQueryClient();
   const [form, setForm] = useState({
-    projectId: cost?.projectId ?? "", description: cost?.description ?? "",
+    subcontractorId: cost?.subcontractorId ?? subcontractorId ?? "", projectId: cost?.projectId ?? projectId ?? "", description: cost?.description ?? "",
     rateType: cost?.rateType ?? "HOURLY" as SubcontractorRateType,
     rate: cost?.rate ?? "", quantity: cost?.quantity ?? "",
     agreedAmount: cost?.agreedAmount ?? "", notes: cost?.notes ?? "",
@@ -42,6 +45,7 @@ export function AddSubcontractorCostForm({ subcontractorId, cost, onSuccess, onC
   const [agreedTouched, setAgreedTouched] = useState(Boolean(cost));
   const [validation, setValidation] = useState<string | null>(null);
   const projects = useQuery({ queryKey: ["projects"], queryFn: () => getProjects() });
+  const subcontractors = useQuery({ queryKey: ["subcontractors", false], queryFn: () => getSubcontractors(false), enabled: !subcontractorId });
   const calculated = useMemo(() => {
     const rate = Number(form.rate); const quantity = Number(form.quantity);
     return form.rate !== "" && form.quantity !== "" && Number.isFinite(rate) && Number.isFinite(quantity) ? rate * quantity : null;
@@ -52,7 +56,11 @@ export function AddSubcontractorCostForm({ subcontractorId, cost, onSuccess, onC
   const mutation = useMutation({
     mutationFn: (input: SubcontractorCostInput) => cost ? updateSubcontractorCost(cost.id, input) : createSubcontractorCost(input),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["subcontractor-costs"] });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["subcontractor-costs"] }),
+        ...(projectId ? [queryClient.invalidateQueries({ queryKey: ["project-overview", projectId] })] : []),
+        queryClient.invalidateQueries({ queryKey: ["business-overview"] }),
+      ]);
       onSuccess();
     },
   });
@@ -76,16 +84,18 @@ export function AddSubcontractorCostForm({ subcontractorId, cost, onSuccess, onC
     const rate = form.rate === "" ? null : Number(form.rate);
     const quantity = form.quantity === "" ? null : Number(form.quantity);
     if (!form.projectId) return setValidation("Select a project.");
+    if (!form.subcontractorId) return setValidation("Select a subcontractor.");
     if (!Number.isFinite(agreedAmount) || agreedAmount <= 0) return setValidation("Agreed amount must be greater than zero.");
     if (cost && agreedAmount < Number(cost.amountPaid)) return setValidation(`Agreed amount cannot be less than the ${money.format(Number(cost.amountPaid))} already paid.`);
     if ((rate !== null && (!Number.isFinite(rate) || rate < 0)) || (quantity !== null && (!Number.isFinite(quantity) || quantity <= 0))) return setValidation("Rate and quantity must be valid non-negative values.");
-    mutation.mutate({ subcontractorId, projectId: form.projectId, description: form.description.trim() || null, rateType: form.rateType, rate, quantity, agreedAmount, notes: form.notes.trim() || null });
+    mutation.mutate({ subcontractorId: form.subcontractorId, projectId: form.projectId, description: form.description.trim() || null, rateType: form.rateType, rate, quantity, agreedAmount, notes: form.notes.trim() || null });
   }
 
   return <form onSubmit={submit}>
     <div className="space-y-5 p-6">
       {(validation || mutation.isError) && <div className="flex gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-700"><CircleAlert size={20}/>{validation ?? mutation.error?.message}</div>}
-      <div><label className="text-sm font-bold text-slate-700">Project *</label><select name="projectId" value={form.projectId} onChange={change} className={inputClass} disabled={projects.isPending}><option value="">Select a project</option>{projects.data?.data.map((project) => <option key={project.id} value={project.id}>{project.name}</option>)}</select>{projects.isError && <p className="mt-2 text-sm text-red-700">{projects.error.message}</p>}</div>
+      <div><label className="text-sm font-bold text-slate-700">Project *</label>{projectId ? <div className="mt-2 flex h-11 items-center rounded-xl border bg-slate-50 px-3.5 text-sm font-semibold">{projectName ?? "Current project"}</div> : <select name="projectId" value={form.projectId} onChange={change} className={inputClass} disabled={projects.isPending}><option value="">Select a project</option>{projects.data?.data.map((project) => <option key={project.id} value={project.id}>{project.name}</option>)}</select>}{projects.isError && <p className="mt-2 text-sm text-red-700">{projects.error.message}</p>}</div>
+      {!subcontractorId && <div><label className="text-sm font-bold text-slate-700">Subcontractor *</label><select name="subcontractorId" value={form.subcontractorId} onChange={change} className={inputClass}><option value="">Select a subcontractor</option>{subcontractors.data?.data.map((item) => <option key={item.id} value={item.id}>{item.businessName || `${item.firstName} ${item.lastName || ""}`}</option>)}</select></div>}
       <div><label className="text-sm font-bold text-slate-700">Description</label><input name="description" value={form.description} onChange={change} placeholder="e.g. Tiling work" className={inputClass}/></div>
       <div><label className="text-sm font-bold text-slate-700">Rate type *</label><select name="rateType" value={form.rateType} onChange={change} className={inputClass}>{rateTypes.map((type) => <option key={type.value} value={type.value}>{type.label}</option>)}</select></div>
       {!fixed && <div className="grid gap-4 sm:grid-cols-2"><div><label className="text-sm font-bold text-slate-700">{fieldLabels.rate}</label><input name="rate" type="number" min="0" step="0.01" value={form.rate} onChange={change} className={inputClass}/></div><div><label className="text-sm font-bold text-slate-700">{fieldLabels.quantity}</label><input name="quantity" type="number" min="0.01" step="0.01" value={form.quantity} onChange={change} className={inputClass}/></div></div>}

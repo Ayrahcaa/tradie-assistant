@@ -58,6 +58,39 @@ enum ExpenseStatus {
   OVERDUE
 }
 
+enum BusinessStructure {
+  SOLE_TRADER
+  COMPANY
+  PARTNERSHIP
+  TRUST
+  OTHER
+}
+
+enum GstAccountingMethod {
+  CASH
+  ACCRUAL
+}
+
+enum BasFrequency {
+  MONTHLY
+  QUARTERLY
+  ANNUALLY
+}
+
+enum TaxProfile {
+  UNSPECIFIED
+  AUSTRALIAN_RESIDENT_INDIVIDUAL
+  UNSUPPORTED
+}
+
+enum GstTreatment {
+  GST_INCLUDED
+  GST_FREE
+  MANUAL
+  NOT_CLAIMABLE
+  UNKNOWN
+}
+
 enum SubcontractorRateType {
   HOURLY
   SQUARE_METRE
@@ -86,6 +119,13 @@ model User {
   address       String?
   tradeType     String?
   gstRegistered Boolean  @default(false)
+  businessStructure BusinessStructure @default(SOLE_TRADER)
+  gstAccountingMethod GstAccountingMethod @default(CASH)
+  basFrequency BasFrequency @default(QUARTERLY)
+  taxProfile TaxProfile @default(UNSPECIFIED)
+  taxFinancialYear String @default("2026-27")
+  otherTaxableIncome Decimal @default(0) @db.Decimal(12, 2)
+  additionalDeductions Decimal @default(0) @db.Decimal(12, 2)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -102,6 +142,7 @@ model User {
   subcontractors            Subcontractor[]
   subcontractorProjectCosts SubcontractorProjectCost[]
   subcontractorPayments     SubcontractorPayment[]
+  paygInstalments           PaygInstalment[]
 }
 
 model PasswordCredential {
@@ -287,6 +328,7 @@ model InvoiceItem {
   unitPrice   Decimal @db.Decimal(12, 2)
   lineTotal   Decimal @db.Decimal(12, 2)
   sortOrder   Int     @default(0)
+  gstApplicable Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -328,6 +370,8 @@ model Expense {
 
   amount    Decimal @db.Decimal(12, 2)
   gstAmount Decimal @default(0) @db.Decimal(12, 2)
+  gstTreatment GstTreatment @default(UNKNOWN)
+  gstClaimable Boolean @default(false)
 
   expenseDate DateTime
   dueDate     DateTime?
@@ -351,6 +395,23 @@ model Expense {
   @@index([category])
   @@index([status])
   @@index([expenseDate])
+}
+
+model PaygInstalment {
+  id        String   @id @default(uuid())
+  amount    Decimal  @db.Decimal(12, 2)
+  paidAt    DateTime
+  period    String?
+  reference String?
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ownerId String
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId])
+  @@index([paidAt])
 }
 
 model Receipt {

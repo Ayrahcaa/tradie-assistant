@@ -11,7 +11,7 @@ function Routes() {
   if (loading) return <LoadingState />;
   return <Stack screenOptions={{ headerShown: false }}>
     <Stack.Protected guard={!user}><Stack.Screen name="(auth)" /></Stack.Protected>
-    <Stack.Protected guard={!!user}><Stack.Screen name="(tabs)"/><Stack.Screen name="projects"/><Stack.Screen name="customers"/><Stack.Screen name="expenses"/><Stack.Screen name="invoices"/><Stack.Screen name="subcontractors"/><Stack.Screen name="quotes"/><Stack.Screen name="outstanding"/><Stack.Screen name="settings"/></Stack.Protected>
+    <Stack.Protected guard={!!user}><Stack.Screen name="(tabs)"/><Stack.Screen name="projects"/><Stack.Screen name="customers"/><Stack.Screen name="expenses"/><Stack.Screen name="invoices"/><Stack.Screen name="subcontractors"/><Stack.Screen name="quotes"/><Stack.Screen name="outstanding"/><Stack.Screen name="tax"/><Stack.Screen name="settings"/></Stack.Protected>
   </Stack>;
 }
 export default function RootLayout() { const [client] = useState(() => new QueryClient({ defaultOptions: { queries: { staleTime: 30_000, retry: 1 } } })); return <SafeAreaProvider><QueryClientProvider client={client}><AuthProvider><StatusBar style="dark"/><Routes/></AuthProvider></QueryClientProvider></SafeAreaProvider>; }

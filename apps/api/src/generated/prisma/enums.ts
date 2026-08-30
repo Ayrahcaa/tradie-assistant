@@ -78,6 +78,54 @@ export const ExpenseStatus = {
 export type ExpenseStatus = (typeof ExpenseStatus)[keyof typeof ExpenseStatus]
 
 
+export const BusinessStructure = {
+  SOLE_TRADER: 'SOLE_TRADER',
+  COMPANY: 'COMPANY',
+  PARTNERSHIP: 'PARTNERSHIP',
+  TRUST: 'TRUST',
+  OTHER: 'OTHER'
+} as const
+
+export type BusinessStructure = (typeof BusinessStructure)[keyof typeof BusinessStructure]
+
+
+export const GstAccountingMethod = {
+  CASH: 'CASH',
+  ACCRUAL: 'ACCRUAL'
+} as const
+
+export type GstAccountingMethod = (typeof GstAccountingMethod)[keyof typeof GstAccountingMethod]
+
+
+export const BasFrequency = {
+  MONTHLY: 'MONTHLY',
+  QUARTERLY: 'QUARTERLY',
+  ANNUALLY: 'ANNUALLY'
+} as const
+
+export type BasFrequency = (typeof BasFrequency)[keyof typeof BasFrequency]
+
+
+export const TaxProfile = {
+  UNSPECIFIED: 'UNSPECIFIED',
+  AUSTRALIAN_RESIDENT_INDIVIDUAL: 'AUSTRALIAN_RESIDENT_INDIVIDUAL',
+  UNSUPPORTED: 'UNSUPPORTED'
+} as const
+
+export type TaxProfile = (typeof TaxProfile)[keyof typeof TaxProfile]
+
+
+export const GstTreatment = {
+  GST_INCLUDED: 'GST_INCLUDED',
+  GST_FREE: 'GST_FREE',
+  MANUAL: 'MANUAL',
+  NOT_CLAIMABLE: 'NOT_CLAIMABLE',
+  UNKNOWN: 'UNKNOWN'
+} as const
+
+export type GstTreatment = (typeof GstTreatment)[keyof typeof GstTreatment]
+
+
 export const SubcontractorRateType = {
   HOURLY: 'HOURLY',
   SQUARE_METRE: 'SQUARE_METRE',

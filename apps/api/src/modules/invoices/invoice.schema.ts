@@ -20,6 +20,8 @@ export const invoiceItemSchema = z.object({
 
   unitPrice: z.number().nonnegative("Unit price cannot be negative."),
 
+  gstApplicable: z.boolean().optional(),
+
   sortOrder: z.number().int().nonnegative().optional(),
 });
 

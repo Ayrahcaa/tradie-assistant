@@ -408,6 +408,7 @@ export const ModelName = {
   InvoiceItem: 'InvoiceItem',
   Payment: 'Payment',
   Expense: 'Expense',
+  PaygInstalment: 'PaygInstalment',
   Receipt: 'Receipt',
   Subcontractor: 'Subcontractor',
   SubcontractorProjectCost: 'SubcontractorProjectCost',
@@ -427,7 +428,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "passwordCredential" | "session" | "project" | "customer" | "quote" | "quoteItem" | "invoice" | "invoiceItem" | "payment" | "expense" | "receipt" | "subcontractor" | "subcontractorProjectCost" | "subcontractorPayment"
+    modelProps: "user" | "passwordCredential" | "session" | "project" | "customer" | "quote" | "quoteItem" | "invoice" | "invoiceItem" | "payment" | "expense" | "paygInstalment" | "receipt" | "subcontractor" | "subcontractorProjectCost" | "subcontractorPayment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1245,6 +1246,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PaygInstalment: {
+      payload: Prisma.$PaygInstalmentPayload<ExtArgs>
+      fields: Prisma.PaygInstalmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PaygInstalmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaygInstalmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PaygInstalmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaygInstalmentPayload>
+        }
+        findFirst: {
+          args: Prisma.PaygInstalmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaygInstalmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PaygInstalmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaygInstalmentPayload>
+        }
+        findMany: {
+          args: Prisma.PaygInstalmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaygInstalmentPayload>[]
+        }
+        create: {
+          args: Prisma.PaygInstalmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaygInstalmentPayload>
+        }
+        createMany: {
+          args: Prisma.PaygInstalmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PaygInstalmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaygInstalmentPayload>[]
+        }
+        delete: {
+          args: Prisma.PaygInstalmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaygInstalmentPayload>
+        }
+        update: {
+          args: Prisma.PaygInstalmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaygInstalmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.PaygInstalmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PaygInstalmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PaygInstalmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaygInstalmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.PaygInstalmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaygInstalmentPayload>
+        }
+        aggregate: {
+          args: Prisma.PaygInstalmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePaygInstalment>
+        }
+        groupBy: {
+          args: Prisma.PaygInstalmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaygInstalmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PaygInstalmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaygInstalmentCountAggregateOutputType> | number
+        }
+      }
+    }
     Receipt: {
       payload: Prisma.$ReceiptPayload<ExtArgs>
       fields: Prisma.ReceiptFieldRefs
@@ -1591,6 +1666,13 @@ export const UserScalarFieldEnum = {
   address: 'address',
   tradeType: 'tradeType',
   gstRegistered: 'gstRegistered',
+  businessStructure: 'businessStructure',
+  gstAccountingMethod: 'gstAccountingMethod',
+  basFrequency: 'basFrequency',
+  taxProfile: 'taxProfile',
+  taxFinancialYear: 'taxFinancialYear',
+  otherTaxableIncome: 'otherTaxableIncome',
+  additionalDeductions: 'additionalDeductions',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1729,6 +1811,7 @@ export const InvoiceItemScalarFieldEnum = {
   unitPrice: 'unitPrice',
   lineTotal: 'lineTotal',
   sortOrder: 'sortOrder',
+  gstApplicable: 'gstApplicable',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   invoiceId: 'invoiceId'
@@ -1761,6 +1844,8 @@ export const ExpenseScalarFieldEnum = {
   status: 'status',
   amount: 'amount',
   gstAmount: 'gstAmount',
+  gstTreatment: 'gstTreatment',
+  gstClaimable: 'gstClaimable',
   expenseDate: 'expenseDate',
   dueDate: 'dueDate',
   paidAt: 'paidAt',
@@ -1772,6 +1857,21 @@ export const ExpenseScalarFieldEnum = {
 } as const
 
 export type ExpenseScalarFieldEnum = (typeof ExpenseScalarFieldEnum)[keyof typeof ExpenseScalarFieldEnum]
+
+
+export const PaygInstalmentScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  paidAt: 'paidAt',
+  period: 'period',
+  reference: 'reference',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  ownerId: 'ownerId'
+} as const
+
+export type PaygInstalmentScalarFieldEnum = (typeof PaygInstalmentScalarFieldEnum)[keyof typeof PaygInstalmentScalarFieldEnum]
 
 
 export const ReceiptScalarFieldEnum = {
@@ -1898,16 +1998,58 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
- * Reference to a field of type 'DateTime'
+ * Reference to a field of type 'BusinessStructure'
  */
-export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+export type EnumBusinessStructureFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BusinessStructure'>
     
 
 
 /**
- * Reference to a field of type 'DateTime[]'
+ * Reference to a field of type 'BusinessStructure[]'
  */
-export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+export type ListEnumBusinessStructureFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BusinessStructure[]'>
+    
+
+
+/**
+ * Reference to a field of type 'GstAccountingMethod'
+ */
+export type EnumGstAccountingMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GstAccountingMethod'>
+    
+
+
+/**
+ * Reference to a field of type 'GstAccountingMethod[]'
+ */
+export type ListEnumGstAccountingMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GstAccountingMethod[]'>
+    
+
+
+/**
+ * Reference to a field of type 'BasFrequency'
+ */
+export type EnumBasFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BasFrequency'>
+    
+
+
+/**
+ * Reference to a field of type 'BasFrequency[]'
+ */
+export type ListEnumBasFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BasFrequency[]'>
+    
+
+
+/**
+ * Reference to a field of type 'TaxProfile'
+ */
+export type EnumTaxProfileFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaxProfile'>
+    
+
+
+/**
+ * Reference to a field of type 'TaxProfile[]'
+ */
+export type ListEnumTaxProfileFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaxProfile[]'>
     
 
 
@@ -1922,6 +2064,20 @@ export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
  * Reference to a field of type 'Decimal[]'
  */
 export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime'
+ */
+export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime[]'
+ */
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -2020,6 +2176,20 @@ export type EnumExpenseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'ExpenseStatus[]'
  */
 export type ListEnumExpenseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExpenseStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'GstTreatment'
+ */
+export type EnumGstTreatmentFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GstTreatment'>
+    
+
+
+/**
+ * Reference to a field of type 'GstTreatment[]'
+ */
+export type ListEnumGstTreatmentFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GstTreatment[]'>
     
 
 
@@ -2226,6 +2396,7 @@ export type GlobalOmitConfig = {
   invoiceItem?: Prisma.InvoiceItemOmit
   payment?: Prisma.PaymentOmit
   expense?: Prisma.ExpenseOmit
+  paygInstalment?: Prisma.PaygInstalmentOmit
   receipt?: Prisma.ReceiptOmit
   subcontractor?: Prisma.SubcontractorOmit
   subcontractorProjectCost?: Prisma.SubcontractorProjectCostOmit

@@ -1,4 +1,5 @@
 import { prisma } from "../../lib/prisma.js";
+import { Prisma } from "../../generated/prisma/client.js";
 
 type QuoteStatus = "DRAFT" | "SENT" | "ACCEPTED" | "REJECTED" | "EXPIRED";
 
@@ -59,14 +60,10 @@ async function validateProject(
   return project;
 }
 
-function calculateTotals(items: QuoteItemInput[]) {
-  const subtotal = items.reduce(
-    (sum, item) => sum + item.quantity * item.unitPrice,
-    0,
-  );
-
-  const gstAmount = subtotal * 0.1;
-  const totalAmount = subtotal + gstAmount;
+function calculateTotals(items: QuoteItemInput[], gstRegistered: boolean) {
+  const subtotal = items.reduce((sum,item)=>sum.plus(new Prisma.Decimal(item.quantity).times(item.unitPrice)),new Prisma.Decimal(0));
+  const gstAmount = gstRegistered ? subtotal.times("0.10").toDecimalPlaces(2) : new Prisma.Decimal(0);
+  const totalAmount = subtotal.plus(gstAmount);
 
   return {
     subtotal,
@@ -90,7 +87,8 @@ export async function createQuote(ownerId: string, input: CreateQuoteInput) {
 
   const quoteNumber = await generateQuoteNumber(ownerId);
 
-  const totals = calculateTotals(input.items);
+  const owner = await prisma.user.findUniqueOrThrow({ where: { id: ownerId }, select: { gstRegistered: true } });
+  const totals = calculateTotals(input.items, owner.gstRegistered);
 
   return prisma.quote.create({
     data: {
@@ -183,7 +181,8 @@ export async function updateQuote(ownerId: string, quoteId: string, input: Updat
     await validateProject(input.projectId, ownerId);
   }
 
-  const totals = input.items ? calculateTotals(input.items) : null;
+  const owner = await prisma.user.findUniqueOrThrow({ where: { id: ownerId }, select: { gstRegistered: true } });
+  const totals = input.items ? calculateTotals(input.items, owner.gstRegistered) : null;
 
   return prisma.$transaction(async (tx) => {
     if (input.items) {

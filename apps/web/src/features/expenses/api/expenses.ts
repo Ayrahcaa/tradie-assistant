@@ -15,6 +15,8 @@ export interface CreateExpenseInput {
   status?: ExpenseStatus;
   amount: number;
   gstAmount?: number;
+  gstTreatment?: "GST_INCLUDED"|"GST_FREE"|"MANUAL"|"NOT_CLAIMABLE"|"UNKNOWN";
+  gstClaimable?: boolean;
   expenseDate: string;
   dueDate?: string | null;
   paidAt?: string | null;

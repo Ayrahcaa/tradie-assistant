@@ -6,6 +6,8 @@ import { uploadReceipt } from "../api/receipts";
 
 interface ReceiptUploadProps {
   expenseId: string;
+  projectId?: string;
+  onSuccess?: () => void;
 }
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -17,7 +19,7 @@ const allowedTypes = [
   "application/pdf",
 ];
 
-export function ReceiptUpload({ expenseId }: ReceiptUploadProps) {
+export function ReceiptUpload({ expenseId, projectId, onSuccess }: ReceiptUploadProps) {
   const queryClient = useQueryClient();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -28,15 +30,18 @@ export function ReceiptUpload({ expenseId }: ReceiptUploadProps) {
     mutationFn: (file: File) => uploadReceipt(expenseId, file),
 
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["expense-receipts", expenseId],
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["expense-receipts", expenseId] }),
+        queryClient.invalidateQueries({ queryKey: ["expense", expenseId] }),
+        ...(projectId ? [queryClient.invalidateQueries({ queryKey: ["project-overview", projectId] })] : []),
+      ]);
 
       setError(null);
 
       if (inputRef.current) {
         inputRef.current.value = "";
       }
+      onSuccess?.();
     },
   });
 

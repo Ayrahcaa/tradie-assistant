@@ -10,6 +10,10 @@ import { createQuote, type CreateQuoteInput } from "../api/quotes";
 interface NewQuoteFormProps {
   onSuccess: () => void;
   onCancel: () => void;
+  projectId?: string;
+  projectName?: string;
+  customerId?: string;
+  customerName?: string;
 }
 
 interface QuoteItemForm {
@@ -51,10 +55,10 @@ function money(value: number): string {
   }).format(value);
 }
 
-export function NewQuoteForm({ onSuccess, onCancel }: NewQuoteFormProps) {
+export function NewQuoteForm({ onSuccess, onCancel, projectId, projectName, customerId, customerName }: NewQuoteFormProps) {
   const queryClient = useQueryClient();
 
-  const [form, setForm] = useState<QuoteFormState>(initialFormState);
+  const [form, setForm] = useState<QuoteFormState>({ ...initialFormState, projectId: projectId ?? "", customerId: customerId ?? "" });
 
   const [items, setItems] = useState<QuoteItemForm[]>([{ ...initialItem }]);
 
@@ -74,9 +78,10 @@ export function NewQuoteForm({ onSuccess, onCancel }: NewQuoteFormProps) {
     mutationFn: createQuote,
 
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["quotes"],
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["quotes"] }),
+        ...(projectId ? [queryClient.invalidateQueries({ queryKey: ["project-overview", projectId] })] : []),
+      ]);
 
       setForm(initialFormState);
       setItems([{ ...initialItem }]);
@@ -268,7 +273,7 @@ export function NewQuoteForm({ onSuccess, onCancel }: NewQuoteFormProps) {
           <div>
             <label className="text-sm font-bold text-slate-700">Customer</label>
 
-            <select
+            {customerId ? <div className="mt-2 flex h-11 items-center rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700">{customerName ?? "Project customer"}</div> : <select
               name="customerId"
               value={form.customerId}
               onChange={handleChange}
@@ -283,13 +288,13 @@ export function NewQuoteForm({ onSuccess, onCancel }: NewQuoteFormProps) {
                   {customer.businessName ? ` — ${customer.businessName}` : ""}
                 </option>
               ))}
-            </select>
+            </select>}
           </div>
 
           <div>
             <label className="text-sm font-bold text-slate-700">Project</label>
 
-            <select
+            {projectId ? <div className="mt-2 flex h-11 items-center rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700">{projectName ?? "Current project"}</div> : <select
               name="projectId"
               value={form.projectId}
               onChange={handleChange}
@@ -302,7 +307,7 @@ export function NewQuoteForm({ onSuccess, onCancel }: NewQuoteFormProps) {
                   {project.name}
                 </option>
               ))}
-            </select>
+            </select>}
           </div>
         </div>
 

@@ -23,6 +23,7 @@ import { HttpError } from "./lib/http-error.js";
 import { ZodError } from "zod";
 import { authRouter } from "./modules/auth/auth.routes.js";
 import { requireAuth } from "./modules/auth/auth.middleware.js";
+import { financialRouter } from "./modules/financial/financial.routes.js";
 
 const app = express();
 
@@ -71,6 +72,7 @@ app.use("/api/subcontractors", subcontractorRouter);
 app.use("/api/subcontractor-costs", subcontractorCostRouter);
 app.use("/api/subcontractor-payments", subcontractorPaymentRouter);
 app.use("/api/analytics", analyticsRouter);
+app.use("/api/financial", financialRouter);
 
 app.use(
   (

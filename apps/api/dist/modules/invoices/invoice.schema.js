@@ -15,6 +15,7 @@ export const invoiceItemSchema = z.object({
         .max(250),
     quantity: z.number().positive("Quantity must be greater than 0."),
     unitPrice: z.number().nonnegative("Unit price cannot be negative."),
+    gstApplicable: z.boolean().optional(),
     sortOrder: z.number().int().nonnegative().optional(),
 });
 const invoiceFieldsSchema = z.object({

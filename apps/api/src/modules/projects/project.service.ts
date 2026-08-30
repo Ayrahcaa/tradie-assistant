@@ -79,17 +79,29 @@ export async function createProject(ownerId: string, input: CreateProjectInput) 
 }
 
 export async function listProjects(ownerId: string, status?: ProjectStatus) {
-  return prisma.project.findMany({
+  const projects = await prisma.project.findMany({
     where: {
       ownerId,
       ...(status ? { status } : {}),
     },
     include: {
       customer: true,
+      invoices: { select: { status: true, totalAmount: true } },
+      expenses: { select: { category: true, amount: true } },
+      subcontractorProjectCosts: { select: { status: true, agreedAmount: true } },
     },
     orderBy: {
       createdAt: "desc",
     },
+  });
+  return projects.map((project) => {
+    const revenue = project.invoices.filter((invoice) => invoice.status !== "DRAFT" && invoice.status !== "CANCELLED").reduce((total, invoice) => total + Number(invoice.totalAmount), 0);
+    const expenses = project.expenses.filter((expense) => expense.category !== "SUBCONTRACTOR").reduce((total, expense) => total + Number(expense.amount), 0);
+    const subcontractors = project.subcontractorProjectCosts.filter((cost) => cost.status !== "CANCELLED").reduce((total, cost) => total + Number(cost.agreedAmount), 0);
+    const profit = revenue - expenses - subcontractors;
+    const { invoices: _invoices, expenses: _expenses, subcontractorProjectCosts: _costs, ...result } = project;
+    void _invoices; void _expenses; void _costs;
+    return { ...result, financialSummary: { revenue, costs: expenses + subcontractors, profit, margin: revenue ? profit / revenue * 100 : 0 } };
   });
 }
 

@@ -47,6 +47,7 @@ export type InvoiceItemMinAggregateOutputType = {
   unitPrice: runtime.Decimal | null
   lineTotal: runtime.Decimal | null
   sortOrder: number | null
+  gstApplicable: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
   invoiceId: string | null
@@ -59,6 +60,7 @@ export type InvoiceItemMaxAggregateOutputType = {
   unitPrice: runtime.Decimal | null
   lineTotal: runtime.Decimal | null
   sortOrder: number | null
+  gstApplicable: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
   invoiceId: string | null
@@ -71,6 +73,7 @@ export type InvoiceItemCountAggregateOutputType = {
   unitPrice: number
   lineTotal: number
   sortOrder: number
+  gstApplicable: number
   createdAt: number
   updatedAt: number
   invoiceId: number
@@ -99,6 +102,7 @@ export type InvoiceItemMinAggregateInputType = {
   unitPrice?: true
   lineTotal?: true
   sortOrder?: true
+  gstApplicable?: true
   createdAt?: true
   updatedAt?: true
   invoiceId?: true
@@ -111,6 +115,7 @@ export type InvoiceItemMaxAggregateInputType = {
   unitPrice?: true
   lineTotal?: true
   sortOrder?: true
+  gstApplicable?: true
   createdAt?: true
   updatedAt?: true
   invoiceId?: true
@@ -123,6 +128,7 @@ export type InvoiceItemCountAggregateInputType = {
   unitPrice?: true
   lineTotal?: true
   sortOrder?: true
+  gstApplicable?: true
   createdAt?: true
   updatedAt?: true
   invoiceId?: true
@@ -222,6 +228,7 @@ export type InvoiceItemGroupByOutputType = {
   unitPrice: runtime.Decimal
   lineTotal: runtime.Decimal
   sortOrder: number
+  gstApplicable: boolean
   createdAt: Date
   updatedAt: Date
   invoiceId: string
@@ -257,6 +264,7 @@ export type InvoiceItemWhereInput = {
   unitPrice?: Prisma.DecimalFilter<"InvoiceItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFilter<"InvoiceItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   sortOrder?: Prisma.IntFilter<"InvoiceItem"> | number
+  gstApplicable?: Prisma.BoolFilter<"InvoiceItem"> | boolean
   createdAt?: Prisma.DateTimeFilter<"InvoiceItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"InvoiceItem"> | Date | string
   invoiceId?: Prisma.StringFilter<"InvoiceItem"> | string
@@ -270,6 +278,7 @@ export type InvoiceItemOrderByWithRelationInput = {
   unitPrice?: Prisma.SortOrder
   lineTotal?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
+  gstApplicable?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   invoiceId?: Prisma.SortOrder
@@ -286,6 +295,7 @@ export type InvoiceItemWhereUniqueInput = Prisma.AtLeast<{
   unitPrice?: Prisma.DecimalFilter<"InvoiceItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFilter<"InvoiceItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   sortOrder?: Prisma.IntFilter<"InvoiceItem"> | number
+  gstApplicable?: Prisma.BoolFilter<"InvoiceItem"> | boolean
   createdAt?: Prisma.DateTimeFilter<"InvoiceItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"InvoiceItem"> | Date | string
   invoiceId?: Prisma.StringFilter<"InvoiceItem"> | string
@@ -299,6 +309,7 @@ export type InvoiceItemOrderByWithAggregationInput = {
   unitPrice?: Prisma.SortOrder
   lineTotal?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
+  gstApplicable?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   invoiceId?: Prisma.SortOrder
@@ -319,6 +330,7 @@ export type InvoiceItemScalarWhereWithAggregatesInput = {
   unitPrice?: Prisma.DecimalWithAggregatesFilter<"InvoiceItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalWithAggregatesFilter<"InvoiceItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   sortOrder?: Prisma.IntWithAggregatesFilter<"InvoiceItem"> | number
+  gstApplicable?: Prisma.BoolWithAggregatesFilter<"InvoiceItem"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"InvoiceItem"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"InvoiceItem"> | Date | string
   invoiceId?: Prisma.StringWithAggregatesFilter<"InvoiceItem"> | string
@@ -331,6 +343,7 @@ export type InvoiceItemCreateInput = {
   unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal: runtime.Decimal | runtime.DecimalJsLike | number | string
   sortOrder?: number
+  gstApplicable?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   invoice: Prisma.InvoiceCreateNestedOneWithoutItemsInput
@@ -343,6 +356,7 @@ export type InvoiceItemUncheckedCreateInput = {
   unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal: runtime.Decimal | runtime.DecimalJsLike | number | string
   sortOrder?: number
+  gstApplicable?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   invoiceId: string
@@ -355,6 +369,7 @@ export type InvoiceItemUpdateInput = {
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  gstApplicable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   invoice?: Prisma.InvoiceUpdateOneRequiredWithoutItemsNestedInput
@@ -367,6 +382,7 @@ export type InvoiceItemUncheckedUpdateInput = {
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  gstApplicable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   invoiceId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -379,6 +395,7 @@ export type InvoiceItemCreateManyInput = {
   unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal: runtime.Decimal | runtime.DecimalJsLike | number | string
   sortOrder?: number
+  gstApplicable?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   invoiceId: string
@@ -391,6 +408,7 @@ export type InvoiceItemUpdateManyMutationInput = {
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  gstApplicable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -402,6 +420,7 @@ export type InvoiceItemUncheckedUpdateManyInput = {
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  gstApplicable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   invoiceId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -424,6 +443,7 @@ export type InvoiceItemCountOrderByAggregateInput = {
   unitPrice?: Prisma.SortOrder
   lineTotal?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
+  gstApplicable?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   invoiceId?: Prisma.SortOrder
@@ -443,6 +463,7 @@ export type InvoiceItemMaxOrderByAggregateInput = {
   unitPrice?: Prisma.SortOrder
   lineTotal?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
+  gstApplicable?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   invoiceId?: Prisma.SortOrder
@@ -455,6 +476,7 @@ export type InvoiceItemMinOrderByAggregateInput = {
   unitPrice?: Prisma.SortOrder
   lineTotal?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
+  gstApplicable?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   invoiceId?: Prisma.SortOrder
@@ -516,6 +538,7 @@ export type InvoiceItemCreateWithoutInvoiceInput = {
   unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal: runtime.Decimal | runtime.DecimalJsLike | number | string
   sortOrder?: number
+  gstApplicable?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -527,6 +550,7 @@ export type InvoiceItemUncheckedCreateWithoutInvoiceInput = {
   unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal: runtime.Decimal | runtime.DecimalJsLike | number | string
   sortOrder?: number
+  gstApplicable?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -567,6 +591,7 @@ export type InvoiceItemScalarWhereInput = {
   unitPrice?: Prisma.DecimalFilter<"InvoiceItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFilter<"InvoiceItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   sortOrder?: Prisma.IntFilter<"InvoiceItem"> | number
+  gstApplicable?: Prisma.BoolFilter<"InvoiceItem"> | boolean
   createdAt?: Prisma.DateTimeFilter<"InvoiceItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"InvoiceItem"> | Date | string
   invoiceId?: Prisma.StringFilter<"InvoiceItem"> | string
@@ -579,6 +604,7 @@ export type InvoiceItemCreateManyInvoiceInput = {
   unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal: runtime.Decimal | runtime.DecimalJsLike | number | string
   sortOrder?: number
+  gstApplicable?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -590,6 +616,7 @@ export type InvoiceItemUpdateWithoutInvoiceInput = {
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  gstApplicable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -601,6 +628,7 @@ export type InvoiceItemUncheckedUpdateWithoutInvoiceInput = {
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  gstApplicable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -612,6 +640,7 @@ export type InvoiceItemUncheckedUpdateManyWithoutInvoiceInput = {
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  gstApplicable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -625,6 +654,7 @@ export type InvoiceItemSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   unitPrice?: boolean
   lineTotal?: boolean
   sortOrder?: boolean
+  gstApplicable?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   invoiceId?: boolean
@@ -638,6 +668,7 @@ export type InvoiceItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   unitPrice?: boolean
   lineTotal?: boolean
   sortOrder?: boolean
+  gstApplicable?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   invoiceId?: boolean
@@ -651,6 +682,7 @@ export type InvoiceItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   unitPrice?: boolean
   lineTotal?: boolean
   sortOrder?: boolean
+  gstApplicable?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   invoiceId?: boolean
@@ -664,12 +696,13 @@ export type InvoiceItemSelectScalar = {
   unitPrice?: boolean
   lineTotal?: boolean
   sortOrder?: boolean
+  gstApplicable?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   invoiceId?: boolean
 }
 
-export type InvoiceItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "description" | "quantity" | "unitPrice" | "lineTotal" | "sortOrder" | "createdAt" | "updatedAt" | "invoiceId", ExtArgs["result"]["invoiceItem"]>
+export type InvoiceItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "description" | "quantity" | "unitPrice" | "lineTotal" | "sortOrder" | "gstApplicable" | "createdAt" | "updatedAt" | "invoiceId", ExtArgs["result"]["invoiceItem"]>
 export type InvoiceItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   invoice?: boolean | Prisma.InvoiceDefaultArgs<ExtArgs>
 }
@@ -692,6 +725,7 @@ export type $InvoiceItemPayload<ExtArgs extends runtime.Types.Extensions.Interna
     unitPrice: runtime.Decimal
     lineTotal: runtime.Decimal
     sortOrder: number
+    gstApplicable: boolean
     createdAt: Date
     updatedAt: Date
     invoiceId: string
@@ -1125,6 +1159,7 @@ export interface InvoiceItemFieldRefs {
   readonly unitPrice: Prisma.FieldRef<"InvoiceItem", 'Decimal'>
   readonly lineTotal: Prisma.FieldRef<"InvoiceItem", 'Decimal'>
   readonly sortOrder: Prisma.FieldRef<"InvoiceItem", 'Int'>
+  readonly gstApplicable: Prisma.FieldRef<"InvoiceItem", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"InvoiceItem", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"InvoiceItem", 'DateTime'>
   readonly invoiceId: Prisma.FieldRef<"InvoiceItem", 'String'>

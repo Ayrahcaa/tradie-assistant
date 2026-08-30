@@ -1,28 +1,413 @@
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, Banknote, BriefcaseBusiness, CircleAlert, CircleDollarSign, FileText, FolderKanban, HandCoins, ReceiptText, TrendingUp, WalletCards } from "lucide-react";
+import {
+  ArrowRight,
+  Banknote,
+  BriefcaseBusiness,
+  CircleAlert,
+  CircleDollarSign,
+  FilePlus2,
+  FolderKanban,
+  HandCoins,
+  Plus,
+  ReceiptText,
+  Sparkles,
+  TrendingUp,
+  Users,
+  WalletCards,
+} from "lucide-react";
 import { Link } from "react-router";
-import { getBusinessOverview } from "../../features/analytics/api";
-import type { Activity } from "../../features/analytics/types";
-import { PageHeader } from "../components/ui/PageHeader";
-import { StatCard } from "../components/ui/StatCard";
-
-const money = (value: number | string) => new Intl.NumberFormat("en-AU", { style: "currency", currency: "AUD", maximumFractionDigits: 0 }).format(Number(value));
-const formatDate = (value: string) => new Intl.DateTimeFormat("en-AU", { day: "numeric", month: "short" }).format(new Date(value));
-const activityIcons: Record<string, typeof FolderKanban> = { PROJECT: FolderKanban, INVOICE: FileText, PAYMENT: Banknote, EXPENSE: ReceiptText, SUBCONTRACTOR_PAYMENT: BriefcaseBusiness, QUOTE: FileText };
+import {
+  getBusinessOverview,
+  getWeeklyCheck,
+} from "../../features/analytics/api";
+import {
+  aud,
+  businessInsights,
+  margin,
+  percentageChange,
+} from "../../features/analytics/dashboard-utils";
+import {
+  ActivityList,
+  BusinessHealth,
+  ExpenseBreakdown,
+  Insights,
+  InvoiceInsights,
+  TopProjects,
+  YearAndForecast,
+} from "../../features/analytics/components/DashboardSections";
+import { MoneyChart } from "../../features/analytics/components/FinancialCharts";
+import { MetricCard } from "../../features/analytics/components/MetricCard";
 
 export function DashboardPage() {
-  const query = useQuery({ queryKey: ["business-overview"], queryFn: getBusinessOverview });
-  if (query.isPending) return <div className="space-y-6 animate-pulse"><div className="h-24 rounded-2xl bg-slate-200"/><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{[1,2,3,4].map((n) => <div key={n} className="h-36 rounded-2xl bg-slate-200"/>)}</div><div className="h-80 rounded-2xl bg-slate-200"/></div>;
-  if (query.isError) return <div className="flex gap-3 rounded-2xl border border-red-200 bg-red-50 p-6 text-red-700"><CircleAlert/><div><strong>Dashboard could not be loaded</strong><p className="mt-1 text-sm">{query.error.message}</p><button onClick={() => query.refetch()} className="mt-3 text-sm font-bold underline">Try again</button></div></div>;
-  const { business, kpis, recentActivity, activeProjects, receivables, payables } = query.data;
-  return <>
-    <PageHeader eyebrow={new Intl.DateTimeFormat("en-AU", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(new Date())} title={`Good morning, ${business.firstName}`} description="Run your jobs. Know your numbers. Here’s what needs your attention today." action={<Link to="/projects" className="inline-flex h-11 items-center gap-2 rounded-xl bg-slate-950 px-5 text-sm font-bold text-white">View projects<ArrowRight size={17}/></Link>}/>
-    <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"><StatCard title="Active projects" value={String(kpis.activeProjects)} description="Jobs currently underway" icon={FolderKanban}/><StatCard title="Payments received" value={money(kpis.paymentsReceived)} description={`${money(kpis.totalInvoiced)} invoiced`} icon={CircleDollarSign}/><StatCard title="Customer outstanding" value={money(kpis.customerOutstanding)} description={`${receivables.length} invoice${receivables.length === 1 ? "" : "s"} awaiting money`} icon={HandCoins}/><StatCard title="Subcontractors owed" value={money(kpis.subcontractorOutstanding)} description={`${payables.length} cost record${payables.length === 1 ? "" : "s"} outstanding`} icon={BriefcaseBusiness}/></section>
-    <section className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4"><article className="rounded-2xl bg-slate-950 p-5 text-white"><WalletCards size={20} className="text-amber-400"/><p className="mt-4 text-xs font-bold uppercase text-slate-400">Direct expenses</p><p className="mt-1 text-2xl font-bold">{money(kpis.expenses)}</p></article><article className="rounded-2xl bg-slate-950 p-5 text-white"><BriefcaseBusiness size={20} className="text-amber-400"/><p className="mt-4 text-xs font-bold uppercase text-slate-400">Committed subcontractor costs</p><p className="mt-1 text-2xl font-bold">{money(kpis.subcontractorCosts)}</p></article><article className="rounded-2xl bg-slate-950 p-5 text-white"><TrendingUp size={20} className="text-amber-400"/><p className="mt-4 text-xs font-bold uppercase text-slate-400">Estimated profit</p><p className={`mt-1 text-2xl font-bold ${kpis.estimatedProfit < 0 ? "text-red-400" : "text-emerald-400"}`}>{money(kpis.estimatedProfit)}</p></article><article className="rounded-2xl bg-slate-950 p-5 text-white"><Banknote size={20} className="text-amber-400"/><p className="mt-4 text-xs font-bold uppercase text-slate-400">Cash position</p><p className={`mt-1 text-2xl font-bold ${kpis.cashPosition < 0 ? "text-red-400" : "text-amber-400"}`}>{money(kpis.cashPosition)}</p></article></section>
-    <section className="mt-6 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]"><div className="rounded-2xl border bg-white p-6 shadow-sm"><div className="flex items-center justify-between"><div><h2 className="text-lg font-bold">Active projects</h2><p className="mt-1 text-sm text-slate-500">Estimated margin and current cash at a glance.</p></div><Link to="/projects" className="text-sm font-bold text-amber-700">View all</Link></div><div className="mt-5 space-y-3">{activeProjects.length ? activeProjects.map((project) => <Link key={project.id} to={`/projects/${project.id}`} className="block rounded-xl border p-4 hover:bg-slate-50"><div className="flex items-start justify-between gap-4"><div><p className="font-bold">{project.name}</p><p className="mt-1 text-xs text-slate-500">{project.clientName || "No customer assigned"}</p></div><p className={`font-bold ${project.financials.estimatedProfit < 0 ? "text-red-700" : "text-emerald-700"}`}>{money(project.financials.estimatedProfit)} est. profit</p></div><div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-amber-400" style={{ width: `${Math.min(100, project.financials.invoiceTotal ? project.financials.customerPayments / project.financials.invoiceTotal * 100 : 0)}%` }}/></div><div className="mt-2 flex justify-between text-xs text-slate-500"><span>{money(project.financials.customerPayments)} received</span><span>{money(project.financials.customerOutstanding)} owing</span></div></Link>) : <p className="rounded-xl border border-dashed p-8 text-center text-sm text-slate-500">No active projects yet.</p>}</div></div><RecentActivity items={recentActivity}/></section>
-    <section className="mt-6 grid gap-6 xl:grid-cols-2"><MoneyList title="Money owed to you" link="/outstanding" items={receivables.slice(0,4).map((item) => ({ id:item.id, path:`/invoices/${item.id}`, title:`${item.invoiceNumber} · ${item.customer.firstName} ${item.customer.lastName}`, subtitle:item.project?.name || "No project", amount:item.outstanding, urgent:item.status === "OVERDUE" }))}/><MoneyList title="Money you owe" link="/outstanding" items={payables.slice(0,4).map((item) => ({ id:item.id, path:`/subcontractors/${item.subcontractor.id}`, title:item.subcontractor.businessName || `${item.subcontractor.firstName} ${item.subcontractor.lastName || ""}`, subtitle:item.project.name, amount:item.outstanding }))}/></section>
-  </>;
+  const query = useQuery({
+    queryKey: ["business-overview"],
+    queryFn: getBusinessOverview,
+  });
+  const weeklyQuery = useQuery({
+    queryKey: ["weekly-check"],
+    queryFn: getWeeklyCheck,
+    staleTime: 60_000,
+  });
+  if (query.isPending) return <DashboardSkeleton />;
+  if (query.isError)
+    return (
+      <div className="surface-card flex gap-3 border-red-200 bg-red-50 p-6 text-red-700">
+        <CircleAlert />
+        <div>
+          <strong>Dashboard could not be loaded</strong>
+          <p className="mt-1 text-sm">{query.error.message}</p>
+          <button
+            onClick={() => query.refetch()}
+            className="mt-3 text-sm font-bold underline"
+          >
+            Try again
+          </button>
+        </div>
+      </div>
+    );
+  const data = query.data;
+  const d = data.dashboard;
+  const revenueChange = percentageChange(
+    d.revenueThisMonth,
+    d.revenueLastMonth,
+  );
+  const expenseChange = percentageChange(
+    d.expensesThisMonth,
+    d.expensesLastMonth,
+  );
+  const profitChange = percentageChange(d.profitThisMonth, d.profitLastMonth);
+  const greeting =
+    new Date().getHours() < 12
+      ? "Good morning"
+      : new Date().getHours() < 17
+        ? "Good afternoon"
+        : "Good evening";
+  return (
+    <div className="space-y-6">
+      <header className="relative overflow-hidden rounded-[1.75rem] bg-[#152238] px-6 py-7 text-white shadow-xl sm:px-8 sm:py-9">
+        <div className="absolute -right-14 -top-20 h-64 w-64 rounded-full bg-amber-400/15 blur-2xl" />
+        <div className="relative flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <p className="text-sm font-bold text-amber-300">
+              {new Intl.DateTimeFormat("en-AU", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+              }).format(new Date())}
+            </p>
+            <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">
+              {greeting}, {data.business.firstName} 👋
+            </h1>
+            <p className="mt-2 max-w-xl text-sm leading-6 text-slate-300 sm:text-base">
+              Here’s how your business is looking. The important numbers are
+              front and centre.
+            </p>
+          </div>
+          <Link
+            to="/projects"
+            className="inline-flex h-11 items-center gap-2 rounded-xl bg-amber-400  px-5 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5"
+          >
+            View projects
+            <ArrowRight size={17} />
+          </Link>
+        </div>
+      </header>
+
+      <section
+        aria-label="Key business metrics"
+        className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"
+      >
+        <MetricCard
+          label="Revenue this month"
+          value={aud(d.revenueThisMonth, true)}
+          detail="from last month"
+          change={revenueChange}
+          icon={CircleDollarSign}
+          tone="green"
+        />
+        <MetricCard
+          label="Revenue this year"
+          value={aud(d.ytdRevenue, true)}
+          detail={`${Math.round(d.yearProgress * 100)}% through ${d.year}`}
+          icon={TrendingUp}
+          tone="green"
+        />
+        <MetricCard
+          label="Expenses this month"
+          value={aud(d.expensesThisMonth, true)}
+          detail="from last month"
+          change={expenseChange}
+          icon={WalletCards}
+          tone="orange"
+        />
+        <MetricCard
+          label="Profit this month"
+          value={aud(d.profitThisMonth, true)}
+          detail="from last month"
+          change={profitChange}
+          icon={Banknote}
+          tone={d.profitThisMonth >= 0 ? "green" : "coral"}
+        />
+        <MetricCard
+          label="Profit this year"
+          value={aud(d.ytdProfit, true)}
+          detail={`${margin(d.ytdProfit, d.ytdRevenue).toFixed(0)}% margin`}
+          icon={Sparkles}
+          tone="green"
+        />
+        <MetricCard
+          label="Money outstanding"
+          value={aud(data.kpis.customerOutstanding, true)}
+          detail={`${data.receivables.length} invoice${data.receivables.length === 1 ? "" : "s"} awaiting payment`}
+          icon={HandCoins}
+          tone="purple"
+        />
+        <MetricCard
+          label="GST estimate"
+          value={
+            d.gst.registered ? aud(d.gst.estimate, true) : "Not registered"
+          }
+          detail={
+            d.gst.registered
+              ? "recorded transactions this year"
+              : "GST calculations are hidden"
+          }
+          icon={ReceiptText}
+          tone="purple"
+        />
+        <MetricCard
+          label="Active projects"
+          value={String(data.kpis.activeProjects)}
+          detail="jobs currently underway"
+          icon={FolderKanban}
+          tone="purple"
+        />
+      </section>
+
+      <MoneyChart data={d.monthlyTrend} />
+      <YearAndForecast data={d} />
+      <BusinessHealth data={data} />
+      <section className="grid gap-5 lg:grid-cols-2">
+        <OwedCard
+          title="Money owed to you"
+          value={data.kpis.customerOutstanding}
+          detail={`${aud(d.invoiceBuckets.dueSoon.amount, true)} due soon · ${aud(d.invoiceBuckets.overdue.amount, true)} overdue`}
+          icon={HandCoins}
+          tone="incoming"
+        />
+        <OwedCard
+          title="Money you owe"
+          value={data.kpis.subcontractorOutstanding}
+          detail={`${data.payables.length} subcontractor obligation${data.payables.length === 1 ? "" : "s"}`}
+          icon={BriefcaseBusiness}
+          tone="owing"
+        />
+      </section>
+      {weeklyQuery.data?.issues.length ? (
+        <section className="rounded-[1.25rem] border border-amber-200 bg-amber-50 p-6">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="text-xs font-extrabold uppercase tracking-[.15em] text-amber-700">
+                Needs attention
+              </p>
+              <h2 className="mt-1 text-xl font-black">
+                A few things to review
+              </h2>
+            </div>
+            <Link
+              to="/business-check"
+              className="text-sm font-bold text-amber-800"
+            >
+              Open weekly check →
+            </Link>
+          </div>
+          <div className="mt-4 grid gap-3 md:grid-cols-2">
+            {weeklyQuery.data.issues.slice(0, 4).map((item, index) => (
+              <Link
+                key={`${item.type}-${index}`}
+                to={item.path}
+                className="flex items-center justify-between rounded-xl border border-amber-200 bg-white p-4 text-sm font-bold"
+              >
+                <span>{item.title}</span>
+                <ArrowRight size={17} />
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
+      <section className="grid gap-5 xl:grid-cols-2">
+        <ExpenseBreakdown items={d.expenseBreakdown} />
+        <InvoiceInsights data={d.invoiceBuckets} />
+      </section>
+      <TopProjects projects={d.topProjects} />
+      <Insights items={businessInsights(data)} />
+      <QuickActions />
+      <section className="grid gap-5 xl:grid-cols-[1.1fr_.9fr]">
+        <ActivityList items={data.recentActivity} />
+        <GstCard data={data} />
+      </section>
+    </div>
+  );
 }
 
-function RecentActivity({ items }: { items: Activity[] }) { return <div className="rounded-2xl border bg-white p-6 shadow-sm"><h2 className="text-lg font-bold">Recent activity</h2><div className="mt-5 space-y-5">{items.length ? items.slice(0,7).map((item) => { const Icon = activityIcons[item.type] ?? FolderKanban; const description = item.description.replace(/ · (-?\d+(?:\.\d+)?)$/, (_match, amount: string) => ` · ${money(amount)}`); return <Link key={item.id} to={item.path} className="flex gap-3"><span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-600"><Icon size={18}/></span><div className="min-w-0 flex-1"><p className="truncate text-sm font-bold">{item.title.replace(/ · (-?\d+(?:\.\d+)?)$/, (_match, amount: string) => ` · ${money(amount)}`)}</p><p className="mt-0.5 truncate text-xs text-slate-500">{description}</p></div><span className="text-xs text-slate-400">{formatDate(item.occurredAt)}</span></Link>; }) : <p className="text-sm text-slate-500">Activity will appear as you use the app.</p>}</div></div>; }
-function MoneyList({ title, link, items }: { title: string; link: string; items: Array<{ id:string; path:string; title:string; subtitle:string; amount:string; urgent?:boolean }> }) { return <div className="rounded-2xl border bg-white p-6 shadow-sm"><div className="flex justify-between"><h2 className="text-lg font-bold">{title}</h2><Link to={link} className="text-sm font-bold text-amber-700">View all</Link></div><div className="mt-4 divide-y">{items.length ? items.map((item) => <Link key={item.id} to={item.path} className="flex items-center justify-between gap-4 py-4"><div><p className="font-bold">{item.title}</p><p className="mt-1 text-xs text-slate-500">{item.subtitle}</p></div><p className={`font-bold ${item.urgent ? "text-red-700" : ""}`}>{money(item.amount)}</p></Link>) : <p className="py-8 text-center text-sm text-slate-500">Nothing outstanding.</p>}</div></div>; }
+function OwedCard({
+  title,
+  value,
+  detail,
+  icon: Icon,
+  tone,
+}: {
+  title: string;
+  value: number;
+  detail: string;
+  icon: typeof HandCoins;
+  tone: "incoming" | "owing";
+}) {
+  return (
+    <Link
+      to="/outstanding"
+      className={`interactive-card relative overflow-hidden rounded-[1.25rem] border bg-white p-6 ${tone === "incoming" ? "border-emerald-200" : "border-amber-200"}`}
+    >
+      <div className="flex justify-between">
+        <div>
+          <p
+            className={`text-sm font-bold ${tone === "incoming" ? "text-emerald-700" : "text-amber-800"}`}
+          >
+            {title}
+          </p>
+          <p className="mt-2 text-3xl font-black tracking-tight">
+            {aud(value, true)}
+          </p>
+          <p
+            className="mt-3 text-xs font-semibold text-slate-600"
+          >
+            {detail}
+          </p>
+        </div>
+        <span
+          className={`flex h-12 w-12 items-center justify-center rounded-2xl ${tone === "incoming" ? "bg-emerald-50 text-emerald-700" : "bg-amber-100 text-amber-800"}`}
+        >
+          <Icon size={23} />
+        </span>
+      </div>
+    </Link>
+  );
+}
+function QuickActions() {
+  const actions = [
+    {
+      label: "New project",
+      to: "/projects",
+      icon: FolderKanban,
+      tone: "bg-amber-100 text-amber-800",
+    },
+    {
+      label: "Create invoice",
+      to: "/invoices",
+      icon: FilePlus2,
+      tone: "bg-amber-100 text-amber-800",
+    },
+    {
+      label: "Add expense",
+      to: "/expenses",
+      icon: WalletCards,
+      tone: "bg-amber-100 text-amber-800",
+    },
+    {
+      label: "Upload receipt",
+      to: "/receipts",
+      icon: ReceiptText,
+      tone: "bg-amber-100 text-amber-800",
+    },
+    {
+      label: "Add customer",
+      to: "/customers",
+      icon: Users,
+      tone: "bg-amber-100 text-amber-800",
+    },
+  ];
+  return (
+    <section>
+      <div className="mb-3 flex items-center gap-2">
+        <Plus size={19} className="text-amber-600" />
+        <h2 className="text-lg font-black">Quick actions</h2>
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+        {actions.map(({ label, to, icon: Icon, tone }) => (
+          <Link
+            key={label}
+            to={to}
+            className="surface-card interactive-card flex items-center gap-3 p-4 text-sm font-extrabold"
+          >
+            <span className={`rounded-xl p-2.5 ${tone}`}>
+              <Icon size={19} />
+            </span>
+            {label}
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+function GstCard({
+  data,
+}: {
+  data: Awaited<ReturnType<typeof getBusinessOverview>>;
+}) {
+  const gst = data.dashboard.gst;
+  return (
+    <article className="surface-card p-6">
+      <p className="text-xs font-extrabold uppercase tracking-[.15em] text-amber-700">
+        GST snapshot
+      </p>
+      <h2 className="mt-1 text-xl font-black">
+        {gst.registered ? "Estimated GST position" : "GST not enabled"}
+      </h2>
+      {gst.registered ? (
+        <>
+          <p className="mt-4 text-4xl font-black tracking-tight">
+            {aud(gst.estimate, true)}
+          </p>
+          <div className="mt-5 space-y-3 rounded-2xl bg-amber-50 p-4 text-sm">
+            <p className="flex justify-between">
+              <span>GST collected</span>
+              <b>{aud(gst.collected, true)}</b>
+            </p>
+            <p className="flex justify-between">
+              <span>GST credits</span>
+              <b>-{aud(gst.credits, true)}</b>
+            </p>
+          </div>
+          <p className="mt-4 text-xs leading-5 text-slate-500">
+            Estimate based on recorded transactions. Confirm figures before
+            lodging with the ATO.
+          </p>
+          <Link
+            to="/tax"
+            className="mt-4 inline-flex text-sm font-bold text-slate-700 hover:text-amber-700"
+          >
+            Review Tax & GST →
+          </Link>
+        </>
+      ) : (
+        <p className="mt-4 text-sm leading-6 text-slate-500">
+          Turn on GST registration in business settings if this business is
+          registered for GST.
+        </p>
+      )}
+    </article>
+  );
+}
+function DashboardSkeleton() {
+  return (
+    <div className="animate-pulse space-y-6">
+      <div className="h-44 rounded-[1.75rem] bg-slate-200" />
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {Array.from({ length: 8 }, (_, i) => (
+          <div key={i} className="h-36 rounded-2xl bg-slate-200" />
+        ))}
+      </div>
+      <div className="h-96 rounded-2xl bg-slate-200" />
+    </div>
+  );
+}

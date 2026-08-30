@@ -15,8 +15,8 @@ async function main(): Promise<void> {
   const demoPassword = process.env.DEMO_USER_PASSWORD ?? "TradieDemo2026!";
   const user = await prisma.user.upsert({
     where: { email },
-    update: { firstName: "Daniel", lastName: "Taylor", businessName: "Taylor Trade Services", abn: "53 901 234 567", phone: "0412 555 010", address: "15 Hutt Street, Adelaide SA 5000", tradeType: "Renovations and general building", gstRegistered: true },
-    create: { id: id(1, 1), firstName: "Daniel", lastName: "Taylor", email, businessName: "Taylor Trade Services", abn: "53 901 234 567", phone: "0412 555 010", address: "15 Hutt Street, Adelaide SA 5000", tradeType: "Renovations and general building", gstRegistered: true },
+    update: { firstName: "Daniel", lastName: "Taylor", businessName: "Taylor Trade Services", abn: "53 901 234 567", phone: "0412 555 010", address: "15 Hutt Street, Adelaide SA 5000", tradeType: "Renovations and general building", gstRegistered: true, businessStructure:"SOLE_TRADER",gstAccountingMethod:"CASH",basFrequency:"QUARTERLY",taxProfile:"AUSTRALIAN_RESIDENT_INDIVIDUAL",taxFinancialYear:"2026-27",otherTaxableIncome:5000 },
+    create: { id: id(1, 1), firstName: "Daniel", lastName: "Taylor", email, businessName: "Taylor Trade Services", abn: "53 901 234 567", phone: "0412 555 010", address: "15 Hutt Street, Adelaide SA 5000", tradeType: "Renovations and general building", gstRegistered: true, businessStructure:"SOLE_TRADER",gstAccountingMethod:"CASH",basFrequency:"QUARTERLY",taxProfile:"AUSTRALIAN_RESIDENT_INDIVIDUAL",taxFinancialYear:"2026-27",otherTaxableIncome:5000 },
   });
   const demoPasswordHash = await hashPassword(demoPassword);
   await prisma.passwordCredential.upsert({
@@ -27,6 +27,7 @@ async function main(): Promise<void> {
 
   await prisma.$transaction(async (tx) => {
     await tx.subcontractorPayment.deleteMany({ where: { ownerId: user.id } });
+    await tx.paygInstalment.deleteMany({ where: { ownerId: user.id } });
     await tx.subcontractorProjectCost.deleteMany({ where: { ownerId: user.id } });
     await tx.receipt.deleteMany({ where: { ownerId: user.id } });
     await tx.payment.deleteMany({ where: { ownerId: user.id } });
@@ -92,7 +93,7 @@ async function main(): Promise<void> {
     const expenses = [
       [1,1,"Bathroom fixtures","Reece Plumbing","MATERIALS",4380,"PAID","2026-07-15"],[2,1,"Waterproofing supplies","Bunnings Mile End","MATERIALS",1260,"PAID","2026-07-18"],[3,2,"Kitchen cabinetry deposit","Adelaide Cabinets","MATERIALS",7200,"PAID","2026-06-20"],[4,2,"Electrical fittings","Middy’s","MATERIALS",1850,"PENDING","2026-08-02"],[5,3,"Tile adhesive and grout","Beaumont Tiles","MATERIALS",1640,"PAID","2026-08-07"],[6,4,"Premium tapware","Tradelink","MATERIALS",2900,"PAID","2026-04-11"],[7,5,"Commercial framing materials","Stratco","MATERIALS",9350,"PAID","2026-07-25"],[8,5,"Equipment hire","Kennards Hire","EQUIPMENT_HIRE",2180,"PAID","2026-08-03"],[9,6,"Paint and consumables","Inspirations Paint","MATERIALS",2200,"PAID","2026-01-18"],[10,7,"Spotted gum decking","Australian Timbers","MATERIALS",5100,"PENDING","2026-08-17"],
     ] as const;
-    for(const [n,project,description,supplier,category,amount,status,expenseDate] of expenses) await tx.expense.create({data:{id:id(7,n),projectId:id(3,project),description,supplier,category,status,amount,gstAmount:Number((amount/11).toFixed(2)),expenseDate:d(expenseDate),dueDate:status==="PENDING"?d("2026-09-05"):null,paidAt:status==="PAID"?d(expenseDate):null,ownerId:user.id}});
+    for(const [n,project,description,supplier,category,amount,status,expenseDate] of expenses) { const treatment=n===4?"UNKNOWN":n===9?"GST_FREE":"GST_INCLUDED";const claimable=treatment==="GST_INCLUDED";await tx.expense.create({data:{id:id(7,n),projectId:id(3,project),description,supplier,category,status,amount,gstAmount:claimable?Number((amount/11).toFixed(2)):0,gstTreatment:treatment,gstClaimable:claimable,expenseDate:d(expenseDate),dueDate:status==="PENDING"?d("2026-09-05"):null,paidAt:status==="PAID"?d(expenseDate):null,ownerId:user.id,receipts:n<=6&&n!==4?{create:{id:id(11,n),originalName:`demo-receipt-${n}.pdf`,fileName:`demo-receipt-${n}.pdf`,mimeType:"application/pdf",fileSize:24500,storagePath:`demo/demo-receipt-${n}.pdf`,ownerId:user.id}}:undefined}});}
 
     const subcontractors = [
       [1,"Ethan","Murphy","Murphy Tiling","43 812 345 678","0401 220 104"],[2,"Grace","Lee","Lee Electrical SA","67 923 456 789","0413 220 218"],[3,"Lucas","Harris","Harris Carpentry","25 134 567 890","0422 220 327"],[4,"Ruby","Thomas","RT Painting","81 245 678 901","0430 220 436"],[5,"Henry","Clark","Clark Plumbing Solutions","39 356 789 012","0409 220 545"],
@@ -103,6 +104,7 @@ async function main(): Promise<void> {
       [1,1,1,"Wall and floor tiling","SQUARE_METRE",72,46,3312,3500,2000,"PARTIALLY_PAID"],[2,5,1,"Plumbing rough-in and fit-off","FIXED_TASK",null,null,null,4200,4200,"PAID"],[3,2,2,"Kitchen electrical upgrade","HOURLY",96,34,3264,3400,1500,"PARTIALLY_PAID"],[4,1,3,"Apartment floor tiling","SQUARE_METRE",68,132,8976,9200,0,"UNPAID"],[5,1,4,"Ensuite tiling","SQUARE_METRE",75,38,2850,3000,3000,"PAID"],[6,2,5,"Office electrical fitout","FIXED_PROJECT",null,null,null,12500,5000,"PARTIALLY_PAID"],[7,3,5,"Partition framing","DAILY",720,8,5760,6000,0,"UNPAID"],[8,4,6,"Interior repaint","FIXED_PROJECT",null,null,null,4800,4800,"PAID"],[9,3,7,"Deck construction labour","PER_UNIT",95,42,3990,4200,0,"UNPAID"],
     ] as const;
     for(const [n,subcontractor,project,description,rateType,rate,quantity,calculatedAmount,agreedAmount,amountPaid,status] of costs){await tx.subcontractorProjectCost.create({data:{id:id(9,n),subcontractorId:id(8,subcontractor),projectId:id(3,project),description,rateType,rate,quantity,calculatedAmount,agreedAmount,amountPaid,amountPending:agreedAmount-amountPaid,status,ownerId:user.id,payments:amountPaid>0?{create:{id:id(10,n),amount:amountPaid,paidAt:d("2026-08-10"),reference:`SUB-DEMO-${n}`,notes:"Demo bank transfer",ownerId:user.id}}:undefined}});}
+    await tx.paygInstalment.createMany({data:[{id:id(12,1),ownerId:user.id,amount:1200,paidAt:d("2026-07-28"),period:"2026–27 Q1",reference:"PAYG-Q1"},{id:id(12,2),ownerId:user.id,amount:800,paidAt:d("2026-08-28"),period:"2026–27 Q1",reference:"PAYG-Q1-2"}]});
   }, { timeout: 30000 });
 
   console.log("Demo data ready", { user: user.email, customers: 7, projects: 8, invoices: 7, subcontractors: 5 });

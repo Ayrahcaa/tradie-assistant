@@ -97,6 +97,11 @@ export type Payment = Prisma.PaymentModel
  */
 export type Expense = Prisma.ExpenseModel
 /**
+ * Model PaygInstalment
+ * 
+ */
+export type PaygInstalment = Prisma.PaygInstalmentModel
+/**
  * Model Receipt
  * 
  */

@@ -8,7 +8,7 @@ import type { LoginInput, RegisterInput, UpdateProfileInput } from "./auth.schem
 export const SESSION_COOKIE = "tradie_session";
 export const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 
-const safeUserSelect = { id: true, email: true, firstName: true, lastName: true, businessName: true, abn: true, phone: true, address: true, tradeType: true, gstRegistered: true } as const;
+const safeUserSelect = { id: true, email: true, firstName: true, lastName: true, businessName: true, abn: true, phone: true, address: true, tradeType: true, gstRegistered: true, businessStructure: true, gstAccountingMethod: true, basFrequency: true, taxProfile: true, taxFinancialYear: true, otherTaxableIncome: true, additionalDeductions: true } as const;
 const dummyPasswordHash = hashPassword("invalid-credential-timing-value");
 export const hashSessionToken = (token: string) => createHash("sha256").update(token).digest("hex");
 

@@ -49,10 +49,10 @@ function formatDate(value: string | null): string {
 function statusClasses(status: ProjectStatus): string {
   switch (status) {
     case "ACTIVE":
-      return "bg-emerald-100 text-emerald-700";
+      return "bg-amber-50 text-amber-800";
 
     case "COMPLETED":
-      return "bg-blue-100 text-blue-700";
+      return "bg-emerald-100 text-emerald-700";
 
     case "ARCHIVED":
       return "bg-slate-200 text-slate-600";
@@ -131,6 +131,7 @@ function ProjectCard({ project }: { project: Project }) {
           View details
         </Link>
       </div>
+      {project.financialSummary && <div className="mt-3 grid grid-cols-3 gap-2 rounded-xl border border-slate-100 p-3 text-right"><div className="text-left"><p className="text-[10px] font-bold uppercase text-slate-400">Revenue</p><p className="mt-1 text-sm font-black">{formatMoney(String(project.financialSummary.revenue))}</p></div><div><p className="text-[10px] font-bold uppercase text-slate-400">Profit</p><p className={`mt-1 text-sm font-black ${project.financialSummary.profit>=0?"text-emerald-700":"text-red-700"}`}>{formatMoney(String(project.financialSummary.profit))}</p></div><div><p className="text-[10px] font-bold uppercase text-slate-400">Margin</p><p className="mt-1 text-sm font-black">{project.financialSummary.margin.toFixed(0)}%</p></div></div>}
     </article>
   );
 }

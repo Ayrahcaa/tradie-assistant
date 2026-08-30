@@ -22,6 +22,10 @@ import { SettingsPage } from "../shared/pages/SettingsPage";
 import { LoginPage } from "../features/auth/pages/LoginPage";
 import { RegisterPage } from "../features/auth/pages/RegisterPage";
 import { ProtectedRoute, PublicOnlyRoute } from "../features/auth/components/AuthGuards";
+import { TaxAndGstPage } from "../features/analytics/TaxAndGstPage";
+import { BusinessCheckPage } from "../features/analytics/BusinessCheckPage";
+import { SubcontractorStatementPage } from "../features/analytics/SubcontractorStatementPage";
+import { AccountantExportPage } from "../features/analytics/AccountantExportPage";
 
 const router = createBrowserRouter([
   {
@@ -91,6 +95,7 @@ const router = createBrowserRouter([
         path: "subcontractors/:subcontractorId",
         element: <SubcontractorDetailsPage />,
       },
+      { path: "subcontractors/:subcontractorId/statement", element: <SubcontractorStatementPage /> },
       {
         path: "finances",
         element: <FinancialOverviewPage />,
@@ -99,6 +104,9 @@ const router = createBrowserRouter([
         path: "outstanding",
         element: <OutstandingPage />,
       },
+      { path: "tax", element: <TaxAndGstPage /> },
+      { path: "business-check", element: <BusinessCheckPage /> },
+      { path: "accountant-export", element: <AccountantExportPage /> },
       {
         path: "assistant",
         element: <AssistantPage />,

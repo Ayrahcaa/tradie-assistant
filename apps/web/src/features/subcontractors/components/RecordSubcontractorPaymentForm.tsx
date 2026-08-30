@@ -15,7 +15,7 @@ export function RecordSubcontractorPaymentForm({ cost, onSuccess, onCancel }: Pr
   const [validation, setValidation] = useState<string | null>(null);
   const mutation = useMutation({
     mutationFn: createSubcontractorPayment,
-    onSuccess: async () => { await queryClient.invalidateQueries({ queryKey: ["subcontractor-costs"] }); onSuccess(); },
+    onSuccess: async () => { await Promise.all([queryClient.invalidateQueries({ queryKey: ["subcontractor-costs"] }), queryClient.invalidateQueries({ queryKey: ["project-overview", cost.projectId] }), queryClient.invalidateQueries({ queryKey: ["business-overview"] })]); onSuccess(); },
   });
   function change(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) { setForm((current) => ({ ...current, [event.target.name]: event.target.value })); }
   function submit(event: FormEvent) {

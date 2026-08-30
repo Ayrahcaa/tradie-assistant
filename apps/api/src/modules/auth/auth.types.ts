@@ -9,6 +9,13 @@ export interface AuthUser {
   address: string | null;
   tradeType: string | null;
   gstRegistered: boolean;
+  businessStructure: "SOLE_TRADER" | "COMPANY" | "PARTNERSHIP" | "TRUST" | "OTHER";
+  gstAccountingMethod: "CASH" | "ACCRUAL";
+  basFrequency: "MONTHLY" | "QUARTERLY" | "ANNUALLY";
+  taxProfile: "UNSPECIFIED" | "AUSTRALIAN_RESIDENT_INDIVIDUAL" | "UNSUPPORTED";
+  taxFinancialYear: string;
+  otherTaxableIncome: unknown;
+  additionalDeductions: unknown;
 }
 
 declare global {

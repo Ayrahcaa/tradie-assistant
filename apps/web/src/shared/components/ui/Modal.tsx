@@ -54,21 +54,16 @@ export function Modal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
-        className="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl"
+        className="modal-surface relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[1.5rem] bg-white shadow-2xl"
       >
         <div className="sticky top-0 z-10 flex items-start justify-between border-b border-slate-200 bg-white px-6 py-5">
           <div>
-            <h2
-              id="modal-title"
-              className="text-xl font-bold text-slate-950"
-            >
+            <h2 id="modal-title" className="text-xl font-bold text-slate-950">
               {title}
             </h2>
 
             {description && (
-              <p className="mt-1 text-sm text-slate-500">
-                {description}
-              </p>
+              <p className="mt-1 text-sm text-slate-500">{description}</p>
             )}
           </div>
 

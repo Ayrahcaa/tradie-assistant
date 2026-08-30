@@ -53,6 +53,8 @@ export function RecordPaymentForm({
         queryClient.invalidateQueries({
           queryKey: ["invoices"],
         }),
+        ...(invoice.projectId ? [queryClient.invalidateQueries({ queryKey: ["project-overview", invoice.projectId] })] : []),
+        queryClient.invalidateQueries({ queryKey: ["business-overview"] }),
       ]);
 
       onSuccess();
@@ -227,7 +229,7 @@ export function RecordPaymentForm({
         <button
           type="submit"
           disabled={mutation.isPending}
-          className="inline-flex h-11 items-center gap-2 rounded-xl bg-emerald-600 px-5 font-bold text-white disabled:opacity-50"
+          className="btn-primary"
         >
           {mutation.isPending && (
             <LoaderCircle size={18} className="animate-spin" />

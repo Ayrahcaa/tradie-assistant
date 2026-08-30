@@ -10,6 +10,8 @@ import type { ExpenseCategory, ExpenseStatus } from "../types/expense";
 interface NewExpenseFormProps {
   onSuccess: () => void;
   onCancel: () => void;
+  projectId?: string;
+  projectName?: string;
 }
 
 interface ExpenseFormState {
@@ -19,6 +21,7 @@ interface ExpenseFormState {
   status: ExpenseStatus;
   amount: string;
   gstAmount: string;
+  gstTreatment: "GST_INCLUDED"|"GST_FREE"|"MANUAL"|"NOT_CLAIMABLE"|"UNKNOWN";
   expenseDate: string;
   dueDate: string;
   paidAt: string;
@@ -37,6 +40,7 @@ const initialFormState: ExpenseFormState = {
   status: "PAID",
   amount: "",
   gstAmount: "",
+  gstTreatment: "GST_INCLUDED",
   expenseDate: today(),
   dueDate: "",
   paidAt: today(),
@@ -44,10 +48,10 @@ const initialFormState: ExpenseFormState = {
   notes: "",
 };
 
-export function NewExpenseForm({ onSuccess, onCancel }: NewExpenseFormProps) {
+export function NewExpenseForm({ onSuccess, onCancel, projectId, projectName }: NewExpenseFormProps) {
   const queryClient = useQueryClient();
 
-  const [form, setForm] = useState<ExpenseFormState>(initialFormState);
+  const [form, setForm] = useState<ExpenseFormState>({ ...initialFormState, projectId: projectId ?? "" });
 
   const [validationError, setValidationError] = useState<string | null>(null);
 
@@ -60,9 +64,11 @@ export function NewExpenseForm({ onSuccess, onCancel }: NewExpenseFormProps) {
     mutationFn: createExpense,
 
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["expenses"],
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["expenses"] }),
+        ...(projectId ? [queryClient.invalidateQueries({ queryKey: ["project-overview", projectId] })] : []),
+        queryClient.invalidateQueries({ queryKey: ["business-overview"] }),
+      ]);
 
       setForm(initialFormState);
       setValidationError(null);
@@ -136,6 +142,8 @@ export function NewExpenseForm({ onSuccess, onCancel }: NewExpenseFormProps) {
       amount: Number(form.amount),
 
       gstAmount: form.gstAmount === "" ? 0 : Number(form.gstAmount),
+      gstTreatment: form.gstTreatment,
+      gstClaimable: form.gstTreatment === "GST_INCLUDED" || form.gstTreatment === "MANUAL",
 
       expenseDate: new Date(`${form.expenseDate}T12:00:00`).toISOString(),
 
@@ -201,6 +209,18 @@ export function NewExpenseForm({ onSuccess, onCancel }: NewExpenseFormProps) {
           />
         </div>
 
+        <div>
+          <label className="text-sm font-bold text-slate-700">GST treatment</label>
+          <select name="gstTreatment" value={form.gstTreatment} onChange={handleChange} className={inputClasses}>
+            <option value="GST_INCLUDED">GST included — claimable with documentation</option>
+            <option value="GST_FREE">GST free / no GST</option>
+            <option value="MANUAL">Enter GST amount manually</option>
+            <option value="NOT_CLAIMABLE">Not claimable</option>
+            <option value="UNKNOWN">Unknown — review later</option>
+          </select>
+          <p className="mt-2 text-xs text-slate-500">Categories are for bookkeeping only. Confirm credit eligibility with your BAS agent.</p>
+        </div>
+
         <div className="grid gap-5 sm:grid-cols-2">
           <div>
             <label className="text-sm font-bold text-slate-700">Supplier</label>
@@ -217,7 +237,7 @@ export function NewExpenseForm({ onSuccess, onCancel }: NewExpenseFormProps) {
           <div>
             <label className="text-sm font-bold text-slate-700">Project</label>
 
-            <select
+            {projectId ? <div className="mt-2 flex h-11 items-center rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700">{projectName ?? "Current project"}</div> : <select
               name="projectId"
               value={form.projectId}
               onChange={handleChange}
@@ -230,7 +250,7 @@ export function NewExpenseForm({ onSuccess, onCancel }: NewExpenseFormProps) {
                   {project.name}
                 </option>
               ))}
-            </select>
+            </select>}
           </div>
         </div>
 

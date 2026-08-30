@@ -11,9 +11,9 @@ import { EmptyState } from "../../../shared/components/ui/EmptyState";
 import { Modal } from "../../../shared/components/ui/Modal";
 import { PageHeader } from "../../../shared/components/ui/PageHeader";
 
-type ExpenseFilter = "ALL" | ExpenseStatus;
+type ExpenseFilter = "ALL" | "WITH_RECEIPT" | "MISSING_RECEIPT" | ExpenseStatus;
 
-const filters: ExpenseFilter[] = ["ALL", "PAID", "PENDING", "OVERDUE"];
+const filters: ExpenseFilter[] = ["ALL", "PAID", "PENDING", "OVERDUE", "WITH_RECEIPT", "MISSING_RECEIPT"];
 
 function money(value: string): string {
   return new Intl.NumberFormat("en-AU", {
@@ -131,12 +131,13 @@ export function ExpensesPage() {
 
   const [newExpenseOpen, setNewExpenseOpen] = useState(false);
 
-  const status = filter === "ALL" ? undefined : filter;
+  const status:ExpenseStatus|undefined = ["PAID","PENDING","OVERDUE"].includes(filter) ? filter as ExpenseStatus : undefined;
 
   const expensesQuery = useQuery({
     queryKey: ["expenses", status],
     queryFn: () => getExpenses(status),
   });
+  const displayedExpenses = expensesQuery.data?.data.filter((expense) => filter === "WITH_RECEIPT" ? Boolean(expense.receipts?.length) : filter === "MISSING_RECEIPT" ? !expense.receipts?.length : true) ?? [];
 
   return (
     <>
@@ -169,7 +170,7 @@ export function ExpensesPage() {
                 : "border border-slate-200 bg-white text-slate-600",
             ].join(" ")}
           >
-            {item === "ALL" ? "All expenses" : item}
+            {item === "ALL" ? "All expenses" : item === "WITH_RECEIPT" ? "With receipt" : item === "MISSING_RECEIPT" ? "Missing receipt" : item}
           </button>
         ))}
       </div>
@@ -195,21 +196,21 @@ export function ExpensesPage() {
         </div>
       )}
 
-      {expensesQuery.isSuccess && expensesQuery.data.data.length === 0 && (
+      {expensesQuery.isSuccess && displayedExpenses.length === 0 && (
         <EmptyState
           title="No expenses found"
           description="Record your first business expense to start tracking costs and GST."
         />
       )}
 
-      {expensesQuery.isSuccess && expensesQuery.data.data.length > 0 && (
+      {expensesQuery.isSuccess && displayedExpenses.length > 0 && (
         <>
           <p className="mb-4 text-sm font-semibold text-slate-500">
-            {expensesQuery.data.count} expenses
+            {displayedExpenses.length} expenses
           </p>
 
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {expensesQuery.data.data.map((expense) => (
+            {displayedExpenses.map((expense) => (
               <ExpenseCard key={expense.id} expense={expense} />
             ))}
           </div>

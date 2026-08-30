@@ -3,9 +3,10 @@ import { CircleAlert, LoaderCircle } from "lucide-react";
 import { type ChangeEvent, type FormEvent, useState } from "react";
 
 import { createCustomer, type CreateCustomerInput } from "../api/customers";
+import type { Customer } from "../types/customer";
 
 interface NewCustomerFormProps {
-  onSuccess: () => void;
+  onSuccess: (customer: Customer) => void;
   onCancel: () => void;
 }
 
@@ -41,13 +42,13 @@ export function NewCustomerForm({ onSuccess, onCancel }: NewCustomerFormProps) {
   const mutation = useMutation({
     mutationFn: createCustomer,
 
-    onSuccess: async () => {
+    onSuccess: async (customer) => {
       await queryClient.invalidateQueries({
         queryKey: ["customers"],
       });
 
       setForm(initialState);
-      onSuccess();
+      onSuccess(customer);
     },
   });
 

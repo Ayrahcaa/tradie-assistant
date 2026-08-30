@@ -27,6 +27,8 @@ const expenseFieldsSchema = z.object({
         .number()
         .nonnegative("GST amount cannot be negative.")
         .optional(),
+    gstTreatment: z.enum(["GST_INCLUDED", "GST_FREE", "MANUAL", "NOT_CLAIMABLE", "UNKNOWN"]).optional(),
+    gstClaimable: z.boolean().optional(),
     expenseDate: z.string().datetime({ offset: true }),
     dueDate: z.string().datetime({ offset: true }).optional().nullable(),
     paidAt: z.string().datetime({ offset: true }).optional().nullable(),

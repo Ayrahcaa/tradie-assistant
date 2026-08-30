@@ -24,6 +24,9 @@ import { RecordPaymentForm } from "../components/RecordPaymentForm";
 import type { InvoiceStatus, Payment, PaymentMethod } from "../types/invoice";
 
 import { Modal } from "../../../shared/components/ui/Modal";
+import { ShareMenu } from "../../../shared/components/ui/ShareMenu";
+import { useCurrentUser } from "../../auth/hooks/useCurrentUser";
+import { shareOrFallback } from "../../../shared/utils/sharing";
 
 function money(value: string | number): string {
   return new Intl.NumberFormat("en-AU", {
@@ -69,10 +72,10 @@ function statusClasses(status: InvoiceStatus): string {
       return "bg-slate-100 text-slate-700";
 
     case "SENT":
-      return "bg-blue-100 text-blue-700";
+      return "bg-slate-100 text-slate-700";
 
     case "PARTIALLY_PAID":
-      return "bg-violet-100 text-violet-700";
+      return "bg-amber-100 text-amber-800";
 
     case "PAID":
       return "bg-emerald-100 text-emerald-700";
@@ -94,6 +97,7 @@ export function InvoiceDetailsPage() {
   const queryClient = useQueryClient();
 
   const [paymentOpen, setPaymentOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
 
   const [deleteInvoiceOpen, setDeleteInvoiceOpen] = useState(false);
 
@@ -106,6 +110,7 @@ export function InvoiceDetailsPage() {
 
     enabled: Boolean(invoiceId),
   });
+  const currentUserQuery = useCurrentUser();
 
   const statusMutation = useMutation({
     mutationFn: (status: InvoiceStatus) =>
@@ -208,6 +213,12 @@ export function InvoiceDetailsPage() {
 
   const canRecordPayment =
     Number(invoice.balanceDue) > 0 && invoice.status !== "CANCELLED";
+  const shareInput = {
+    kind: "Invoice" as const, number: invoice.invoiceNumber,
+    businessName: currentUserQuery.data?.businessName || [currentUserQuery.data?.firstName, currentUserQuery.data?.lastName].filter(Boolean).join(" ") || "Your business",
+    customerName: `${invoice.customer.firstName} ${invoice.customer.lastName}`, customerEmail: invoice.customer.email, customerPhone: invoice.customer.phone,
+    projectName: invoice.project?.name, total: invoice.totalAmount, outstanding: invoice.balanceDue, dueDate: invoice.dueDate,
+  };
 
   return (
     <>
@@ -252,7 +263,7 @@ export function InvoiceDetailsPage() {
                 type="button"
                 onClick={() => statusMutation.mutate("SENT")}
                 disabled={statusMutation.isPending}
-                className="inline-flex h-11 items-center gap-2 rounded-xl border border-blue-200 bg-blue-50 px-4 text-sm font-bold text-blue-700"
+                className="btn-secondary"
               >
                 <Send size={18} />
                 Mark sent
@@ -263,7 +274,7 @@ export function InvoiceDetailsPage() {
               <button
                 type="button"
                 onClick={() => setPaymentOpen(true)}
-                className="inline-flex h-11 items-center gap-2 rounded-xl bg-emerald-600 px-5 text-sm font-bold text-white hover:bg-emerald-700"
+                className="btn-primary"
               >
                 <Banknote size={18} />
                 Record payment
@@ -486,6 +497,24 @@ export function InvoiceDetailsPage() {
             </h2>
 
             <div className="mt-4 flex flex-col gap-3">
+              <button
+                type="button"
+                onClick={() => void shareOrFallback(shareInput, () => setShareOpen(true))}
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-amber-400 px-4 text-sm font-bold text-slate-950 hover:bg-amber-300"
+              >
+                <Send size={18} />
+                Send invoice
+              </button>
+
+              <button
+                type="button"
+                disabled
+                className="inline-flex h-11 cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-bold text-slate-400"
+                title="Online payments require a payment provider connection"
+              >
+                <CircleDollarSign size={18} />
+                Pay online · Coming soon
+              </button>
               {invoice.status !== "CANCELLED" && invoice.status !== "PAID" && (
                 <button
                   type="button"
@@ -509,6 +538,12 @@ export function InvoiceDetailsPage() {
           </div>
         </div>
       </section>
+
+      <ShareMenu
+        open={shareOpen}
+        onClose={() => setShareOpen(false)}
+        document={shareInput}
+      />
 
       <Modal
         open={paymentOpen}

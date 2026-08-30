@@ -44,6 +44,8 @@ export type ExpenseMinAggregateOutputType = {
   status: $Enums.ExpenseStatus | null
   amount: runtime.Decimal | null
   gstAmount: runtime.Decimal | null
+  gstTreatment: $Enums.GstTreatment | null
+  gstClaimable: boolean | null
   expenseDate: Date | null
   dueDate: Date | null
   paidAt: Date | null
@@ -62,6 +64,8 @@ export type ExpenseMaxAggregateOutputType = {
   status: $Enums.ExpenseStatus | null
   amount: runtime.Decimal | null
   gstAmount: runtime.Decimal | null
+  gstTreatment: $Enums.GstTreatment | null
+  gstClaimable: boolean | null
   expenseDate: Date | null
   dueDate: Date | null
   paidAt: Date | null
@@ -80,6 +84,8 @@ export type ExpenseCountAggregateOutputType = {
   status: number
   amount: number
   gstAmount: number
+  gstTreatment: number
+  gstClaimable: number
   expenseDate: number
   dueDate: number
   paidAt: number
@@ -110,6 +116,8 @@ export type ExpenseMinAggregateInputType = {
   status?: true
   amount?: true
   gstAmount?: true
+  gstTreatment?: true
+  gstClaimable?: true
   expenseDate?: true
   dueDate?: true
   paidAt?: true
@@ -128,6 +136,8 @@ export type ExpenseMaxAggregateInputType = {
   status?: true
   amount?: true
   gstAmount?: true
+  gstTreatment?: true
+  gstClaimable?: true
   expenseDate?: true
   dueDate?: true
   paidAt?: true
@@ -146,6 +156,8 @@ export type ExpenseCountAggregateInputType = {
   status?: true
   amount?: true
   gstAmount?: true
+  gstTreatment?: true
+  gstClaimable?: true
   expenseDate?: true
   dueDate?: true
   paidAt?: true
@@ -251,6 +263,8 @@ export type ExpenseGroupByOutputType = {
   status: $Enums.ExpenseStatus
   amount: runtime.Decimal
   gstAmount: runtime.Decimal
+  gstTreatment: $Enums.GstTreatment
+  gstClaimable: boolean
   expenseDate: Date
   dueDate: Date | null
   paidAt: Date | null
@@ -292,6 +306,8 @@ export type ExpenseWhereInput = {
   status?: Prisma.EnumExpenseStatusFilter<"Expense"> | $Enums.ExpenseStatus
   amount?: Prisma.DecimalFilter<"Expense"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: Prisma.DecimalFilter<"Expense"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: Prisma.EnumGstTreatmentFilter<"Expense"> | $Enums.GstTreatment
+  gstClaimable?: Prisma.BoolFilter<"Expense"> | boolean
   expenseDate?: Prisma.DateTimeFilter<"Expense"> | Date | string
   dueDate?: Prisma.DateTimeNullableFilter<"Expense"> | Date | string | null
   paidAt?: Prisma.DateTimeNullableFilter<"Expense"> | Date | string | null
@@ -313,6 +329,8 @@ export type ExpenseOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   gstAmount?: Prisma.SortOrder
+  gstTreatment?: Prisma.SortOrder
+  gstClaimable?: Prisma.SortOrder
   expenseDate?: Prisma.SortOrder
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -337,6 +355,8 @@ export type ExpenseWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumExpenseStatusFilter<"Expense"> | $Enums.ExpenseStatus
   amount?: Prisma.DecimalFilter<"Expense"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: Prisma.DecimalFilter<"Expense"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: Prisma.EnumGstTreatmentFilter<"Expense"> | $Enums.GstTreatment
+  gstClaimable?: Prisma.BoolFilter<"Expense"> | boolean
   expenseDate?: Prisma.DateTimeFilter<"Expense"> | Date | string
   dueDate?: Prisma.DateTimeNullableFilter<"Expense"> | Date | string | null
   paidAt?: Prisma.DateTimeNullableFilter<"Expense"> | Date | string | null
@@ -358,6 +378,8 @@ export type ExpenseOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   gstAmount?: Prisma.SortOrder
+  gstTreatment?: Prisma.SortOrder
+  gstClaimable?: Prisma.SortOrder
   expenseDate?: Prisma.SortOrder
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -384,6 +406,8 @@ export type ExpenseScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumExpenseStatusWithAggregatesFilter<"Expense"> | $Enums.ExpenseStatus
   amount?: Prisma.DecimalWithAggregatesFilter<"Expense"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: Prisma.DecimalWithAggregatesFilter<"Expense"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: Prisma.EnumGstTreatmentWithAggregatesFilter<"Expense"> | $Enums.GstTreatment
+  gstClaimable?: Prisma.BoolWithAggregatesFilter<"Expense"> | boolean
   expenseDate?: Prisma.DateTimeWithAggregatesFilter<"Expense"> | Date | string
   dueDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Expense"> | Date | string | null
   paidAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Expense"> | Date | string | null
@@ -402,6 +426,8 @@ export type ExpenseCreateInput = {
   status?: $Enums.ExpenseStatus
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: $Enums.GstTreatment
+  gstClaimable?: boolean
   expenseDate: Date | string
   dueDate?: Date | string | null
   paidAt?: Date | string | null
@@ -421,6 +447,8 @@ export type ExpenseUncheckedCreateInput = {
   status?: $Enums.ExpenseStatus
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: $Enums.GstTreatment
+  gstClaimable?: boolean
   expenseDate: Date | string
   dueDate?: Date | string | null
   paidAt?: Date | string | null
@@ -440,6 +468,8 @@ export type ExpenseUpdateInput = {
   status?: Prisma.EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: Prisma.EnumGstTreatmentFieldUpdateOperationsInput | $Enums.GstTreatment
+  gstClaimable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   expenseDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -459,6 +489,8 @@ export type ExpenseUncheckedUpdateInput = {
   status?: Prisma.EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: Prisma.EnumGstTreatmentFieldUpdateOperationsInput | $Enums.GstTreatment
+  gstClaimable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   expenseDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -478,6 +510,8 @@ export type ExpenseCreateManyInput = {
   status?: $Enums.ExpenseStatus
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: $Enums.GstTreatment
+  gstClaimable?: boolean
   expenseDate: Date | string
   dueDate?: Date | string | null
   paidAt?: Date | string | null
@@ -496,6 +530,8 @@ export type ExpenseUpdateManyMutationInput = {
   status?: Prisma.EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: Prisma.EnumGstTreatmentFieldUpdateOperationsInput | $Enums.GstTreatment
+  gstClaimable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   expenseDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -512,6 +548,8 @@ export type ExpenseUncheckedUpdateManyInput = {
   status?: Prisma.EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: Prisma.EnumGstTreatmentFieldUpdateOperationsInput | $Enums.GstTreatment
+  gstClaimable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   expenseDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -540,6 +578,8 @@ export type ExpenseCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   gstAmount?: Prisma.SortOrder
+  gstTreatment?: Prisma.SortOrder
+  gstClaimable?: Prisma.SortOrder
   expenseDate?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
@@ -563,6 +603,8 @@ export type ExpenseMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   gstAmount?: Prisma.SortOrder
+  gstTreatment?: Prisma.SortOrder
+  gstClaimable?: Prisma.SortOrder
   expenseDate?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
@@ -581,6 +623,8 @@ export type ExpenseMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   gstAmount?: Prisma.SortOrder
+  gstTreatment?: Prisma.SortOrder
+  gstClaimable?: Prisma.SortOrder
   expenseDate?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
@@ -693,6 +737,10 @@ export type EnumExpenseStatusFieldUpdateOperationsInput = {
   set?: $Enums.ExpenseStatus
 }
 
+export type EnumGstTreatmentFieldUpdateOperationsInput = {
+  set?: $Enums.GstTreatment
+}
+
 export type ExpenseCreateNestedOneWithoutReceiptsInput = {
   create?: Prisma.XOR<Prisma.ExpenseCreateWithoutReceiptsInput, Prisma.ExpenseUncheckedCreateWithoutReceiptsInput>
   connectOrCreate?: Prisma.ExpenseCreateOrConnectWithoutReceiptsInput
@@ -715,6 +763,8 @@ export type ExpenseCreateWithoutOwnerInput = {
   status?: $Enums.ExpenseStatus
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: $Enums.GstTreatment
+  gstClaimable?: boolean
   expenseDate: Date | string
   dueDate?: Date | string | null
   paidAt?: Date | string | null
@@ -733,6 +783,8 @@ export type ExpenseUncheckedCreateWithoutOwnerInput = {
   status?: $Enums.ExpenseStatus
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: $Enums.GstTreatment
+  gstClaimable?: boolean
   expenseDate: Date | string
   dueDate?: Date | string | null
   paidAt?: Date | string | null
@@ -780,6 +832,8 @@ export type ExpenseScalarWhereInput = {
   status?: Prisma.EnumExpenseStatusFilter<"Expense"> | $Enums.ExpenseStatus
   amount?: Prisma.DecimalFilter<"Expense"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: Prisma.DecimalFilter<"Expense"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: Prisma.EnumGstTreatmentFilter<"Expense"> | $Enums.GstTreatment
+  gstClaimable?: Prisma.BoolFilter<"Expense"> | boolean
   expenseDate?: Prisma.DateTimeFilter<"Expense"> | Date | string
   dueDate?: Prisma.DateTimeNullableFilter<"Expense"> | Date | string | null
   paidAt?: Prisma.DateTimeNullableFilter<"Expense"> | Date | string | null
@@ -798,6 +852,8 @@ export type ExpenseCreateWithoutProjectInput = {
   status?: $Enums.ExpenseStatus
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: $Enums.GstTreatment
+  gstClaimable?: boolean
   expenseDate: Date | string
   dueDate?: Date | string | null
   paidAt?: Date | string | null
@@ -816,6 +872,8 @@ export type ExpenseUncheckedCreateWithoutProjectInput = {
   status?: $Enums.ExpenseStatus
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: $Enums.GstTreatment
+  gstClaimable?: boolean
   expenseDate: Date | string
   dueDate?: Date | string | null
   paidAt?: Date | string | null
@@ -860,6 +918,8 @@ export type ExpenseCreateWithoutReceiptsInput = {
   status?: $Enums.ExpenseStatus
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: $Enums.GstTreatment
+  gstClaimable?: boolean
   expenseDate: Date | string
   dueDate?: Date | string | null
   paidAt?: Date | string | null
@@ -878,6 +938,8 @@ export type ExpenseUncheckedCreateWithoutReceiptsInput = {
   status?: $Enums.ExpenseStatus
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: $Enums.GstTreatment
+  gstClaimable?: boolean
   expenseDate: Date | string
   dueDate?: Date | string | null
   paidAt?: Date | string | null
@@ -912,6 +974,8 @@ export type ExpenseUpdateWithoutReceiptsInput = {
   status?: Prisma.EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: Prisma.EnumGstTreatmentFieldUpdateOperationsInput | $Enums.GstTreatment
+  gstClaimable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   expenseDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -930,6 +994,8 @@ export type ExpenseUncheckedUpdateWithoutReceiptsInput = {
   status?: Prisma.EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: Prisma.EnumGstTreatmentFieldUpdateOperationsInput | $Enums.GstTreatment
+  gstClaimable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   expenseDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -948,6 +1014,8 @@ export type ExpenseCreateManyOwnerInput = {
   status?: $Enums.ExpenseStatus
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: $Enums.GstTreatment
+  gstClaimable?: boolean
   expenseDate: Date | string
   dueDate?: Date | string | null
   paidAt?: Date | string | null
@@ -965,6 +1033,8 @@ export type ExpenseUpdateWithoutOwnerInput = {
   status?: Prisma.EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: Prisma.EnumGstTreatmentFieldUpdateOperationsInput | $Enums.GstTreatment
+  gstClaimable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   expenseDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -983,6 +1053,8 @@ export type ExpenseUncheckedUpdateWithoutOwnerInput = {
   status?: Prisma.EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: Prisma.EnumGstTreatmentFieldUpdateOperationsInput | $Enums.GstTreatment
+  gstClaimable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   expenseDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1001,6 +1073,8 @@ export type ExpenseUncheckedUpdateManyWithoutOwnerInput = {
   status?: Prisma.EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: Prisma.EnumGstTreatmentFieldUpdateOperationsInput | $Enums.GstTreatment
+  gstClaimable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   expenseDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1018,6 +1092,8 @@ export type ExpenseCreateManyProjectInput = {
   status?: $Enums.ExpenseStatus
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: $Enums.GstTreatment
+  gstClaimable?: boolean
   expenseDate: Date | string
   dueDate?: Date | string | null
   paidAt?: Date | string | null
@@ -1035,6 +1111,8 @@ export type ExpenseUpdateWithoutProjectInput = {
   status?: Prisma.EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: Prisma.EnumGstTreatmentFieldUpdateOperationsInput | $Enums.GstTreatment
+  gstClaimable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   expenseDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1053,6 +1131,8 @@ export type ExpenseUncheckedUpdateWithoutProjectInput = {
   status?: Prisma.EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: Prisma.EnumGstTreatmentFieldUpdateOperationsInput | $Enums.GstTreatment
+  gstClaimable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   expenseDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1071,6 +1151,8 @@ export type ExpenseUncheckedUpdateManyWithoutProjectInput = {
   status?: Prisma.EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   gstAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  gstTreatment?: Prisma.EnumGstTreatmentFieldUpdateOperationsInput | $Enums.GstTreatment
+  gstClaimable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   expenseDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1119,6 +1201,8 @@ export type ExpenseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   status?: boolean
   amount?: boolean
   gstAmount?: boolean
+  gstTreatment?: boolean
+  gstClaimable?: boolean
   expenseDate?: boolean
   dueDate?: boolean
   paidAt?: boolean
@@ -1141,6 +1225,8 @@ export type ExpenseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   status?: boolean
   amount?: boolean
   gstAmount?: boolean
+  gstTreatment?: boolean
+  gstClaimable?: boolean
   expenseDate?: boolean
   dueDate?: boolean
   paidAt?: boolean
@@ -1161,6 +1247,8 @@ export type ExpenseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   status?: boolean
   amount?: boolean
   gstAmount?: boolean
+  gstTreatment?: boolean
+  gstClaimable?: boolean
   expenseDate?: boolean
   dueDate?: boolean
   paidAt?: boolean
@@ -1181,6 +1269,8 @@ export type ExpenseSelectScalar = {
   status?: boolean
   amount?: boolean
   gstAmount?: boolean
+  gstTreatment?: boolean
+  gstClaimable?: boolean
   expenseDate?: boolean
   dueDate?: boolean
   paidAt?: boolean
@@ -1191,7 +1281,7 @@ export type ExpenseSelectScalar = {
   projectId?: boolean
 }
 
-export type ExpenseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "description" | "supplier" | "category" | "status" | "amount" | "gstAmount" | "expenseDate" | "dueDate" | "paidAt" | "notes" | "createdAt" | "updatedAt" | "ownerId" | "projectId", ExtArgs["result"]["expense"]>
+export type ExpenseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "description" | "supplier" | "category" | "status" | "amount" | "gstAmount" | "gstTreatment" | "gstClaimable" | "expenseDate" | "dueDate" | "paidAt" | "notes" | "createdAt" | "updatedAt" | "ownerId" | "projectId", ExtArgs["result"]["expense"]>
 export type ExpenseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   project?: boolean | Prisma.Expense$projectArgs<ExtArgs>
@@ -1222,6 +1312,8 @@ export type $ExpensePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     status: $Enums.ExpenseStatus
     amount: runtime.Decimal
     gstAmount: runtime.Decimal
+    gstTreatment: $Enums.GstTreatment
+    gstClaimable: boolean
     expenseDate: Date
     dueDate: Date | null
     paidAt: Date | null
@@ -1663,6 +1755,8 @@ export interface ExpenseFieldRefs {
   readonly status: Prisma.FieldRef<"Expense", 'ExpenseStatus'>
   readonly amount: Prisma.FieldRef<"Expense", 'Decimal'>
   readonly gstAmount: Prisma.FieldRef<"Expense", 'Decimal'>
+  readonly gstTreatment: Prisma.FieldRef<"Expense", 'GstTreatment'>
+  readonly gstClaimable: Prisma.FieldRef<"Expense", 'Boolean'>
   readonly expenseDate: Prisma.FieldRef<"Expense", 'DateTime'>
   readonly dueDate: Prisma.FieldRef<"Expense", 'DateTime'>
   readonly paidAt: Prisma.FieldRef<"Expense", 'DateTime'>

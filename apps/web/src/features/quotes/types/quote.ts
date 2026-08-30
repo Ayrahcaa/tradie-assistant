@@ -10,6 +10,8 @@ export interface QuoteCustomer {
   firstName: string;
   lastName: string;
   businessName: string | null;
+  email?: string | null;
+  phone?: string | null;
 }
 
 export interface QuoteProject {
