@@ -3,17 +3,22 @@ import fs from "node:fs/promises";
 import OpenAI from "openai";
 import { zodTextFormat } from "openai/helpers/zod";
 
+import { HttpError } from "../../lib/http-error.js";
 import { prisma } from "../../lib/prisma.js";
 import { receiptExtractionSchema } from "./receipt.extraction.js";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+function getOpenAIClient(): OpenAI {
+  const apiKey = process.env.OPENAI_API_KEY;
+
+  if (!apiKey) {
+    throw new HttpError(503, "AI receipt extraction is not configured.");
+  }
+
+  return new OpenAI({ apiKey });
+}
 
 export async function extractReceiptData(ownerId: string, receiptId: string) {
-  if (!process.env.OPENAI_API_KEY) {
-    throw new Error("OPENAI_API_KEY is not configured.");
-  }
+  const openai = getOpenAIClient();
 
   const receipt = await prisma.receipt.findFirst({
     where: {
