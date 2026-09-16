@@ -1,7 +1,5 @@
 import type { Invoice, Payment, PaymentMethod } from "../types/invoice";
-import { apiFetch } from "../../../shared/api/http";
-
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
+import { API_URL, apiFetch } from "../../../shared/api/http";
 
 export interface CreatePaymentInput {
   invoiceId: string;

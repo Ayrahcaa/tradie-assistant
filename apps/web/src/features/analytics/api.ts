@@ -1,7 +1,5 @@
 import type { BusinessOverview, CustomerOverview, ProjectOverview, Receivable, Payable } from "./types";
-import { apiFetch } from "../../shared/api/http";
-
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
+import { API_URL, apiFetch } from "../../shared/api/http";
 
 async function get<T>(path: string, fallback: string): Promise<T> {
   const response = await apiFetch(`${API_URL}${path}`);

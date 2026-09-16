@@ -1,6 +1,5 @@
-import { apiFetch } from "../../../shared/api/http";
+import { API_URL, apiFetch } from "../../../shared/api/http";
 import type { CurrentUser, LoginInput, RegisterInput, UpdateProfileInput } from "../types/auth";
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
 
 async function message(response: Response, fallback: string) { const body: unknown = await response.json().catch(() => null); return body && typeof body === "object" && "message" in body && typeof body.message === "string" ? body.message : fallback; }
 async function submit(path: string, method: string, body?: unknown) { const response = await apiFetch(`${API_URL}${path}`, { method, headers: body ? { "Content-Type": "application/json" } : undefined, body: body ? JSON.stringify(body) : undefined }); if (!response.ok) throw new Error(await message(response, "Authentication request failed.")); return response; }

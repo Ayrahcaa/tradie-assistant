@@ -1,7 +1,5 @@
 import type { Customer, CustomersResponse } from "../types/customer";
-import { apiFetch } from "../../../shared/api/http";
-
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
+import { API_URL, apiFetch } from "../../../shared/api/http";
 
 export interface CreateCustomerInput {
   firstName: string;

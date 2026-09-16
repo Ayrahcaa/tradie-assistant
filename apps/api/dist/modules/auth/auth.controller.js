@@ -2,11 +2,25 @@ import { loginSchema, registerSchema, updateProfileSchema } from "./auth.schema.
 import { invalidateSession, login, register, SESSION_COOKIE, SESSION_TTL_MS, updateProfile } from "./auth.service.js";
 import { getRequestSessionToken } from "./auth.middleware.js";
 import { prisma } from "../../lib/prisma.js";
-function setSessionCookie(response, token, expiresAt) {
-    const secure = process.env.NODE_ENV === "production" ? "; Secure" : "";
-    response.setHeader("Set-Cookie", `${SESSION_COOKIE}=${encodeURIComponent(token)}; HttpOnly; Path=/; SameSite=Lax; Max-Age=${Math.floor(SESSION_TTL_MS / 1000)}; Expires=${expiresAt.toUTCString()}${secure}`);
+function sessionCookieOptions() {
+    const isProduction = process.env.NODE_ENV === "production";
+    return {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+        path: "/",
+    };
 }
-function clearSessionCookie(response) { const secure = process.env.NODE_ENV === "production" ? "; Secure" : ""; response.setHeader("Set-Cookie", `${SESSION_COOKIE}=; HttpOnly; Path=/; SameSite=Lax; Max-Age=0${secure}`); }
+function setSessionCookie(response, token, expiresAt) {
+    response.cookie(SESSION_COOKIE, token, {
+        ...sessionCookieOptions(),
+        maxAge: SESSION_TTL_MS,
+        expires: expiresAt,
+    });
+}
+function clearSessionCookie(response) {
+    response.clearCookie(SESSION_COOKIE, sessionCookieOptions());
+}
 function authResponseData(request, result) {
     // Native clients cannot reliably use browser cookie jars. They explicitly opt in
     // to receiving the same opaque session token and keep it in OS secure storage.

@@ -3,9 +3,7 @@ import type {
   ProjectStatus,
   ProjectsResponse,
 } from "../types/project";
-
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
-import { apiFetch } from "../../../shared/api/http";
+import { API_URL, apiFetch } from "../../../shared/api/http";
 
 interface ProjectResponse {
   data: Project;

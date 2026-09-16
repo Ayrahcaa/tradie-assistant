@@ -4,9 +4,7 @@ import type {
   ExpensesResponse,
   ExpenseStatus,
 } from "../types/expense";
-import { apiFetch } from "../../../shared/api/http";
-
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
+import { API_URL, apiFetch } from "../../../shared/api/http";
 
 export interface CreateExpenseInput {
   description: string;

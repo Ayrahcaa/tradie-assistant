@@ -1,14 +1,31 @@
-import type { NextFunction, Request, Response } from "express";
+import type { CookieOptions, NextFunction, Request, Response } from "express";
 import { loginSchema, registerSchema, updateProfileSchema } from "./auth.schema.js";
 import { invalidateSession, login, register, SESSION_COOKIE, SESSION_TTL_MS, updateProfile } from "./auth.service.js";
 import { getRequestSessionToken } from "./auth.middleware.js";
 import { prisma } from "../../lib/prisma.js";
 
-function setSessionCookie(response: Response, token: string, expiresAt: Date) {
-  const secure = process.env.NODE_ENV === "production" ? "; Secure" : "";
-  response.setHeader("Set-Cookie", `${SESSION_COOKIE}=${encodeURIComponent(token)}; HttpOnly; Path=/; SameSite=Lax; Max-Age=${Math.floor(SESSION_TTL_MS / 1000)}; Expires=${expiresAt.toUTCString()}${secure}`);
+function sessionCookieOptions(): CookieOptions {
+  const isProduction = process.env.NODE_ENV === "production";
+
+  return {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    path: "/",
+  };
 }
-function clearSessionCookie(response: Response) { const secure = process.env.NODE_ENV === "production" ? "; Secure" : ""; response.setHeader("Set-Cookie", `${SESSION_COOKIE}=; HttpOnly; Path=/; SameSite=Lax; Max-Age=0${secure}`); }
+
+function setSessionCookie(response: Response, token: string, expiresAt: Date) {
+  response.cookie(SESSION_COOKIE, token, {
+    ...sessionCookieOptions(),
+    maxAge: SESSION_TTL_MS,
+    expires: expiresAt,
+  });
+}
+
+function clearSessionCookie(response: Response) {
+  response.clearCookie(SESSION_COOKIE, sessionCookieOptions());
+}
 
 function authResponseData(request: Request, result: { user: unknown; token: string; expiresAt: Date }) {
   // Native clients cannot reliably use browser cookie jars. They explicitly opt in
